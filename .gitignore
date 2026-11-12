@@ -1,0 +1,40 @@
+# Secrets and local state
+.token
+*.token
+*.secret
+*.dpapi
+*.pem
+*.key
+*.pfx
+*.psb
+*.zap21
+*.ap21
+*.zip
+*.7z
+*.rar
+*.iso
+
+# Vendor binaries and large artifacts
+*.dll
+*.exe
+*.bin
+*.so
+*.dylib
+
+# Logs / captures / databases
+*.log
+*.pcap
+*.pcapng
+*.sqlite
+*.db
+tags.csv
+
+# Local lab/runtime state
+lab/
+runtime/
+artifacts/
+__pycache__/
+*.pyc
+
+# Keep the curated example
+!examples/*.csv

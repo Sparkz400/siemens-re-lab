@@ -1,0 +1,75 @@
+# Artifacts and reproduction
+
+## Published in this repo
+
+| Path | Content |
+|---|---|
+| `docs/` | goals, environment, lab project, GraphQL, TIA Openness, plans, roadmap, legal |
+| `probe/unified_probe.py` | login / browse / read / write / CSV watcher |
+| `probe/dump_schema.py` | introspection → local SDL + JSON |
+| `probe/summarize_schema.py` | introspection JSON → Markdown operation summary |
+| `analysis/schema-summary.md` | curated queries/mutations/subscriptions/tag model |
+| `examples/tags.csv` | truncated demo capture (10 tags, 0.5 s) |
+
+The **raw GraphQL SDL** (`schema.runtime.graphql`) is generated locally from the licensed
+installation and is intentionally **not committed**. Run `probe/dump_schema.py` to recreate it.
+
+## Local lab artifacts (not published)
+
+| Artifact | Path |
+|---|---|
+| TIA project | `C:\Programs\04_Programme\lab\tia-mcp-artifacts\scratch\TiaMcpScratch_20261112_123345_9eb052ce\...ap21` |
+| Runtime package | `%USERPROFILE%\Documents\Simatic.HMI\RT_Projects\HMI_RT_1[...] - Full <date>.zip` |
+| Runtime project data | `C:\ProgramData\SCADAProjects\HMI_RT_1\` |
+| TIA MCP bundle | `C:\TiaMcp\releases\tia-mcp-v21-0.9.0_20261112_122441_bb02d6cf` |
+| TIA MCP source | `C:\Programs\04_Programme\src\TIA_MCP` |
+| TIA MCP changes/journals | `C:\Programs\04_Programme\lab\tia-mcp-artifacts\changes\` |
+| DPAPI credentials | `...\scratch-credentials\*.dpapi` (current Windows user only) |
+| GraphQL capture | `C:\Programs\04_Programme\analysis\wincc-graphql\` |
+| WSL worker | `\\wsl$\Ubuntu-24.04\opt\...` (Ghidra, Kuna, rizin, jars) |
+| Windows toolkit | `C:\Programs\04_Programme\` |
+
+Do not commit any of these: they contain project data, credentials/tokens, vendor archives,
+certificates or machine-specific paths.
+
+## Reproduction
+
+### GraphQL probe
+
+```powershell
+$py = "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
+$env:PYTHONPATH = ''
+& $py probe/unified_probe.py browse --user Lab --password '...'
+& $py probe/unified_probe.py watch  --user Lab --password '...' --tags Tag01,Tag02 --duration 10 --out tags.csv
+```
+
+### Schema dump
+
+```powershell
+& $py probe/dump_schema.py --url http://localhost:4000/graphql --out .
+& $py probe/summarize_schema.py --introspection introspection.json --out schema-summary.md
+```
+
+### Runtime package
+
+```powershell
+$rm = 'C:\Program Files\Siemens\Automation\WinCCUnified\bin\SIMATICRuntimeManager.exe'
+& $rm -s -o download.log -overwriteUmc -c fulldownload '<runtime>.zip'
+& $rm -s -o start.log -c start <project-id>
+```
+
+### TIA MCP
+
+```powershell
+$env:FrameworkPathOverride = 'C:\Programs\04_Programme\src\TIA_MCP\.net48refs\build\.NETFramework\v4.8'
+.\scripts\New-IsolatedBuild.ps1 -Configuration Release
+.\scripts\Package.ps1 -Configuration Release -SkipBuild -IsolatedBuildDirectory <build-root>
+```
+
+## Environment snapshot
+
+- TIA V21, PLCSIM Advanced V8, WinCC Unified PC RT 21.0.
+- Node 24.22.3, REA 6.9.0 (Windows 6.8), Python 3.12.
+- Ghidra 12.1.3 (Windows + WSL), IDA Free 9.5, jadx 1.5.6, apktool 3.0.3.
+- WSL Ubuntu 24.04.5, Kuna 1.990, Rizin 0.9.1, TShark 4.2.2, Frida 17.26.2.
+- TIA MCP v0.9.0 (314 tools), local Test Suite stub + HMI station-name patch.
