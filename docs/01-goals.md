@@ -82,7 +82,8 @@ first deliverable.
 **Phases**
 1. **MVP (done):** schema introspection, `login`, `browse`, `tagValues`, `writeTagValues`, CSV
    watcher.
-2. **Live subscriptions:** graphql-ws `tagValues` subscription with reconnect/backoff.
+2. **Live subscriptions (done):** graphql-ws `tagValues` subscription with reconnect/backoff,
+   SQLite + CSV logging, session/gap records and a 10-tag soak.
 3. **Alarms:** `activeAlarms` subscription, acknowledge/reset/enable/shelve mutations.
 4. **History:** `loggedTagValues` and `loggedAlarms`, time-range queries, archive files if the
    history service is separate (`ReportingReverseProxy`).
@@ -96,8 +97,9 @@ first deliverable.
 4. SQLite is restart-safe and queryable; CSV format documented.
 5. Login uses a local UMC user; no credentials in files.
 
-**Current status:** MVP working (2026-11-12). 138 types / 8 queries / 11 mutations / 3
-subscriptions; user `Lab`; 20 internal tags; 170-row CSV demo. Details in
+**Current status:** MVP and live logger working (2026-11-12). 138 types / 8 queries / 11
+mutations / 3 subscriptions; user `Lab`; 20 internal tags; graphql-ws `tagValues` with
+reconnect/backoff, SQLite + CSV, and a 10-tag 1 Hz soak. Details in
 [04-wincc-graphql.md](04-wincc-graphql.md).
 
 **Risks:** UMC configuration (local vs central), editor-only transfer password for headless

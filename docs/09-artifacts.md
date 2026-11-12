@@ -6,6 +6,9 @@
 |---|---|
 | `docs/` | goals, environment, lab project, GraphQL, TIA Openness, plans, roadmap, legal |
 | `probe/unified_probe.py` | login / browse / read / write / CSV watcher |
+| `probe/live_logger.py` | graphql-ws tag subscription → SQLite + CSV, reconnect/backoff |
+| `probe/demo_writer.py` | deterministic 1 Hz value generator for soak tests |
+| `probe/live_logger.example.toml` | logger configuration template (no credentials) |
 | `probe/dump_schema.py` | introspection → local SDL + JSON |
 | `probe/summarize_schema.py` | introspection JSON → Markdown operation summary |
 | `analysis/schema-summary.md` | curated queries/mutations/subscriptions/tag model |
@@ -26,6 +29,7 @@ installation and is intentionally **not committed**. Run `probe/dump_schema.py` 
 | TIA MCP changes/journals | `C:\Programs\04_Programme\lab\tia-mcp-artifacts\changes\` |
 | DPAPI credentials | `...\scratch-credentials\*.dpapi` (current Windows user only) |
 | GraphQL capture | `C:\Programs\04_Programme\analysis\wincc-graphql\` |
+| Logger soak data | `C:\Programs\04_Programme\analysis\wincc-graphql\soak\` |
 | WSL worker | `\\wsl$\Ubuntu-24.04\opt\...` (Ghidra, Kuna, rizin, jars) |
 | Windows toolkit | `C:\Programs\04_Programme\` |
 
@@ -42,6 +46,20 @@ $env:PYTHONPATH = ''
 & $py probe/unified_probe.py browse --user Lab --password '...'
 & $py probe/unified_probe.py watch  --user Lab --password '...' --tags Tag01,Tag02 --duration 10 --out tags.csv
 ```
+
+### Live logger
+
+```powershell
+$env:WINCC_USER = 'Lab'
+$env:WINCC_PASSWORD = '...'
+& $py probe/live_logger.py --config probe/live_logger.example.toml --duration 3600
+& $py probe/demo_writer.py --tags Tag01,Tag02,Tag03,Tag04,Tag05,Tag06,Tag07,Tag08,Tag09,Tag10 `
+    --duration 3590 --interval 1
+```
+
+Outputs are the SQLite tables `samples`, `sessions`, `events`, `meta` and the CSV listed in
+[04-wincc-graphql.md](04-wincc-graphql.md#live-logger-m1). Soak data stays under the local
+`analysis\wincc-graphql\soak\` path and is not committed.
 
 ### Schema dump
 

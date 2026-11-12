@@ -15,11 +15,12 @@
 - GraphQL schema captured; login/browse/read/write/watch verified.
 - TIA MCP v0.9.0 built and installed; toolchain documented.
 
-### M1 — Goal 3 live logger (next, ~3–5 days)
-- graphql-ws `tagValues` subscription with reconnect/backoff.
-- Config file (URL, user, tags, interval, storage).
-- SQLite writer + CSV export; systemd/Windows service wrapper.
-- 1 h / 10-tag soak test; gap and value cross-check against the Unified screen.
+### M1 — Goal 3 live logger (code complete, soak running)
+- [x] graphql-ws `tagValues` subscription with reconnect/backoff.
+- [x] Config file (URL, user, tags, interval, storage).
+- [x] SQLite writer + CSV export; session and gap records.
+- [ ] 1 h / 10-tag soak test (running); gap and value cross-check against the Unified screen.
+- [ ] Windows service wrapper (Task Scheduler/NSSM notes).
 
 ### M2 — Goal 3 alarms + history (~1–2 weeks)
 - `activeAlarms` subscription; acknowledge/reset/enable/shelve round-trip.

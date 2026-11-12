@@ -1,0 +1,38 @@
+# WinCC Unified live logger configuration.
+#
+# Credentials are NOT configured here. Use the environment:
+#   PowerShell:  $env:WINCC_USER = "Lab"; $env:WINCC_PASSWORD = "..."
+# or pass --user/--password (an interactive prompt is used if the password
+# is missing). The password is never written to SQLite, CSV or the log.
+
+[wincc]
+url = "http://localhost:4000/graphql"
+# Bare tag names are qualified as "<system>::<tag>".
+system = "HMI_RT_1"
+tags = [
+  "Tag01", "Tag02", "Tag03", "Tag04", "Tag05",
+  "Tag06", "Tag07", "Tag08", "Tag09", "Tag10",
+]
+
+[storage]
+# SQLite is the primary store (use ":memory:" for an ephemeral run).
+# Set csv to "" to disable the CSV copy.
+sqlite = "data/live.sqlite"
+csv = "data/live.csv"
+
+[connection]
+# Exponential backoff with 20% jitter, capped at reconnect_max_s.
+reconnect_min_s = 1.0
+reconnect_max_s = 30.0
+# Client-side keepalive: graphql-transport-ws ping/pong.
+ping_interval_s = 15.0
+pong_timeout_s = 10.0
+recv_timeout_s = 2.0
+ack_timeout_s = 10.0
+# SQLite transaction interval.
+commit_interval_s = 1.0
+
+[run]
+# 0 = run until Ctrl+C.
+duration_s = 0
+stats_interval_s = 60.0

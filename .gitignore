@@ -26,8 +26,11 @@
 *.pcap
 *.pcapng
 *.sqlite
+*.sqlite-wal
+*.sqlite-shm
 *.db
 tags.csv
+data/
 
 # Local lab/runtime state
 lab/

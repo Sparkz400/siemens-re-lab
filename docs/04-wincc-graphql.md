@@ -126,6 +126,117 @@ mutation {
 - History is a separate query (`loggedTagValues`) and may also live in archive files /
   `ReportingReverseProxy`, not only GraphQL.
 
+## Live subscriptions (graphql-ws)
+
+Captured 2026-11-12 with `websocket-client` 1.9.2 against the live runtime.
+
+| Item | Value |
+|---|---|
+| URL | `ws://localhost:4000/graphql` (same path as HTTP) |
+| Subprotocol | `graphql-transport-ws` |
+| Auth | `connection_init.payload.Authorization = "Bearer <token>"` |
+| Ack | `{"type":"connection_ack"}` |
+| Framing | one `next` message per tag per change |
+| Keepalive | client `{"type":"ping"}` → server `{"type":"pong"}` |
+
+The HTTP `Authorization` header on the upgrade request is **ignored** by the resolver. Sending
+only the header acknowledges the connection but the first subscription field returns
+`UNAUTHENTICATED` / "User is not logged in"; the token must be in the `connection_init` payload.
+
+Minimal transcript:
+
+```json
+→ {"type":"connection_init","payload":{"Authorization":"Bearer <token>"}}
+← {"type":"connection_ack"}
+→ {"id":"tags","type":"subscribe","payload":{"query":"subscription($n:[String!]!){tagValues(names:$n){name value{value timestamp} notificationReason}}","variables":{"n":["HMI_RT_1::Tag01"]}}}
+← {"id":"tags","type":"next","payload":{"data":{"tagValues":{"name":"HMI_RT_1::Tag01","value":{"value":12,"timestamp":"2026-11-12T14:18:26.779Z"},"notificationReason":"Modified"}}}}
+```
+
+Observed behaviour:
+
+- `notificationReason` values seen: `Added` (initial snapshot after subscribe **and again after
+  every resubscribe**) and `Modified` (value change).
+- The server sends one message per changed tag, not a batch: 10 tags at 1 Hz ≈ 10 msg/s.
+- No server-initiated `ping` was observed in a idle 12 s window; client pings work, so the logger
+  uses them as a liveness check.
+- `complete` ends the subscription; the client reconnects and re-subscribes.
+- The WebSocket endpoint is HTTP-only like the query endpoint; `wss://` is not available in this
+  installation.
+
+## Live logger (M1)
+
+`probe/live_logger.py` subscribes to `tagValues`, writes every notification to SQLite and CSV,
+reconnects with exponential backoff, re-authenticates on every reconnect and records
+sessions/gaps.
+
+```powershell
+$env:WINCC_USER = 'Lab'
+$env:WINCC_PASSWORD = '...'
+$py = "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
+
+& $py probe/live_logger.py --config probe/live_logger.example.toml
+& $py probe/live_logger.py --config probe/live_logger.example.toml --duration 3600
+```
+
+`probe/demo_writer.py` generates deterministic 1 Hz changes for tests and soak runs:
+
+```powershell
+& $py probe/demo_writer.py --tags Tag01,Tag02,Tag03,Tag04,Tag05,Tag06,Tag07,Tag08,Tag09,Tag10 `
+    --duration 3590 --interval 1
+```
+
+### Behaviour
+
+- **Auth:** a fresh `login` runs before every WebSocket connect, so a runtime restart or an
+  expired token recovers without restarting the logger. Bad credentials / UMC errors are logged
+  to `events` and retried.
+- **Backoff:** 1 s → 2 s → 4 s … capped at 30 s with 20% jitter; reset after a session that
+  lasted more than 30 s.
+- **Liveness:** client ping every 15 s; a missing pong for 10 s forces a reconnect. The socket
+  read timeout is 2 s, so `Ctrl+C`/SIGTERM stop promptly.
+- **Resync:** every reconnect re-subscribes all tags; the runtime sends an `Added` snapshot per
+  tag. Consumers should treat `Added` after a reconnect as a resync, not a process change.
+- **Gaps:** the subscription is event-driven, so a quiet tag produces no rows. A gap is the time
+  between losing the subscription and the next successful `connection_ack`; it is recorded in
+  `sessions` (`disconnect_reason`, reconnect time) and as an `events` row with
+  `{"kind":"gap","detail":{"seconds":10.6}}`.
+- **Durability:** SQLite uses WAL and commits at most every 1 s / 200 rows; CSV is flushed per
+  row. Restarting the logger with the same files appends to them.
+
+### Storage schema
+
+`samples` (one row per notification):
+
+| Column | Meaning |
+|---|---|
+| `received_utc` | logger receive time (ISO-8601, `Z`) |
+| `session_id` | FK to `sessions` |
+| `tag` | fully qualified tag name |
+| `value_json` / `value_num` | raw Variant as JSON / numeric convenience column |
+| `value_timestamp` | runtime timestamp of the value |
+| `notification_reason` | `Added` or `Modified` |
+| `quality_json` | `value.quality` when the server supplies it |
+| `error_code` / `error_description` | per-tag error (`0` / `Succeeded` normally) |
+
+`sessions`: connect/disconnect timestamps, disconnect reason, and per-session
+`notifications` / `added` / `modified` counts. `events`: `connect`, `gap`, `auth_failed`,
+`connect_failed`, `session_error`, `subscription_error`, `stop`, with JSON detail. `meta`:
+logger version, URL, tag list and start time.
+
+CSV columns:
+
+```text
+received_utc,session_id,tag,value,value_timestamp,notification_reason,error_code,error_description
+```
+
+### M1 test results
+
+| Test | Result |
+|---|---|
+| 75 s, 10 tags, 1 Hz | 710 samples (10 `Added` + 700 `Modified`), 0 errors; steady-state max inter-arrival 1.068 s |
+| Forced 10.6 s outage (TCP proxy) | connection reset → 3 login/backoff attempts → new session → 10 `Added` resync, 530 further notifications; gap recorded |
+| 1 h soak, 10 tags, 1 Hz | running (results appended when complete) |
+
 ## Probe
 
 `probe/unified_probe.py` implements login, browse, read, write and a polling CSV watcher.
@@ -139,7 +250,8 @@ $py = "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 ```
 
 `watch` polls `tagValues` at `--interval` seconds and writes
-`collected_utc,tag,value,value_timestamp,error`. A future version adds graphql-ws subscriptions.
+`collected_utc,tag,value,value_timestamp,error`. For long-running capture use
+`live_logger.py` (subscriptions, reconnect, SQLite).
 
 ## Demo evidence
 

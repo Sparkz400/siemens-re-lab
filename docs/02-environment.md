@@ -47,7 +47,7 @@ Installed under `C:\Programs\04_Programme` (portable unless noted):
 | WinDbg, WinObjEx64 | kernel/user debugging and object manager |
 | REA 6.8 | agent-driven RE with Ghidra/IDA/jadx/apktool/Kuna (Windows) |
 | TIA MCP v0.9.0 | 314 MCP tools over TIA Openness (see 05) |
-| Python 3.12 | `requests`, `graphql-core`, `pypdf`, `pefile` |
+| Python 3.12 | `requests`, `graphql-core`, `websocket-client` 1.9.2, `pypdf`, `pefile` |
 | portable Git 2.56.1 | repo tooling (added for this project) |
 
 ## WSL2 Linux worker
