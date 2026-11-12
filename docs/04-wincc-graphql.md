@@ -229,6 +229,12 @@ CSV columns:
 received_utc,session_id,tag,value,value_timestamp,notification_reason,error_code,error_description
 ```
 
+Analyze a capture (counts, rates, intervals, sessions, gaps, integrity):
+
+```powershell
+& $py probe/soak_report.py --sqlite data/live.sqlite --csv data/live.csv
+```
+
 ### M1 test results
 
 | Test | Result |

@@ -9,6 +9,7 @@
 | `probe/live_logger.py` | graphql-ws tag subscription → SQLite + CSV, reconnect/backoff |
 | `probe/demo_writer.py` | deterministic 1 Hz value generator for soak tests |
 | `probe/live_logger.example.toml` | logger configuration template (no credentials) |
+| `probe/soak_report.py` | capture summary: rate, intervals, sessions, gaps, integrity |
 | `probe/dump_schema.py` | introspection → local SDL + JSON |
 | `probe/summarize_schema.py` | introspection JSON → Markdown operation summary |
 | `analysis/schema-summary.md` | curated queries/mutations/subscriptions/tag model |
