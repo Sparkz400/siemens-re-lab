@@ -235,6 +235,13 @@ Analyze a capture (counts, rates, intervals, sessions, gaps, integrity):
 & $py probe/soak_report.py --sqlite data/live.sqlite --csv data/live.csv
 ```
 
+### Service mode
+
+The logger is a console program; Task Scheduler (trigger *At startup*, run as the lab user) or
+NSSM can host it. Put `WINCC_USER`/`WINCC_PASSWORD` in the user/service environment and pass
+`--log` to a writable path (for example `C:\ProgramData\WinccLiveLogger\logger.log`). Never put
+credentials in the task XML, the TOML config or the repository.
+
 ### M1 test results
 
 | Test | Result |

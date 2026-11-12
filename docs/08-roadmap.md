@@ -20,7 +20,7 @@
 - [x] Config file (URL, user, tags, interval, storage).
 - [x] SQLite writer + CSV export; session and gap records.
 - [ ] 1 h / 10-tag soak test (running); gap and value cross-check against the Unified screen.
-- [ ] Windows service wrapper (Task Scheduler/NSSM notes).
+- [x] Windows service wrapper notes (Task Scheduler/NSSM) in docs/04.
 
 ### M2 — Goal 3 alarms + history (~1–2 weeks)
 - `activeAlarms` subscription; acknowledge/reset/enable/shelve round-trip.
