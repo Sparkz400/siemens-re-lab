@@ -55,8 +55,35 @@ def resolve_archive(project: str) -> tuple[Path, str, int]:
     return path, sha256_file(path), path.stat().st_size
 
 
+VOLATILE_DIRS = {"Logs", "TMP"}
+VOLATILE_SUFFIXES = {".log", ".tmp", ".bak"}
+
+
+def folder_manifest(root: Path) -> tuple[str, int, int]:
+    """Stable manifest hash of the project folder, excluding logs/temp files."""
+    digest = hashlib.sha256()
+    count = 0
+    total = 0
+    for path in sorted(root.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(root)
+        if any(part in VOLATILE_DIRS for part in relative.parts):
+            continue
+        if path.suffix.lower() in VOLATILE_SUFFIXES:
+            continue
+        digest.update(relative.as_posix().encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(sha256_file(path).encode("ascii"))
+        digest.update(b"\n")
+        count += 1
+        total += path.stat().st_size
+    return digest.hexdigest(), count, total
+
+
 def capture(args) -> int:
     archive, archive_hash, archive_bytes = resolve_archive(args.project)
+    folder_hash, folder_files, folder_bytes = folder_manifest(archive.parent)
     out = Path(args.out).expanduser().resolve()
     if (out / "snapshot.json").exists() and not args.force:
         raise SystemExit(f"snapshot already exists: {out} (use --force to overwrite)")
@@ -66,9 +93,10 @@ def capture(args) -> int:
     with McpHost(args.bundle, args.artifacts, native=True,
                  timeout_seconds=args.timeout, log_path=log_path) as host:
         identity = host.call_tool("host_build_identity", {}, timeout=60)
+        started = host.call_tool("tia_start", {}, timeout=args.timeout)
         opened = host.call_tool(
             "project_open",
-            {"path": str(archive), "readOnly": True},
+            {"path": str(archive), "readOnly": False},
             timeout=args.timeout)
         project = (opened or {}).get("project") or {}
         project_name = args.project_name or project.get("name") or archive.stem
@@ -84,6 +112,10 @@ def capture(args) -> int:
         capture_result = host.call_tool(
             "project_snapshot_capture", {"request": request},
             timeout=args.timeout)
+        try:
+            host.call_tool("tia_detach", {}, timeout=60)
+        except McpError:
+            pass
 
     review_id = capture_result.get("reviewId")
     artifact = capture_result.get("artifact") or {}
@@ -108,6 +140,9 @@ def capture(args) -> int:
             "name": project_name,
             "archiveSha256": archive_hash,
             "archiveBytes": archive_bytes,
+            "projectFolderSha256": folder_hash,
+            "projectFolderFiles": folder_files,
+            "projectFolderBytes": folder_bytes,
         },
         "tiaMcp": {
             "bundle": str(args.bundle),
@@ -129,6 +164,7 @@ def capture(args) -> int:
         },
         "request": request,
         "open": opened,
+        "tiaStart": started,
     }
     (out / "snapshot.json").write_text(
         json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n",
@@ -140,6 +176,7 @@ def capture(args) -> int:
           f"blocks: {capture_result.get('exportedBlocks')}  "
           f"types: {capture_result.get('exportedTypes')}")
     print(f"archive:  {archive_hash}")
+    print(f"folder:   {folder_hash} ({folder_files} files, {folder_bytes} bytes)")
     return 0
 
 
@@ -226,6 +263,8 @@ def render_markdown(result: dict, before_meta: dict, after_meta: dict) -> str:
         f"| {_cell(after_project.get('name'))} |",
         f"| Archive SHA-256 | `{_cell(before_project.get('archiveSha256'), 70)}` "
         f"| `{_cell(after_project.get('archiveSha256'), 70)}` |",
+        f"| Project folder SHA-256 | `{_cell(before_project.get('projectFolderSha256'), 70)}` "
+        f"| `{_cell(after_project.get('projectFolderSha256'), 70)}` |",
         f"| Review ID | `{_cell(before_meta.get('tiaMcp', {}).get('reviewId'), 70)}` "
         f"| `{_cell(after_meta.get('tiaMcp', {}).get('reviewId'), 70)}` |",
         "",
@@ -246,7 +285,7 @@ def render_markdown(result: dict, before_meta: dict, after_meta: dict) -> str:
             fields = ", ".join(row.get("changedFields") or []) or ""
             lines.append(
                 f"| {_cell(row.get('change'))} | {_cell(row.get('kind'))} "
-                f"| {_cell(row.get('path'))} | {_cell(fields)} |")
+                f"| {_cell(row.get('path'), 160)} | {_cell(fields)} |")
         lines.append("")
     else:
         lines += ["No changes were observed in the captured scope.", ""]

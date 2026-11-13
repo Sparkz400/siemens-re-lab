@@ -37,6 +37,7 @@ lab/
 runtime/
 artifacts/
 snapshots/
+diff/
 diff-*/
 __pycache__/
 *.pyc

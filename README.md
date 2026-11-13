@@ -3,10 +3,11 @@
 Reverse-engineering lab for Siemens TIA Portal V21, PLCSIM Advanced V8 and WinCC Unified PC RT 21.0.
 The repo documents four projects, the environment they run in, and the evidence collected so far.
 
-> **Status: 2026-11-13.** Goal 3 has a live tag logger, working tag/alarm history, and working
-> alarm acknowledge/reset/shelve controls; the direct `activeAlarms` subscription remains broken
-> and a history-polling feed is used instead. Goal 1 has a capture/compare CLI; real acceptance
-> captures are pending. Goals 2 and 4 are planned; goal 4 is blocked on hardware/artifacts.
+> **Status: 2026-11-13.** Goal 3's live tag logger passed a clean 1 h soak (35,910 samples,
+> 0 errors, max interval 1.387 s); tag/alarm history and alarm controls work, while the direct
+> `activeAlarms` subscription remains broken and a history-polling feed is used instead. Goal 1
+> has a capture/compare CLI with a native Python diff; real acceptance captures are pending.
+> Goals 2 and 4 are planned; goal 4 is blocked on hardware/artifacts.
 
 > **Disclaimer:** this is independent research on systems we own or are authorized to test.
 > It is not affiliated with or endorsed by Siemens. Siemens, SIMATIC, TIA Portal, PLCSIM,
@@ -17,7 +18,7 @@ The repo documents four projects, the environment they run in, and the evidence 
 
 | # | Goal | End state | Status |
 |---|---|---|---|
-| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP capture + native Python diff (synthetic validated), Markdown/JSON; real acceptance captures pending |
+| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP capture + native Python diff; unchanged = 0 changes, one tag validated; block/screen pending |
 | 2 | **S7comm-plus client** | Read-only tag client that talks to an S7-1500/PLCSIM Advanced without TIA/WinCC; later a Pi/MQTT bridge | Planned — PLCSIM Advanced V8 installed; capture plan ready; no real PLC |
 | 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger + history working**; tag/alarm history and alarm controls verified; `activeAlarms` subscription blocked |
 | 4 | **Panel backup unpacker** | Parse a `.psb` panel backup (container/compression/encryption), inspect with ImHex, diff two backups of the same panel | **Blocked** — no panel, no `.psb`; ProSave needs hardware |
@@ -53,6 +54,8 @@ WSL2 Ubuntu 24.04 worker
   exponential backoff, re-login, SQLite + CSV, session/gap records.
 - Demo writer: [`probe/demo_writer.py`](probe/demo_writer.py) — deterministic 1 Hz sine values
   for soak tests.
+- **1 h soak passed:** 35,910 samples (10 tags × 3,590), 0 errors, 1 session, 0 reconnects,
+  CSV = SQLite, max interval 1.387 s; final values matched the API 10/10.
 - Alarm client: [`probe/unified_alarms.py`](probe/unified_alarms.py) — ack/reset/enable/disable/
   shelve/unshelve; `activeAlarms` query (blocked on this runtime).
 - Alarm history feed: [`probe/alarm_history_watch.py`](probe/alarm_history_watch.py) — polls
@@ -72,7 +75,10 @@ WSL2 Ubuntu 24.04 worker
 - `compare` is pure Python over `review.json` (no TIA, no MCP Host) and writes
   `compare.json` + `report.md`; it exits non-zero on changes.
 - `probe/tia_mcp.py` is the stdio MCP client (newline-delimited JSON-RPC), also usable standalone.
-- Unit tests cover the MCP client, report rendering and archive hashing.
+- Unit tests cover the MCP client, native compare, report rendering and archive hashing.
+- Live acceptance: unchanged double capture = 0 changes; adding one PLC tag = tag entry plus
+  parent tag-table metadata; project-folder hash changed while `.ap21` stayed the same.
+  Block and screen change tests are pending.
 
 ## Repository layout
 

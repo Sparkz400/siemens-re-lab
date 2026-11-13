@@ -15,12 +15,11 @@
 - GraphQL schema captured; login/browse/read/write/watch verified.
 - TIA MCP v0.9.0 built and installed; toolchain documented.
 
-### M1 — Goal 3 live logger (code complete, clean soak pending)
+### M1 — Goal 3 live logger (done)
 - [x] graphql-ws `tagValues` subscription with reconnect/backoff.
 - [x] Config file (URL, user, tags, interval, storage).
 - [x] SQLite writer + CSV export; session and gap records.
-- [x] 14.3 min / 8,521-row soak, 0 errors (one 2.5 s gap from a GraphQL server restart).
-- [ ] Clean 1 h / 10-tag soak; gap and value cross-check against the Unified screen.
+- [x] Clean 1 h / 10-tag soak: 35,910 samples, 0 errors, 1 session, max interval 1.387 s; final values matched the API 10/10.
 - [x] Windows service wrapper notes (Task Scheduler/NSSM) in docs/04.
 
 ### M2 — Goal 3 alarms + history (history/mutations live; activeAlarms blocked)
@@ -44,8 +43,10 @@
 - [x] Native Python offline compare; Markdown/JSON + CI exit code.
 - [x] Unit tests (fake MCP host, report, archive).
 - [x] Offline compare validated with synthetic reviews (added + modified; unchanged).
-- [ ] Unchanged double-capture test on the lab project.
-- [ ] Tag/block/screen change acceptance tests.
+- [x] Unchanged double-capture test on the lab project (0 changes).
+- [x] One-tag addition test (tag + parent table metadata).
+- [ ] Block edit test.
+- [ ] HMI screen property/change test.
 - [ ] HMI model supplement if screen-item content is not covered.
 
 ### M5 — Goal 2 symbolic + Pi/MQTT (later)

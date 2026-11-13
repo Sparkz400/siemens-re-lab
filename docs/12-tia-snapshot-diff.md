@@ -21,6 +21,7 @@ Python engine. Capture needs TIA/Openness; comparison needs neither TIA nor the 
 ```text
 tia_snapshot.py capture
   └─ starts a private TiaMcp.Host.exe (native worker)
+       ├─ tia_start (headless, worker-owned TIA instance)
        ├─ project_open(readOnly=true)
        ├─ project_snapshot_capture(projectName, maxBlocks, …)
        └─ returns reviewId + project-review.v1 JSON
@@ -60,15 +61,16 @@ Bundle/artifacts defaults for **capture** can be overridden with `--bundle`/`--a
 directories.
 
 Close a user-owned TIA Portal instance with the project open before capture, or capture a
-**copy** of the project. The private Host opens the project read-only but TIA still refuses a
-second open of the same project.
+**copy** of the project. Capture opens the project read-write because TIA refuses native block
+`Export` from a secondary read-only project; it does not save or change the project. The
+worker-owned TIA instance is detached after capture.
 
 ## Snapshot layout
 
 ```text
 snapshots/baseline/
-  snapshot.json     metadata: project path/name, archive SHA-256, capture request,
-                    reviewId, host identity, coverage
+  snapshot.json     metadata: project path/name, .ap21 SHA-256, project-folder manifest SHA-256,
+                    capture request, reviewId, host identity, coverage
   review.json       TIA MCP project-review.v1 (model hierarchy, edges, block/type XML)
   host.log          Host stderr (diagnostics; ignored by git)
 ```
@@ -84,7 +86,7 @@ git; the `.gitignore` covers them.
 
 `compare.json` is the native comparison result. `report.md` contains:
 
-- before/after capture times, project names, archive hashes and review IDs;
+- before/after capture times, project names, `.ap21` and project-folder hashes, review IDs;
 - total changes and added/removed/modified counts;
 - a change table (`path`, `kind`, `change`, `changedFields`);
 - observed static impact paths (bounded);
@@ -108,23 +110,40 @@ The command exits **1** when changes are found, **0** when the captured scope is
 ## Acceptance plan
 
 1. Capture an unchanged project twice → `compare` reports 0 changes and exits 0.
-2. Add one tag → one `addedToCapturedScope` change for the exact tag path.
+2. Add one tag → one `addedToCapturedScope` tag entry, plus the parent tag-table metadata entry
+   (expected).
 3. Modify one block → one `modified` change with `logicChanged`/`interfaceChanged`.
 4. Modify one HMI screen property → confirm whether the model metadata changes; if not, add the
    HMI model supplement.
 5. Capture a project copy and compare with `--allow-different-project-copy`.
 6. Run `compare` with no TIA process and no TIA MCP bundle; verify it still works.
 
+## Live acceptance (2026-11-13)
+
+| Test | Result |
+|---|---|
+| Unchanged double capture | **0 changes**, exit 0; 4 block contents compared |
+| Add one PLC tag (`DiffTag01`, Bool, `%M100.0`) | **2 changes**, exit 1: the tag was added and the parent tag-table `metadata` changed; compile/save succeeded; 4 block contents compared |
+
+Baseline review `aa0e230b…`: 103 nodes, 4 exported blocks, project-folder hash
+`c5943384…` (76 files, 10,400,704 bytes). After the tag: 104 nodes, 4 blocks, folder hash
+`d48ed4e7…` (76 files, 10,445,323 bytes). The `.ap21` file SHA-256 stayed
+`aa8fc543…` in both captures — TIA stores much of the project state in the project folder, so
+`projectFolderSha256` is the useful state hash; `archiveSha256` alone is not sufficient.
+
+The extra `tagTable` metadata entry is expected: adding a child updates the table's metadata
+(tag count). The report keeps it visible rather than hiding a real container change.
+
 ## Status
 
 - [x] stdio MCP client with timeout/error handling
-- [x] portable snapshot + archive hash + review hash verification
+- [x] portable snapshot + archive/folder hashes + review hash verification
 - [x] native Python compare; no TIA, no MCP Host
 - [x] Markdown/JSON report and exit code
 - [x] unit tests (fake MCP host, native compare, report, archive)
-- [x] offline compare validated with synthetic `project-review.v1` fixtures:
-  an added tag + a modified block produced 2 changes (exit 1); an identical clone produced
-  0 changes (exit 0)
-- [ ] unchanged double-capture test on the lab project
-- [ ] tag/block/screen change acceptance tests
+- [x] offline compare validated with synthetic `project-review.v1` fixtures
+- [x] unchanged double-capture test on the lab project
+- [x] one-tag addition test (tag node + parent table metadata)
+- [ ] block edit test
+- [ ] HMI screen property/change test
 - [ ] HMI model supplement if screen content is not covered

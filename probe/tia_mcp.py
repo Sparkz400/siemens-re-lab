@@ -58,7 +58,7 @@ class McpHost:
         self.bundle = Path(bundle)
         self.artifacts = Path(artifacts)
         self.native = native
-        self.timeout_seconds = timeout_seconds
+        self.timeout_seconds = int(timeout_seconds)
         self.command = command
         self.log_path = Path(log_path) if log_path else None
         self.proc: subprocess.Popen | None = None
@@ -214,6 +214,10 @@ class McpHost:
         if "structuredContent" in result:
             return result["structuredContent"]
         return self._parse_text(self._content_text(result))
+
+    def list_tools(self, timeout: float = 60) -> list[dict]:
+        response = self._request("tools/list", {}, timeout=timeout)
+        return (response.get("result") or {}).get("tools") or []
 
     @staticmethod
     def _content_text(result: dict) -> str:

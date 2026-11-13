@@ -36,12 +36,12 @@ exports.
 3. Snapshot is reproducible from the same project archive.
 4. Diff works without a live TIA instance (archive-based).
 
-**Current status:** CLI implemented (2026-11-13). `probe/tia_snapshot.py` captures a TIA MCP
-project review into a portable snapshot (`snapshot.json` + `review.json`) and compares two
+**Current status:** capture/compare validated live (2026-11-13). `probe/tia_snapshot.py` captures a
+TIA MCP project review into a portable snapshot (`snapshot.json` + `review.json`) and compares two
 snapshots with a native Python engine (`probe/tia_compare.py`), producing Markdown/JSON with a CI
 exit code. Capture uses the TIA MCP as the Openness bridge; comparison needs neither TIA nor the
-MCP. The offline compare path is validated with synthetic reviews (added tag + modified block =
-2 changes, identical snapshots = 0). Real project acceptance captures are pending. Details in
+MCP. An unchanged double capture produced 0 changes; adding one PLC tag produced the tag entry
+plus the parent tag-table metadata entry. Block/screen change tests are pending. Details in
 [12-tia-snapshot-diff.md](12-tia-snapshot-diff.md).
 
 **Risks:** object exports are not available for every protected/safety object; HMI screen export
@@ -87,7 +87,8 @@ first deliverable.
 1. **MVP (done):** schema introspection, `login`, `browse`, `tagValues`, `writeTagValues`, CSV
    watcher.
 2. **Live subscriptions (done):** graphql-ws `tagValues` subscription with reconnect/backoff,
-   SQLite + CSV logging, session/gap records and a 14.3 min soak (clean 1 h rerun pending).
+   SQLite + CSV logging, session/gap records and a clean 1 h soak (35,910 samples, 0 errors,
+   max interval 1.387 s; final values matched the API).
 3. **Alarms (history/control working, activeAlarms blocked):** `activeAlarms` query/subscription
    still returns `INTERNAL_SERVER_ERROR`; acknowledge/reset/enable/disable/shelve/unshelve and
    the `loggedAlarms` history work. A history-polling feed covers live alarms (see
@@ -104,11 +105,12 @@ first deliverable.
 4. SQLite is restart-safe and queryable; CSV format documented.
 5. Login uses a local UMC user; no credentials in files.
 
-**Current status:** live logger working; tag/alarm history and alarm control verified (2026-11-13).
-138 types / 8 queries / 11 mutations / 3 subscriptions; user `Lab`; 20 internal tags; graphql-ws
-`tagValues` with reconnect/backoff, SQLite + CSV, and a 14.3 min soak. `loggedTagValues` and
-`loggedAlarms` return live data; acknowledge/reset/enable/disable/shelve/unshelve work. The direct
-`activeAlarms` query/subscription still returns `INTERNAL_SERVER_ERROR`; see
+**Current status:** live logger passed a clean 1 h soak; tag/alarm history and alarm control
+verified (2026-11-13). 138 types / 8 queries / 11 mutations / 3 subscriptions; user `Lab`; 20
+internal tags; graphql-ws `tagValues` with reconnect/backoff, SQLite + CSV, 35,910 samples,
+0 errors, max interval 1.387 s. `loggedTagValues` and `loggedAlarms` return live data;
+acknowledge/reset/enable/disable/shelve/unshelve work. The direct `activeAlarms`
+query/subscription still returns `INTERNAL_SERVER_ERROR`; see
 [11-alarms-history.md](11-alarms-history.md).
 
 **Risks:** UMC configuration (local vs central), editor-only transfer password for headless

@@ -8,7 +8,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from tia_mcp import McpHost, McpToolError
-from tia_snapshot import render_markdown, resolve_archive
+from tia_snapshot import folder_manifest, render_markdown, resolve_archive
 
 
 class McpClientTest(unittest.TestCase):
@@ -33,6 +33,21 @@ class SnapshotTest(unittest.TestCase):
             self.assertEqual(path, project.resolve())
             self.assertEqual(size, 4)
             self.assertEqual(len(digest), 64)
+
+    def test_folder_manifest_ignores_logs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "a.txt").write_text("a", encoding="utf-8")
+            (root / "Logs").mkdir()
+            (root / "Logs" / "runtime.log").write_text("one", encoding="utf-8")
+            first, files, _ = folder_manifest(root)
+            (root / "Logs" / "runtime.log").write_text("two", encoding="utf-8")
+            second, _, _ = folder_manifest(root)
+            self.assertEqual(first, second)
+            (root / "b.txt").write_text("b", encoding="utf-8")
+            third, files3, _ = folder_manifest(root)
+            self.assertNotEqual(first, third)
+            self.assertEqual(files + 1, files3)
 
     def test_markdown_report(self):
         result = {
