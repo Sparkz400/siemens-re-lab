@@ -117,6 +117,9 @@ The command exits **1** when changes are found, **0** when the captured scope is
 - [x] offline compare via `--no-native-workers`
 - [x] Markdown/JSON report and exit code
 - [x] unit tests (fake MCP host, report, archive)
+- [x] offline compare validated with synthetic `project-review.v1` fixtures:
+  an added tag + a modified block produced 2 changes (exit 1); an identical clone produced
+  0 changes (exit 0)
 - [ ] unchanged double-capture test on the lab project
 - [ ] tag/block/screen change acceptance tests
 - [ ] HMI model supplement if screen content is not covered

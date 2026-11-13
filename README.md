@@ -17,7 +17,7 @@ The repo documents four projects, the environment they run in, and the evidence 
 
 | # | Goal | End state | Status |
 |---|---|---|---|
-| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP review capture, offline compare, Markdown/JSON; acceptance captures pending |
+| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP review capture, offline compare (synthetic validated), Markdown/JSON; real acceptance captures pending |
 | 2 | **S7comm-plus client** | Read-only tag client that talks to an S7-1500/PLCSIM Advanced without TIA/WinCC; later a Pi/MQTT bridge | Planned — PLCSIM Advanced V8 installed; capture plan ready; no real PLC |
 | 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger + history working**; tag/alarm history and alarm controls verified; `activeAlarms` subscription blocked |
 | 4 | **Panel backup unpacker** | Parse a `.psb` panel backup (container/compression/encryption), inspect with ImHex, diff two backups of the same panel | **Blocked** — no panel, no `.psb`; ProSave needs hardware |

@@ -38,8 +38,10 @@ exports.
 
 **Current status:** CLI implemented (2026-11-13). `probe/tia_snapshot.py` captures a TIA MCP
 project review into a portable snapshot (`snapshot.json` + `review.json`) and compares two
-snapshots offline via `--no-native-workers`, producing Markdown/JSON with a CI exit code. Real
-project acceptance captures are pending. Details in [12-tia-snapshot-diff.md](12-tia-snapshot-diff.md).
+snapshots offline via `--no-native-workers`, producing Markdown/JSON with a CI exit code. The
+offline compare path is validated with synthetic reviews (added tag + modified block = 2 changes,
+identical snapshots = 0). Real project acceptance captures are pending. Details in
+[12-tia-snapshot-diff.md](12-tia-snapshot-diff.md).
 
 **Risks:** object exports are not available for every protected/safety object; HMI screen export
 coverage differs between Classic and Unified; generated system objects must be filtered.

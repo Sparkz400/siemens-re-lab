@@ -43,6 +43,7 @@
 - [x] Portable snapshot (`snapshot.json` + `review.json`) with archive/review hashes.
 - [x] Offline compare with `--no-native-workers`; Markdown/JSON + CI exit code.
 - [x] Unit tests (fake MCP host, report, archive).
+- [x] Offline compare validated with synthetic reviews (added + modified; unchanged).
 - [ ] Unchanged double-capture test on the lab project.
 - [ ] Tag/block/screen change acceptance tests.
 - [ ] HMI model supplement if screen-item content is not covered.
