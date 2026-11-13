@@ -91,6 +91,19 @@ This is a lab procedure, not a supported Siemens workflow. Rebuild only after a 
 compile, and add any new output files (for example alarm/logging RDFs) to the manifest; a missing
 manifest entry makes the import fail.
 
+`probe/rebuild_runtime_package.py` automates the procedure:
+
+```powershell
+& $py probe/rebuild_runtime_package.py `
+    --saved "...\<project>\IM\HMI\I\0\Saved" `
+    --reference "$env:USERPROFILE\Documents\Simatic.HMI\RT_Projects\<last package>.zip" `
+    --out artifacts\runtime-m2.zip
+```
+
+It reads the project manifest, adds `Download.config` and the machine certificate from the
+reference package, and writes a flat runtime `.zip`. The tool output was also imported and
+started successfully.
+
 ## Runtime layout
 
 ```text

@@ -10,6 +10,7 @@
 | `probe/demo_writer.py` | deterministic 1 Hz value generator for soak tests |
 | `probe/live_logger.example.toml` | logger configuration template (no credentials) |
 | `probe/soak_report.py` | capture summary: rate, intervals, sessions, gaps, integrity |
+| `probe/rebuild_runtime_package.py` | rebuild a runtime `.zip` from the project's `IM\HMI\I\0\Saved` |
 | `probe/unified_alarms.py` | active alarms, subscription logger, ack/reset/enable/disable/shelve/unshelve |
 | `probe/unified_history.py` | `loggedTagValues` / `loggedAlarms` time-range queries |
 | `probe/tests/test_alarm_store.py` | alarm SQLite/CSV sink unit tests |
