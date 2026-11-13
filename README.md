@@ -3,9 +3,10 @@
 Reverse-engineering lab for Siemens TIA Portal V21, PLCSIM Advanced V8 and WinCC Unified PC RT 21.0.
 The repo documents four projects, the environment they run in, and the evidence collected so far.
 
-> **Status: 2026-11-13.** Goal 3 has a live tag logger, plus alarm/history clients. The live
-> alarm/history path is blocked by the current runtime configuration; goals 1, 2 and 4 are
-> planned, and goal 4 is blocked on hardware/artifacts.
+> **Status: 2026-11-13.** Goal 3 has a live tag logger, working tag/alarm history, and working
+> alarm acknowledge/reset/shelve controls. The direct `activeAlarms` query/subscription remains
+> broken on this runtime; a history-polling feed is used instead. Goals 1, 2 and 4 are planned;
+> goal 4 is blocked on hardware/artifacts.
 
 > **Disclaimer:** this is independent research on systems we own or are authorized to test.
 > It is not affiliated with or endorsed by Siemens. Siemens, SIMATIC, TIA Portal, PLCSIM,
@@ -18,7 +19,7 @@ The repo documents four projects, the environment they run in, and the evidence 
 |---|---|---|---|
 | 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | Planned — TIA MCP already exposes `project_index`, `project_snapshot_capture`, `project_model` |
 | 2 | **S7comm-plus client** | Read-only tag client that talks to an S7-1500/PLCSIM Advanced without TIA/WinCC; later a Pi/MQTT bridge | Planned — PLCSIM Advanced V8 installed; capture plan ready; no real PLC |
-| 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger working**; alarm/history clients done, live alarm path blocked by runtime config |
+| 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger + history working**; tag/alarm history and alarm controls verified; `activeAlarms` subscription blocked |
 | 4 | **Panel backup unpacker** | Parse a `.psb` panel backup (container/compression/encryption), inspect with ImHex, diff two backups of the same panel | **Blocked** — no panel, no `.psb`; ProSave needs hardware |
 
 The shared lab project is one TIA project containing a CPU 1511-1 PN and a WinCC Unified PC RT
@@ -52,16 +53,17 @@ WSL2 Ubuntu 24.04 worker
   exponential backoff, re-login, SQLite + CSV, session/gap records.
 - Demo writer: [`probe/demo_writer.py`](probe/demo_writer.py) — deterministic 1 Hz sine values
   for soak tests.
-- Alarm client: [`probe/unified_alarms.py`](probe/unified_alarms.py) — `activeAlarms` query and
-  subscription logger, ack/reset/enable/disable/shelve/unshelve.
+- Alarm client: [`probe/unified_alarms.py`](probe/unified_alarms.py) — ack/reset/enable/disable/
+  shelve/unshelve; `activeAlarms` query (blocked on this runtime).
+- Alarm history feed: [`probe/alarm_history_watch.py`](probe/alarm_history_watch.py) — polls
+  `loggedAlarms` and stores transitions in SQLite/CSV.
 - History client: [`probe/unified_history.py`](probe/unified_history.py) — `loggedTagValues` and
-  `loggedAlarms`.
+  `loggedAlarms`; both verified live.
 - Probe: [`probe/unified_probe.py`](probe/unified_probe.py)
   (`browse`, `read`, `write`, `watch`).
-- **Current M2 blocker:** `activeAlarms`, `loggedTagValues` and `loggedAlarms` return
-  `INTERNAL_SERVER_ERROR` on this project (no alarm/logging configuration). The clients record
-  the error and reconnect; the fixture path is documented in
-  [docs/11-alarms-history.md](docs/11-alarms-history.md).
+- **Current M2 limitation:** the direct `activeAlarms` query/subscription still returns
+  `INTERNAL_SERVER_ERROR`. Tag history, alarm history, acknowledge/reset and shelve/unshelve work.
+  Fixture details and evidence are in [docs/11-alarms-history.md](docs/11-alarms-history.md).
 
 ## Repository layout
 
@@ -86,7 +88,7 @@ Docs index:
 | [docs/08-roadmap.md](docs/08-roadmap.md) | sequencing, milestones, next actions |
 | [docs/09-artifacts.md](docs/09-artifacts.md) | local artifact paths and reproduction commands |
 | [docs/10-legal-security.md](docs/10-legal-security.md) | authorization, trademarks, secret handling |
-| [docs/11-alarms-history.md](docs/11-alarms-history.md) | M2 alarm/history client, live failure evidence, runtime storage, fixture path |
+| [docs/11-alarms-history.md](docs/11-alarms-history.md) | M2 alarm/history client, live evidence, runtime storage, activeAlarms limitation |
 
 ## Quick start (goal 3)
 
@@ -101,10 +103,11 @@ $py = "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 $env:WINCC_USER = 'Lab'; $env:WINCC_PASSWORD = '...'
 & $py probe/live_logger.py --config probe/live_logger.example.toml --duration 60
 
-# alarms / history (M2 client; live reads currently fail, see docs/11)
-& $py probe/unified_alarms.py list
-& $py probe/unified_alarms.py watch --duration 60 --sqlite data/alarms.sqlite
-& $py probe/unified_history.py tags --name Tag01 --max 20
+# alarms / history (M2; activeAlarms is broken, use the history feed)
+& $py probe/alarm_history_watch.py --duration 60 --sqlite data/alarm_history.sqlite
+& $py probe/unified_history.py alarms --system HMI_RT_1 --max 20
+& $py probe/unified_history.py tags --names 'Tag01:Archivvariable_1' --max 20
+& $py probe/unified_alarms.py ack --name HMI_RT_1::Tag00:Alarm_Tag01 --instance 1
 ```
 
 Credentials are not stored in this repo. Create a local UMC user in TIA and pass it at runtime.
@@ -124,10 +127,12 @@ Credentials are not stored in this repo. Create a local UMC user in TIA and pass
   A full download with **`-overwriteUmc`** activates it.
 - GraphQL tag names are fully qualified (`HMI_RT_1::Tag01`), `value` is an object
   (`value { value timestamp }`), and `browse` needs `nameFilters:["*"]`.
-- On this project the alarm and history root fields return `INTERNAL_SERVER_ERROR` even though
-  the runtime has active system alarms; `browse(ALARM)` works, `browse(ALARMCLASS)` and
-  `browse(LOGGINGTAG)` do not. Runtime history lives in per-project SQLite databases
-  (`db\APERDB`, `db\TPERDB`).
+- On this project `loggedTagValues` and `loggedAlarms` work; `activeAlarms` and its subscription
+  return `INTERNAL_SERVER_ERROR` even with a raised alarm. `browse` works for `ALARM`,
+  `ALARMCLASS` and `LOGGINGTAG`. The fixture alarm is `HMI_RT_1::Tag00:Alarm_Tag01` (the mutation
+  name includes the trigger-tag prefix) and the logging tags are `Tag0x:Archivvariable_1`.
+  Runtime history lives in per-project SQLite databases (`db\APERDB`, `db\TPERDB`) plus the
+  configured data/alarm logs.
 
 ## License
 

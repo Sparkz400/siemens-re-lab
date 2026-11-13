@@ -252,10 +252,11 @@ credentials in the task XML, the TOML config or the repository.
 
 ## Alarms and history (M2)
 
-`probe/unified_alarms.py` and `probe/unified_history.py` implement the M2 client. The live
-runtime currently returns `INTERNAL_SERVER_ERROR` for the alarm/history root fields; the
-subscription logger records that error and reconnects. Storage evidence, API shapes and the
-fixture path are in [11-alarms-history.md](11-alarms-history.md).
+`probe/unified_alarms.py` and `probe/unified_history.py` implement the M2 client. On this
+runtime the `activeAlarms` query/subscription still returns `INTERNAL_SERVER_ERROR`, while
+`loggedTagValues`, `loggedAlarms` and all alarm mutations work. `probe/alarm_history_watch.py`
+polls `loggedAlarms` as the live alarm feed. Storage evidence, API shapes and the live test
+results are in [11-alarms-history.md](11-alarms-history.md).
 
 ## Probe
 

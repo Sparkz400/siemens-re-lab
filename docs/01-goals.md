@@ -84,11 +84,12 @@ first deliverable.
    watcher.
 2. **Live subscriptions (done):** graphql-ws `tagValues` subscription with reconnect/backoff,
    SQLite + CSV logging, session/gap records and a 14.3 min soak (clean 1 h rerun pending).
-3. **Alarms (client done, live blocked):** `activeAlarms` query/subscription and
-   acknowledge/reset/enable/disable/shelve/unshelve; the current runtime returns
-   `INTERNAL_SERVER_ERROR` until alarms are configured (see [11-alarms-history.md](11-alarms-history.md)).
-4. **History (client done, live blocked):** `loggedTagValues` and `loggedAlarms` time-range
-   queries; storage located in the project's `APERDB`/`TPERDB` SQLite databases.
+3. **Alarms (history/control working, activeAlarms blocked):** `activeAlarms` query/subscription
+   still returns `INTERNAL_SERVER_ERROR`; acknowledge/reset/enable/disable/shelve/unshelve and
+   the `loggedAlarms` history work. A history-polling feed covers live alarms (see
+   [11-alarms-history.md](11-alarms-history.md)).
+4. **History (working):** `loggedTagValues` and `loggedAlarms` time-range queries verified live;
+   storage is in the project's `APERDB`/`TPERDB` SQLite databases plus the configured logs.
 5. **Storage/dashboard:** SQLite or InfluxDB writer + Grafana.
 6. **Packaging:** config file, service mode, schema-driven tag discovery.
 
@@ -99,10 +100,11 @@ first deliverable.
 4. SQLite is restart-safe and queryable; CSV format documented.
 5. Login uses a local UMC user; no credentials in files.
 
-**Current status:** live logger working and M2 clients implemented (2026-11-13). 138 types / 8
-queries / 11 mutations / 3 subscriptions; user `Lab`; 20 internal tags; graphql-ws `tagValues`
-with reconnect/backoff, SQLite + CSV, and a 14.3 min soak. Alarm/history reads currently return
-`INTERNAL_SERVER_ERROR`; storage and fixture path are documented in
+**Current status:** live logger working; tag/alarm history and alarm control verified (2026-11-13).
+138 types / 8 queries / 11 mutations / 3 subscriptions; user `Lab`; 20 internal tags; graphql-ws
+`tagValues` with reconnect/backoff, SQLite + CSV, and a 14.3 min soak. `loggedTagValues` and
+`loggedAlarms` return live data; acknowledge/reset/enable/disable/shelve/unshelve work. The direct
+`activeAlarms` query/subscription still returns `INTERNAL_SERVER_ERROR`; see
 [11-alarms-history.md](11-alarms-history.md).
 
 **Risks:** UMC configuration (local vs central), editor-only transfer password for headless

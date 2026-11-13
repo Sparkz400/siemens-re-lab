@@ -540,13 +540,13 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="WinCC Unified alarm client")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    p_list = sub.add_parser("list", help="query active alarms")
+    p_list = sub.add_parser("list", help="query active alarms (blocked on this runtime; see docs/11)")
     add_common(p_list)
     p_list.add_argument("--filter", default="")
     p_list.add_argument("--filter-language", default="en-US")
     p_list.add_argument("--languages", default="en-US")
 
-    p_watch = sub.add_parser("watch", help="log the activeAlarms subscription")
+    p_watch = sub.add_parser("watch", help="log the activeAlarms subscription (blocked; use alarm_history_watch.py)")
     add_common(p_watch)
     p_watch.add_argument("--sqlite", default="data/alarms.sqlite")
     p_watch.add_argument("--csv", default="data/alarms.csv")
@@ -573,8 +573,8 @@ def main(argv=None) -> int:
     p_shelve = sub.add_parser("shelve", help="shelve configured alarms")
     add_common(p_shelve)
     p_shelve.add_argument("--name", action="append", required=True)
-    p_shelve.add_argument("--timeout", default=None,
-                          help="Timespan value; omit for the runtime default")
+    p_shelve.add_argument("--timeout", type=int, default=None,
+                          help="numeric Timespan for the shelve timeout (e.g. 60)")
 
     args = ap.parse_args(argv)
 

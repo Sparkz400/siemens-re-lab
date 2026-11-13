@@ -11,7 +11,8 @@
 | `probe/live_logger.example.toml` | logger configuration template (no credentials) |
 | `probe/soak_report.py` | capture summary: rate, intervals, sessions, gaps, integrity |
 | `probe/rebuild_runtime_package.py` | rebuild a runtime `.zip` from the project's `IM\HMI\I\0\Saved` |
-| `probe/unified_alarms.py` | active alarms, subscription logger, ack/reset/enable/disable/shelve/unshelve |
+| `probe/unified_alarms.py` | active alarms, ack/reset/enable/disable/shelve/unshelve |
+| `probe/alarm_history_watch.py` | live alarm feed by polling `loggedAlarms` into SQLite/CSV |
 | `probe/unified_history.py` | `loggedTagValues` / `loggedAlarms` time-range queries |
 | `probe/tests/test_alarm_store.py` | alarm SQLite/CSV sink unit tests |
 | `docs/11-alarms-history.md` | M2 API shapes, live failure evidence, storage, fixture path |
@@ -19,6 +20,7 @@
 | `probe/summarize_schema.py` | introspection JSON → Markdown operation summary |
 | `analysis/schema-summary.md` | curated queries/mutations/subscriptions/tag model |
 | `examples/tags.csv` | truncated demo capture (10 tags, 0.5 s) |
+| `examples/alarm_history.csv` | 4-row alarm transition sample from the M2 fixture |
 
 The **raw GraphQL SDL** (`schema.runtime.graphql`) is generated locally from the licensed
 installation and is intentionally **not committed**. Run `probe/dump_schema.py` to recreate it.
@@ -76,16 +78,17 @@ Outputs are the SQLite tables `samples`, `sessions`, `events`, `meta` and the CS
 $env:WINCC_USER = 'Lab'
 $env:WINCC_PASSWORD = '...'
 & $py probe/unified_alarms.py list
-& $py probe/unified_alarms.py watch --duration 60 `
-    --sqlite data/alarms.sqlite --csv data/alarms.csv
-& $py probe/unified_alarms.py ack --name HMI_RT_1::Alarm_1
-& $py probe/unified_history.py tags  --name Tag01 --max 20
+& $py probe/alarm_history_watch.py --duration 60 `
+    --sqlite data/alarm_history.sqlite --csv data/alarm_history.csv
+& $py probe/unified_alarms.py ack --name HMI_RT_1::Tag00:Alarm_Tag01 --instance 1
+& $py probe/unified_history.py tags  --names 'Tag01:Archivvariable_1' --max 20
 & $py probe/unified_history.py alarms --system HMI_RT_1 --max 20
 & $py -m unittest discover -s probe/tests -v
 ```
 
-The live runtime currently returns `INTERNAL_SERVER_ERROR` for the alarm and history reads; see
-[11-alarms-history.md](11-alarms-history.md) for the evidence and the fixture path.
+The direct `activeAlarms` query/subscription still returns `INTERNAL_SERVER_ERROR`; use
+`alarm_history_watch.py` for the live alarm feed. See
+[11-alarms-history.md](11-alarms-history.md) for the evidence.
 
 ### Schema dump
 

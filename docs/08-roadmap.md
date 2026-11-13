@@ -23,14 +23,15 @@
 - [ ] Clean 1 h / 10-tag soak; gap and value cross-check against the Unified screen.
 - [x] Windows service wrapper notes (Task Scheduler/NSSM) in docs/04.
 
-### M2 — Goal 3 alarms + history (client done, live fixture blocked)
+### M2 — Goal 3 alarms + history (history/mutations live; activeAlarms blocked)
 - [x] `activeAlarms` query and subscription logger (SQLite/CSV, reconnect/backoff).
-- [x] acknowledge/reset/enable/disable/shelve/unshelve clients; error paths verified.
-- [x] `loggedTagValues`/`loggedAlarms` time-range CLIs.
-- [x] History storage located and documented (`APERDB`/`TPERDB` SQLite).
-- [ ] Add alarm classes/discrete alarm and logging tags, recompile and re-download.
-- [ ] Live alarm subscribe + acknowledge round-trip; record it in `examples/`.
-- [ ] Explain the current `INTERNAL_SERVER_ERROR` if it survives a configured alarm.
+- [x] acknowledge/reset/enable/disable/shelve/unshelve clients; live round-trip verified.
+- [x] `loggedTagValues`/`loggedAlarms` time-range CLIs; live values/alarm history verified.
+- [x] History storage located and documented (`APERDB`/`TPERDB` SQLite + data/alarm logs).
+- [x] Add alarm class/discrete alarm and logging tags, recompile and import the new package.
+- [x] Live alarm feed via `probe/alarm_history_watch.py` (polling `loggedAlarms`).
+- [ ] Direct `activeAlarms` query/subscription (still `INTERNAL_SERVER_ERROR`).
+- [ ] Explain/fix the `activeAlarms` resolver error; capture the GraphQL server trace.
 
 ### M3 — Goal 2 capture + read-only client (2–4 weeks)
 - Wireshark install; capture TIA ↔ PLCSIM; annotate handshake/read.
