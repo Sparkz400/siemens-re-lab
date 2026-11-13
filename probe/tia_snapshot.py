@@ -11,8 +11,9 @@ store it portably, and compare two snapshots offline.
 Capture needs TIA Portal/Openness and starts a private TIA MCP Host with the native
 worker.  Compare is pure Python over the saved review JSON: no TIA, no MCP Host.
 
-The snapshot directory contains ``snapshot.json`` (metadata) and ``review.json``
-(the TIA MCP project-review.v1 content).  Keep snapshots out of git.
+The snapshot directory contains ``snapshot.json`` (metadata), ``review.json``
+(the TIA MCP project-review.v1 content) and one ``hmi-model*.json`` per HMI
+(paginated ``hmi_inspect section=model`` readback).  Keep snapshots out of git.
 """
 from __future__ import annotations
 
@@ -81,6 +82,69 @@ def folder_manifest(root: Path) -> tuple[str, int, int]:
     return digest.hexdigest(), count, total
 
 
+def capture_hmi_models(host, review: dict, out: Path, args) -> list[dict]:
+    """Capture hmi_inspect section=model for every HMI in the review."""
+    nodes = (review.get("model") or {}).get("nodes") or []
+    hmi_nodes = [n for n in nodes if n.get("kind") == "hmi"]
+    results: list[dict] = []
+    for index, node in enumerate(hmi_nodes, 1):
+        hmi_path = node.get("objectPath")
+        family = (node.get("metadata") or {}).get("family") or "unified"
+        try:
+            items: list[dict] = []
+            offset = 0
+            pages = 0
+            coverage = None
+            target = None
+            while pages < args.hmi_max_pages:
+                result = host.call_tool(
+                    "hmi_inspect",
+                    {"request": {
+                        "section": "model",
+                        "hmiPath": hmi_path,
+                        "family": family,
+                        "offset": offset,
+                    }},
+                    timeout=args.timeout)
+                items.extend(result.get("items") or [])
+                pages += 1
+                coverage = result.get("coverage") or coverage
+                target = result.get("target") or target
+                next_offset = result.get("nextOffset")
+                if not next_offset:
+                    break
+                offset = next_offset
+            model = {
+                "schemaVersion": "hmi-model.v1",
+                "capturedUtc": utc_now(),
+                "hmiPath": hmi_path,
+                "target": target,
+                "items": items,
+                "coverage": coverage,
+                "pages": pages,
+                "nextOffset": next_offset,
+            }
+            name = ("hmi-model.json" if len(hmi_nodes) == 1
+                    else f"hmi-model-{index}.json")
+            data = (json.dumps(model, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+            (out / name).write_bytes(data)
+            results.append({
+                "hmiPath": hmi_path,
+                "file": name,
+                "sha256": hashlib.sha256(data).hexdigest(),
+                "itemCount": len(items),
+                "pages": pages,
+                "nextOffset": next_offset,
+                "coverage": coverage,
+                "target": target,
+            })
+            print(f"hmi model: {hmi_path} -> {len(items)} items / {pages} page(s)")
+        except McpError as exc:
+            results.append({"hmiPath": hmi_path, "error": str(exc)})
+            print(f"hmi model failed for {hmi_path}: {exc}", file=sys.stderr)
+    return results
+
+
 def capture(args) -> int:
     archive, archive_hash, archive_bytes = resolve_archive(args.project)
     folder_hash, folder_files, folder_bytes = folder_manifest(archive.parent)
@@ -112,20 +176,23 @@ def capture(args) -> int:
         capture_result = host.call_tool(
             "project_snapshot_capture", {"request": request},
             timeout=args.timeout)
+
+        review_id = capture_result.get("reviewId")
+        artifact = capture_result.get("artifact") or {}
+        artifact_path = Path(artifact.get("path", ""))
+        if not artifact_path.is_absolute():
+            artifact_path = Path(args.artifacts) / artifact_path
+        if not review_id or not artifact_path.is_file():
+            raise SystemExit(f"capture did not return a review artifact: {artifact}")
+        review_bytes = artifact_path.read_bytes()
+        review_doc = json.loads(review_bytes)
+        hmi_models = (capture_hmi_models(host, review_doc, out, args)
+                      if args.hmi_model else [])
         try:
             host.call_tool("tia_detach", {}, timeout=60)
         except McpError:
             pass
 
-    review_id = capture_result.get("reviewId")
-    artifact = capture_result.get("artifact") or {}
-    artifact_path = Path(artifact.get("path", ""))
-    if not artifact_path.is_absolute():
-        artifact_path = Path(args.artifacts) / artifact_path
-    if not review_id or not artifact_path.is_file():
-        raise SystemExit(f"capture did not return a review artifact: {artifact}")
-
-    review_bytes = artifact_path.read_bytes()
     actual_id = hashlib.sha256(review_bytes).hexdigest()
     if actual_id != review_id:
         raise SystemExit(
@@ -135,6 +202,7 @@ def capture(args) -> int:
     snapshot = {
         "schemaVersion": SNAPSHOT_SCHEMA,
         "capturedUtc": utc_now(),
+        "hmiModels": hmi_models,
         "project": {
             "path": str(archive),
             "name": project_name,
@@ -200,8 +268,24 @@ def load_snapshot(path: str) -> tuple[dict, dict]:
         raise SystemExit(
             f"unsupported review schema in {review_file}: "
             f"{review.get('schemaVersion')!r}")
+    hmi_models = []
+    for entry in meta.get("hmiModels") or []:
+        if not entry.get("file"):
+            hmi_models.append(entry)
+            continue
+        hmi_file = directory / entry["file"]
+        if not hmi_file.is_file():
+            raise SystemExit(f"missing HMI model file: {hmi_file}")
+        data = hmi_file.read_bytes()
+        actual_hmi = hashlib.sha256(data).hexdigest()
+        if entry.get("sha256") and actual_hmi != entry["sha256"]:
+            raise SystemExit(
+                f"HMI model hash mismatch in {directory}: "
+                f"{entry['sha256']} != {actual_hmi}")
+        hmi_models.append({**entry, "data": json.loads(data)})
     return meta, {"file": review_file, "id": review_id,
-                  "sha256": actual, "data": review}
+                  "sha256": actual, "data": review,
+                  "hmiModels": hmi_models}
 
 
 def compare(args) -> int:
@@ -216,6 +300,8 @@ def compare(args) -> int:
         impact_depth=args.impact_depth,
         max_impact_paths=args.max_impact_paths,
         max_impact_edge_visits=args.max_impact_edge_visits,
+        before_hmi=before.get("hmiModels"),
+        after_hmi=after.get("hmiModels"),
     )
     result["returnedChanges"] = len(result["changes"])
 
@@ -225,11 +311,12 @@ def compare(args) -> int:
     report = render_markdown(result, before_meta, after_meta)
     (out / "report.md").write_text(report, encoding="utf-8")
 
-    total = result.get("totalChanges", len(result["changes"]))
-    print(f"changes: {total} ({len(result['changes'])} returned)")
+    project_total = result.get("totalChanges", len(result["changes"]))
+    hmi_total = result.get("totalHmiChanges", 0)
+    print(f"changes: {project_total} project, {hmi_total} HMI model")
     print(f"report:  {out / 'report.md'}")
     print(f"json:    {out / 'compare.json'}")
-    if total and not args.no_fail:
+    if (project_total or hmi_total) and not args.no_fail:
         return 1
     return 0
 
@@ -252,6 +339,8 @@ def render_markdown(result: dict, before_meta: dict, after_meta: dict) -> str:
         if change in counts:
             counts[change] += 1
     total = result.get("totalChanges", len(changes))
+    hmi_changes = result.get("hmiChanges") or []
+    hmi_compared = result.get("hmiModelCompared", False)
     lines = [
         "# TIA project snapshot diff",
         "",
@@ -268,9 +357,10 @@ def render_markdown(result: dict, before_meta: dict, after_meta: dict) -> str:
         f"| Review ID | `{_cell(before_meta.get('tiaMcp', {}).get('reviewId'), 70)}` "
         f"| `{_cell(after_meta.get('tiaMcp', {}).get('reviewId'), 70)}` |",
         "",
-        f"**{total} change(s):** {counts['addedToCapturedScope']} added, "
+        f"**{total} project change(s), {len(hmi_changes)} HMI model change(s).** "
+        f"{counts['addedToCapturedScope']} added, "
         f"{counts['removedFromCapturedScope']} removed, "
-        f"{counts['modified']} modified.",
+        f"{counts['modified']} modified (project scope).",
         "",
     ]
     if len(changes) < total:
@@ -288,7 +378,33 @@ def render_markdown(result: dict, before_meta: dict, after_meta: dict) -> str:
                 f"| {_cell(row.get('path'), 160)} | {_cell(fields)} |")
         lines.append("")
     else:
-        lines += ["No changes were observed in the captured scope.", ""]
+        lines += ["No changes were observed in the captured project scope.", ""]
+
+    lines += ["## HMI model changes", ""]
+    hmi_unmatched = result.get("hmiModelUnmatchedPaths") or []
+    if not hmi_compared:
+        lines += ["HMI model not captured in both snapshots (comparison skipped).", ""]
+    elif hmi_changes:
+        lines += [
+            "| Change | Kind | Composition | Path | Changed fields |",
+            "|---|---|---|---|---|",
+        ]
+        for row in hmi_changes:
+            fields = ", ".join(row.get("changedFields") or []) or ""
+            lines.append(
+                f"| {_cell(row.get('change'))} | {_cell(row.get('kind'))} "
+                f"| {_cell(row.get('composition'))} "
+                f"| {_cell(row.get('path'), 160)} | {_cell(fields)} |")
+        lines.append("")
+    else:
+        lines += ["No HMI model changes were observed.", ""]
+    if hmi_unmatched:
+        shown = ", ".join(hmi_unmatched[:5])
+        more = f" (+{len(hmi_unmatched) - 5} more)" if len(hmi_unmatched) > 5 else ""
+        lines += [
+            f"> HMI models present in only one snapshot (not compared): {shown}{more}",
+            "",
+        ]
 
     impacts = result.get("observedImpactPaths") or []
     if impacts:
@@ -314,6 +430,21 @@ def render_markdown(result: dict, before_meta: dict, after_meta: dict) -> str:
         f"unknown content: {result.get('contentUnknownBlocks', 0)}.",
         f"- Content-compared types: {result.get('contentComparedTypes', 0)}; "
         f"unknown content: {result.get('contentUnknownTypes', 0)}.",
+    ]
+    hmi_coverage = result.get("hmiCoverage") or {}
+
+    def hmi_side(rows):
+        if not rows:
+            return "not captured"
+        return ", ".join(
+            f"{row.get('status') or row.get('error') or 'unknown'} "
+            f"({row.get('itemCount', 0)} items)"
+            for row in rows)
+
+    lines.append(
+        f"- HMI model before: {hmi_side(hmi_coverage.get('before'))}; "
+        f"after: {hmi_side(hmi_coverage.get('after'))}.")
+    lines += [
         "- `wholeProjectEquivalent` is false; the comparison covers the captured "
         "scope only.",
         "- Absence from a partial capture is not proof of deletion; protected, "
@@ -347,6 +478,10 @@ def main(argv=None) -> int:
     p_capture.add_argument("--max-visited", type=int, default=5000)
     p_capture.add_argument("--max-blocks", type=int, default=25)
     p_capture.add_argument("--max-relationship-roots", type=int, default=5)
+    p_capture.add_argument("--hmi-model", action=argparse.BooleanOptionalAction,
+                           default=True,
+                           help="capture hmi_inspect section=model (default: on)")
+    p_capture.add_argument("--hmi-max-pages", type=int, default=100)
     p_capture.add_argument("--log", help="Host stderr log path")
     p_capture.add_argument("--force", action="store_true")
 

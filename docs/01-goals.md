@@ -31,21 +31,26 @@ exports.
 
 **Acceptance**
 1. Two snapshots of an unchanged project produce an empty diff.
-2. Adding one tag, changing one screen property and editing one block each produce exactly one
+2. Adding one tag, adding one HMI screen item and editing one block each produce exactly one
    expected change entry.
 3. Snapshot is reproducible from the same project archive.
 4. Diff works without a live TIA instance (archive-based).
 
 **Current status:** capture/compare validated live (2026-11-13). `probe/tia_snapshot.py` captures a
-TIA MCP project review into a portable snapshot (`snapshot.json` + `review.json`) and compares two
-snapshots with a native Python engine (`probe/tia_compare.py`), producing Markdown/JSON with a CI
-exit code. Capture uses the TIA MCP as the Openness bridge; comparison needs neither TIA nor the
-MCP. An unchanged double capture produced 0 changes; adding one PLC tag produced 1 change; editing
-one block produced 1 change (`interfaceChanged`, `documentChanged`). HMI screen change testing is
-pending. Details in [12-tia-snapshot-diff.md](12-tia-snapshot-diff.md).
+TIA MCP project review into a portable snapshot (`snapshot.json` + `review.json` + paginated
+`hmi-model.json`) and compares two snapshots with a native Python engine (`probe/tia_compare.py`),
+producing Markdown/JSON with a CI exit code. Capture uses the TIA MCP as the Openness bridge;
+comparison needs neither TIA nor the MCP. An unchanged double capture produced 0 changes; adding
+one PLC tag produced 1 change; editing one block produced 1 change (`interfaceChanged`,
+`documentChanged`). The HMI model supplement captured 134 typed rows over 2 pages
+(`coverage.complete=true`), and an unchanged HMI capture compared 0 project / 0 HMI changes.
+Adding one `HmiRectangle` to `Overview_A` produced **0 project changes and 1 HMI model change**
+at the exact item path (model 134 → 135). Details in
+[12-tia-snapshot-diff.md](12-tia-snapshot-diff.md).
 
-**Risks:** object exports are not available for every protected/safety object; HMI screen export
-coverage differs between Classic and Unified; generated system objects must be filtered.
+**Risks:** object exports are not available for every protected/safety object; HMI screens are
+covered by `hmi_inspect section=model` (public getters only, script code hashed) and Classic
+coverage differs from Unified; generated system objects must be filtered.
 
 ---
 

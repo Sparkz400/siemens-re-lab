@@ -69,9 +69,27 @@ class SnapshotTest(unittest.TestCase):
         after = {"capturedUtc": "b", "project": {"name": "p", "archiveSha256": "c" * 64},
                  "tiaMcp": {"reviewId": "d" * 64}}
         report = render_markdown(result, before, after)
-        self.assertIn("2 change(s)", report)
+        self.assertIn("2 project change(s)", report)
         self.assertIn("Tag01", report)
         self.assertIn("logicChanged", report)
+
+    def test_markdown_report_hmi_coverage(self):
+        result = {
+            "totalChanges": 0,
+            "changes": [],
+            "hmiModelCompared": True,
+            "hmiChanges": [],
+            "hmiCoverage": {
+                "before": [{"status": "complete", "itemCount": 134}],
+                "after": [{"status": "complete", "itemCount": 135}],
+            },
+        }
+        before = {"capturedUtc": "a", "project": {"name": "p"}}
+        after = {"capturedUtc": "b", "project": {"name": "p"}}
+        report = render_markdown(result, before, after)
+        self.assertIn("HMI model before: complete (134 items)", report)
+        self.assertIn("after: complete (135 items)", report)
+        self.assertIn("No HMI model changes", report)
 
 
 if __name__ == "__main__":

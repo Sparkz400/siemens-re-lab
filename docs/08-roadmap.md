@@ -37,17 +37,18 @@
 - Offset-based reader against 10 DB tags.
 - Reconnect and 1 h soak; protocol notes in repo.
 
-### M4 — Goal 1 snapshot/diff (CLI implemented, acceptance pending)
+### M4 — Goal 1 snapshot/diff (CLI implemented; HMI model supplement added)
 - [x] stdio MCP client and `capture`/`compare` CLI.
-- [x] Portable snapshot (`snapshot.json` + `review.json`) with archive/review hashes.
+- [x] Portable snapshot (`snapshot.json` + `review.json`) with archive/folder/review hashes.
 - [x] Native Python offline compare; Markdown/JSON + CI exit code.
-- [x] Unit tests (fake MCP host, report, archive).
+- [x] Unit tests (fake MCP host, native compare, HMI model, report, archive).
 - [x] Offline compare validated with synthetic reviews (added + modified; unchanged).
 - [x] Unchanged double-capture test on the lab project (0 changes).
 - [x] One-tag addition test (1 semantic entry).
 - [x] Block edit test (1 modified block; `interfaceChanged`, `documentChanged`).
-- [ ] HMI screen property/change test.
-- [ ] HMI model supplement if screen-item content is not covered.
+- [x] HMI model supplement: paginated `hmi_inspect section=model`, hashed per HMI.
+- [x] Real HMI model capture (134 items, 2 pages, complete); unchanged HMI compare 0/0.
+- [x] Live HMI screen-item addition test (0 project, 1 HMI change).
 
 ### M5 — Goal 2 symbolic + Pi/MQTT (later)
 - Symbolic browse if feasible; Pi bridge; write safety remains out of scope.

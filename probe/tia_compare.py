@@ -25,7 +25,7 @@ COMPARISON_POLICY = (
     "absence is not proof of deletion."
 )
 IGNORED_METADATA_KEYS = {"modified", "created", "lastModified",
-                         "modificationTime"}
+                         "modificationTime", "UpdateId"}
 
 
 def _normalize_metadata(value: Any) -> Any:
@@ -80,6 +80,87 @@ def _signatures(document: dict | None) -> dict:
     return (document or {}).get("signatures") or {}
 
 
+def _hmi_kind(item: dict) -> str:
+    native = item.get("nativeType") or ""
+    if native:
+        return native.rsplit(".", 1)[-1]
+    return item.get("kind") or "hmiModelNode"
+
+
+def _hmi_coverage(models: list[dict] | None) -> list[dict]:
+    rows = []
+    for model in models or []:
+        data = model.get("data") or {}
+        coverage = data.get("coverage") or {}
+        rows.append({
+            "hmiPath": model.get("hmiPath"),
+            "file": model.get("file"),
+            "status": coverage.get("status"),
+            "complete": coverage.get("complete"),
+            "itemCount": len(data.get("items") or []),
+            "error": model.get("error"),
+        })
+    return rows
+
+
+def compare_hmi_models(before_models: list[dict] | None,
+                       after_models: list[dict] | None,
+                       project_changes: list[dict]) -> tuple[list[dict], list[str], list[str]]:
+    """Compare hmi_inspect section=model captures, deduped by project path."""
+    before_by_path = {
+        m.get("hmiPath"): m for m in (before_models or [])
+        if m.get("data") and m.get("hmiPath")
+    }
+    after_by_path = {
+        m.get("hmiPath"): m for m in (after_models or [])
+        if m.get("data") and m.get("hmiPath")
+    }
+    common_paths = sorted(set(before_by_path) & set(after_by_path))
+    unmatched_paths = sorted(set(before_by_path) ^ set(after_by_path))
+    project_paths = {
+        change.get("afterObjectPath") or change.get("beforeObjectPath")
+        for change in project_changes
+    }
+    changes: list[dict] = []
+    for hmi_path in common_paths:
+        before = before_by_path[hmi_path]["data"]
+        after = after_by_path[hmi_path]["data"]
+        before_items = {item.get("path"): item
+                        for item in before.get("items") or []
+                        if item.get("path")}
+        after_items = {item.get("path"): item
+                       for item in after.get("items") or []
+                       if item.get("path")}
+        for path in sorted(set(before_items) | set(after_items)):
+            old = before_items.get(path)
+            new = after_items.get(path)
+            change = {
+                "hmiPath": hmi_path,
+                "path": path,
+                "kind": _hmi_kind(new or old or {}),
+                "composition": (new or old or {}).get("composition"),
+            }
+            if old is None or new is None:
+                change["change"] = ("addedToCapturedScope" if old is None
+                                    else "removedFromCapturedScope")
+            else:
+                fields = []
+                for field in ("name", "composition", "nativeType"):
+                    if old.get(field) != new.get(field):
+                        fields.append(field)
+                if (_normalize_metadata(old.get("attributes")) !=
+                        _normalize_metadata(new.get("attributes"))):
+                    fields.append("attributes")
+                if not fields:
+                    continue
+                change["change"] = "modified"
+                change["changedFields"] = fields
+            if path in project_paths:
+                continue
+            changes.append(change)
+    return changes, common_paths, unmatched_paths
+
+
 def compare_reviews(
     before: dict,
     after: dict,
@@ -89,6 +170,8 @@ def compare_reviews(
     impact_depth: int = 3,
     max_impact_paths: int = 100,
     max_impact_edge_visits: int = 5000,
+    before_hmi: list[dict] | None = None,
+    after_hmi: list[dict] | None = None,
 ) -> dict:
     a_model = before.get("model") or {}
     b_model = after.get("model") or {}
@@ -183,12 +266,25 @@ def compare_reviews(
     impact_paths, truncated, traversal = _impact_paths(
         before, after, before_review_id, after_review_id, changes,
         impact_depth, max_impact_paths, max_impact_edge_visits)
+    hmi_changes, hmi_common, hmi_unmatched = compare_hmi_models(
+        before_hmi, after_hmi, changes)
+    hmi_available = bool(hmi_common)
 
     return {
         "beforeReviewId": before_review_id,
         "afterReviewId": after_review_id,
         "changes": changes,
         "totalChanges": len(changes),
+        "hmiChanges": hmi_changes,
+        "totalHmiChanges": len(hmi_changes),
+        "hmiModelCompared": hmi_available,
+        "hmiModelCommonPaths": hmi_common,
+        "hmiModelUnmatchedPaths": hmi_unmatched,
+        "hmiCoverage": {
+            "before": _hmi_coverage(before_hmi),
+            "after": _hmi_coverage(after_hmi),
+        },
+        "totalChangesIncludingHmi": len(changes) + len(hmi_changes),
         "nextOffset": None,
         "contentComparedBlocks": content_compared_blocks,
         "contentUnknownBlocks": content_unknown_blocks,

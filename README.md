@@ -6,8 +6,8 @@ The repo documents four projects, the environment they run in, and the evidence 
 > **Status: 2026-11-13.** Goal 3's live tag logger passed a clean 1 h soak (35,910 samples,
 > 0 errors, max interval 1.387 s); tag/alarm history and alarm controls work, while the direct
 > `activeAlarms` subscription remains broken and a history-polling feed is used instead. Goal 1
-> has a capture/compare CLI with a native Python diff; real acceptance captures are pending.
-> Goals 2 and 4 are planned; goal 4 is blocked on hardware/artifacts.
+> has a capture/compare CLI with a native Python diff, validated live for tag, block and HMI
+> screen-item changes. Goals 2 and 4 are planned; goal 4 is blocked on hardware/artifacts.
 
 > **Disclaimer:** this is independent research on systems we own or are authorized to test.
 > It is not affiliated with or endorsed by Siemens. Siemens, SIMATIC, TIA Portal, PLCSIM,
@@ -18,7 +18,7 @@ The repo documents four projects, the environment they run in, and the evidence 
 
 | # | Goal | End state | Status |
 |---|---|---|---|
-| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP capture + native Python diff; unchanged = 0, one tag = 1, one block edit = 1; screen test pending |
+| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI validated live** — TIA MCP capture + native Python diff; unchanged = 0, one tag = 1, one block edit = 1, one HMI item = 1 HMI change |
 | 2 | **S7comm-plus client** | Read-only tag client that talks to an S7-1500/PLCSIM Advanced without TIA/WinCC; later a Pi/MQTT bridge | Planned — PLCSIM Advanced V8 installed; capture plan ready; no real PLC |
 | 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger + history working**; tag/alarm history and alarm controls verified; `activeAlarms` subscription blocked |
 | 4 | **Panel backup unpacker** | Parse a `.psb` panel backup (container/compression/encryption), inspect with ImHex, diff two backups of the same panel | **Blocked** — no panel, no `.psb`; ProSave needs hardware |
@@ -71,14 +71,18 @@ WSL2 Ubuntu 24.04 worker
 ## Working now (goal 1)
 
 - `probe/tia_snapshot.py` captures a TIA MCP `project-review.v1` snapshot into
-  `snapshot.json` + `review.json`, with the `.ap21` archive SHA-256.
-- `compare` is pure Python over `review.json` (no TIA, no MCP Host) and writes
-  `compare.json` + `report.md`; it exits non-zero on changes.
+  `snapshot.json` + `review.json` + `hmi-model.json`, with the `.ap21` archive SHA-256 and a
+  project-folder manifest SHA-256.
+- `compare` is pure Python over `review.json` and the HMI model (no TIA, no MCP Host) and writes
+  `compare.json` + `report.md`; it exits non-zero on project or HMI changes.
 - `probe/tia_mcp.py` is the stdio MCP client (newline-delimited JSON-RPC), also usable standalone.
-- Unit tests cover the MCP client, native compare, report rendering and archive hashing.
+- Unit tests cover the MCP client, native compare, HMI model compare, report rendering and
+  archive/folder hashing.
 - Live acceptance: unchanged double capture = 0 changes; one PLC tag = 1 change; one block edit
-  = 1 change (`interfaceChanged`, `documentChanged`). Volatile metadata timestamps are ignored;
-  the project-folder hash changed while `.ap21` stayed the same. HMI screen testing is pending.
+  = 1 change (`interfaceChanged`, `documentChanged`); one HMI screen item (`HmiRectangle`) = 0
+  project changes + 1 HMI model change. The HMI model supplement captured 134 typed rows over
+  2 pages (`coverage.complete=true`) and 135 after the item. Volatile metadata timestamps are
+  ignored; the project-folder hash changed while `.ap21` stayed the same.
 
 ## Repository layout
 
@@ -162,8 +166,10 @@ Capture starts a private headless TIA; compare does not. See
   configured data/alarm logs.
 - The TIA MCP snapshot is a portable `project-review.v1` JSON with a content-hash `reviewId`;
   the diff is a native Python engine over the saved review JSON, so comparison needs neither TIA
-  nor the MCP. The snapshot includes hierarchy and block/type XML; HMI screen-item XML is a
-  coverage gap.
+  nor the MCP. The snapshot includes hierarchy and block/type XML plus a paginated
+  `hmi_inspect section=model` supplement (Unified typed public attributes; script code hashed;
+  Classic coverage limited to the tool's supported sections). This is model readback, not a
+  native export or runtime proof.
 
 ## License
 

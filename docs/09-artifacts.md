@@ -103,8 +103,9 @@ The direct `activeAlarms` query/subscription still returns `INTERNAL_SERVER_ERRO
 & $py -m unittest discover -s probe/tests -v
 ```
 
-Capture starts a private TIA MCP Host with the native worker. Compare is pure Python over the
-saved `review.json`; it does not start TIA or the MCP Host. See
+Capture starts a private TIA MCP Host with the native worker and also captures a paginated
+`hmi_inspect section=model` supplement. Compare is pure Python over the saved `review.json` and
+HMI model files; it does not start TIA or the MCP Host. See
 [12-tia-snapshot-diff.md](12-tia-snapshot-diff.md) for coverage and acceptance tests.
 
 ### Schema dump

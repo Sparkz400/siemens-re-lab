@@ -13,6 +13,23 @@ PLC = ROOT + "/devices/PLC"
 BLOCK = PLC + "/blocks/Main"
 TAG1 = PLC + "/tags/Tag01"
 TAG2 = PLC + "/tags/Tag02"
+HMI_PATH = "/projects/Demo/devices/HMI/hmi/HMI_RT_1"
+ITEM1 = HMI_PATH + "/screens/Overview_A/items/Button_1"
+ITEM2 = HMI_PATH + "/screens/Overview_A/items/Button_2"
+
+
+def hmi_item(path, native_type, attributes=None, composition="Items"):
+    return {
+        "path": path,
+        "name": path.rsplit("/", 1)[-1],
+        "composition": composition,
+        "nativeType": native_type,
+        "attributes": attributes or {},
+    }
+
+
+def hmi_model(items):
+    return {"schemaVersion": "hmi-model.v1", "items": items}
 
 
 def node(path, kind, name, node_id, metadata=None):
@@ -125,6 +142,65 @@ class CompareReviewsTest(unittest.TestCase):
         result = compare_reviews(
             review(before_nodes), review(after_nodes), "a", "b")
         self.assertEqual(result["totalChanges"], 0)
+
+    def test_hmi_screen_item_added(self):
+        screen_type = "Siemens.Engineering.HmiUnified.UI.Screens.HmiScreenItem"
+        before = hmi_model([hmi_item(ITEM1, screen_type,
+                                     {"Text": "Start"})])
+        after = hmi_model([
+            hmi_item(ITEM1, screen_type, {"Text": "Start"}),
+            hmi_item(ITEM2, screen_type, {"Text": "Stop"}),
+        ])
+        result = compare_reviews(
+            review(copy.deepcopy(base_nodes())),
+            review(copy.deepcopy(base_nodes())), "a", "b",
+            before_hmi=[{"hmiPath": HMI_PATH, "data": before}],
+            after_hmi=[{"hmiPath": HMI_PATH, "data": after}])
+        self.assertEqual(result["totalChanges"], 0)
+        self.assertEqual(result["totalHmiChanges"], 1)
+        self.assertEqual(result["hmiChanges"][0]["path"], ITEM2)
+        self.assertEqual(result["hmiChanges"][0]["kind"], "HmiScreenItem")
+
+    def test_hmi_volatile_attribute_ignored(self):
+        item_type = "Siemens.Engineering.HmiUnified.UI.Screens.HmiScreenItem"
+        before = hmi_model([hmi_item(ITEM1, item_type,
+                                     {"Text": "Start", "UpdateId": 1})])
+        after = hmi_model([hmi_item(ITEM1, item_type,
+                                    {"Text": "Start", "UpdateId": 9})])
+        result = compare_reviews(
+            review(copy.deepcopy(base_nodes())),
+            review(copy.deepcopy(base_nodes())), "a", "b",
+            before_hmi=[{"hmiPath": HMI_PATH, "data": before}],
+            after_hmi=[{"hmiPath": HMI_PATH, "data": after}])
+        self.assertEqual(result["totalHmiChanges"], 0)
+
+    def test_hmi_change_deduped_by_project_path(self):
+        item_type = "Siemens.Engineering.HmiUnified.UI.Screens.HmiScreenItem"
+        before_nodes = copy.deepcopy(base_nodes())
+        after_nodes = copy.deepcopy(base_nodes())
+        before_nodes.append(node(ITEM1, "hmiScreenItem", "Button_1", "h1",
+                                 {"Text": "Start"}))
+        after_nodes.append(node(ITEM1, "hmiScreenItem", "Button_1", "h1",
+                                {"Text": "Stop"}))
+        before = hmi_model([hmi_item(ITEM1, item_type, {"Text": "Start"})])
+        after = hmi_model([hmi_item(ITEM1, item_type, {"Text": "Stop"})])
+        result = compare_reviews(
+            review(before_nodes), review(after_nodes), "a", "b",
+            before_hmi=[{"hmiPath": HMI_PATH, "data": before}],
+            after_hmi=[{"hmiPath": HMI_PATH, "data": after}])
+        self.assertEqual(result["totalChanges"], 1)
+        self.assertEqual(result["totalHmiChanges"], 0)
+
+    def test_hmi_unmatched_model_reported(self):
+        before = hmi_model([hmi_item(ITEM1, "X.HmiScreenItem")])
+        result = compare_reviews(
+            review(copy.deepcopy(base_nodes())),
+            review(copy.deepcopy(base_nodes())), "a", "b",
+            before_hmi=[{"hmiPath": HMI_PATH, "data": before}],
+            after_hmi=[])
+        self.assertFalse(result["hmiModelCompared"])
+        self.assertEqual(result["totalHmiChanges"], 0)
+        self.assertEqual(result["hmiModelUnmatchedPaths"], [HMI_PATH])
 
     def test_impact_path(self):
         after_nodes = copy.deepcopy(base_nodes())
