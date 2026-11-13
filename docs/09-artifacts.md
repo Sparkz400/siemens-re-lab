@@ -14,7 +14,9 @@
 | `probe/unified_alarms.py` | active alarms, ack/reset/enable/disable/shelve/unshelve |
 | `probe/alarm_history_watch.py` | live alarm feed by polling `loggedAlarms` into SQLite/CSV |
 | `probe/unified_history.py` | `loggedTagValues` / `loggedAlarms` time-range queries |
-| `probe/tests/test_alarm_store.py` | alarm SQLite/CSV sink unit tests |
+| `probe/tia_snapshot.py` | TIA project snapshot capture + offline diff CLI |
+| `probe/tia_mcp.py` | stdio MCP client for the TIA MCP Host |
+| `probe/tests/` | alarm-store, TIA MCP and snapshot-report tests |
 | `docs/11-alarms-history.md` | M2 API shapes, live failure evidence, storage, fixture path |
 | `probe/dump_schema.py` | introspection → local SDL + JSON |
 | `probe/summarize_schema.py` | introspection JSON → Markdown operation summary |
@@ -41,6 +43,7 @@ installation and is intentionally **not committed**. Run `probe/dump_schema.py` 
 | DPAPI credentials | `...\scratch-credentials\*.dpapi` (current Windows user only) |
 | GraphQL capture | `C:\Programs\04_Programme\analysis\wincc-graphql\` |
 | Logger soak data | `C:\Programs\04_Programme\analysis\wincc-graphql\soak\` |
+| TIA snapshots/diffs | `C:\Programs\siemens-re-lab\snapshots\`, `diff-*\` (ignored) |
 | WSL worker | `\\wsl$\Ubuntu-24.04\opt\...` (Ghidra, Kuna, rizin, jars) |
 | Windows toolkit | `C:\Programs\04_Programme\` |
 
@@ -89,6 +92,20 @@ $env:WINCC_PASSWORD = '...'
 The direct `activeAlarms` query/subscription still returns `INTERNAL_SERVER_ERROR`; use
 `alarm_history_watch.py` for the live alarm feed. See
 [11-alarms-history.md](11-alarms-history.md) for the evidence.
+
+### TIA snapshot / diff (Goal 1)
+
+```powershell
+& $py probe/tia_snapshot.py capture --project <project.ap21> --out snapshots\baseline `
+    --max-blocks 200
+& $py probe/tia_snapshot.py compare --before snapshots\baseline `
+    --after snapshots\changed --out diff
+& $py -m unittest discover -s probe/tests -v
+```
+
+Capture starts a private TIA MCP Host with the native worker. Compare uses
+`--no-native-workers`, so it does not start TIA. See
+[12-tia-snapshot-diff.md](12-tia-snapshot-diff.md) for coverage and acceptance tests.
 
 ### Schema dump
 

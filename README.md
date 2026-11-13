@@ -4,9 +4,9 @@ Reverse-engineering lab for Siemens TIA Portal V21, PLCSIM Advanced V8 and WinCC
 The repo documents four projects, the environment they run in, and the evidence collected so far.
 
 > **Status: 2026-11-13.** Goal 3 has a live tag logger, working tag/alarm history, and working
-> alarm acknowledge/reset/shelve controls. The direct `activeAlarms` query/subscription remains
-> broken on this runtime; a history-polling feed is used instead. Goals 1, 2 and 4 are planned;
-> goal 4 is blocked on hardware/artifacts.
+> alarm acknowledge/reset/shelve controls; the direct `activeAlarms` subscription remains broken
+> and a history-polling feed is used instead. Goal 1 has a capture/compare CLI; real acceptance
+> captures are pending. Goals 2 and 4 are planned; goal 4 is blocked on hardware/artifacts.
 
 > **Disclaimer:** this is independent research on systems we own or are authorized to test.
 > It is not affiliated with or endorsed by Siemens. Siemens, SIMATIC, TIA Portal, PLCSIM,
@@ -17,7 +17,7 @@ The repo documents four projects, the environment they run in, and the evidence 
 
 | # | Goal | End state | Status |
 |---|---|---|---|
-| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | Planned — TIA MCP already exposes `project_index`, `project_snapshot_capture`, `project_model` |
+| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP review capture, offline compare, Markdown/JSON; acceptance captures pending |
 | 2 | **S7comm-plus client** | Read-only tag client that talks to an S7-1500/PLCSIM Advanced without TIA/WinCC; later a Pi/MQTT bridge | Planned — PLCSIM Advanced V8 installed; capture plan ready; no real PLC |
 | 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger + history working**; tag/alarm history and alarm controls verified; `activeAlarms` subscription blocked |
 | 4 | **Panel backup unpacker** | Parse a `.psb` panel backup (container/compression/encryption), inspect with ImHex, diff two backups of the same panel | **Blocked** — no panel, no `.psb`; ProSave needs hardware |
@@ -65,6 +65,15 @@ WSL2 Ubuntu 24.04 worker
   `INTERNAL_SERVER_ERROR`. Tag history, alarm history, acknowledge/reset and shelve/unshelve work.
   Fixture details and evidence are in [docs/11-alarms-history.md](docs/11-alarms-history.md).
 
+## Working now (goal 1)
+
+- `probe/tia_snapshot.py` captures a TIA MCP `project-review.v1` snapshot into
+  `snapshot.json` + `review.json`, with the `.ap21` archive SHA-256.
+- `compare` runs offline via the TIA MCP Host `--no-native-workers` mode and writes
+  `compare.json` + `report.md`; it exits non-zero on changes.
+- `probe/tia_mcp.py` is the stdio MCP client (newline-delimited JSON-RPC), also usable standalone.
+- Unit tests cover the MCP client, report rendering and archive hashing.
+
 ## Repository layout
 
 ```text
@@ -89,6 +98,7 @@ Docs index:
 | [docs/09-artifacts.md](docs/09-artifacts.md) | local artifact paths and reproduction commands |
 | [docs/10-legal-security.md](docs/10-legal-security.md) | authorization, trademarks, secret handling |
 | [docs/11-alarms-history.md](docs/11-alarms-history.md) | M2 alarm/history client, live evidence, runtime storage, activeAlarms limitation |
+| [docs/12-tia-snapshot-diff.md](docs/12-tia-snapshot-diff.md) | Goal 1 snapshot/diff CLI, snapshot layout, coverage and acceptance plan |
 
 ## Quick start (goal 3)
 
@@ -112,6 +122,17 @@ $env:WINCC_USER = 'Lab'; $env:WINCC_PASSWORD = '...'
 
 Credentials are not stored in this repo. Create a local UMC user in TIA and pass it at runtime.
 
+## Quick start (goal 1)
+
+```powershell
+$py = "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
+& $py probe/tia_snapshot.py capture --project <project.ap21> --out snapshots\baseline --max-blocks 200
+& $py probe/tia_snapshot.py compare --before snapshots\baseline --after snapshots\changed --out diff
+```
+
+Capture starts a private headless TIA; compare does not. See
+[docs/12-tia-snapshot-diff.md](docs/12-tia-snapshot-diff.md).
+
 ## Key findings
 
 - `WCCILgraphQLServer.exe` is a **Node.js SEA** with embedded `server.js`, authentication modules
@@ -133,6 +154,9 @@ Credentials are not stored in this repo. Create a local UMC user in TIA and pass
   name includes the trigger-tag prefix) and the logging tags are `Tag0x:Archivvariable_1`.
   Runtime history lives in per-project SQLite databases (`db\APERDB`, `db\TPERDB`) plus the
   configured data/alarm logs.
+- The TIA MCP snapshot is a portable `project-review.v1` JSON with a content-hash `reviewId`;
+  `project_snapshot_compare` can run in a `--no-native-workers` Host, so diffing needs no TIA.
+  The snapshot includes hierarchy and block/type XML; HMI screen-item XML is a coverage gap.
 
 ## License
 

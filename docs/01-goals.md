@@ -36,9 +36,10 @@ exports.
 3. Snapshot is reproducible from the same project archive.
 4. Diff works without a live TIA instance (archive-based).
 
-**Current status:** planned. The TIA MCP v0.9.0 already offers `project_index`,
-`project_snapshot_capture`, `project_snapshot_import`, `project_model` and `project_inventory`,
-which are the intended building blocks. No repository code yet.
+**Current status:** CLI implemented (2026-11-13). `probe/tia_snapshot.py` captures a TIA MCP
+project review into a portable snapshot (`snapshot.json` + `review.json`) and compares two
+snapshots offline via `--no-native-workers`, producing Markdown/JSON with a CI exit code. Real
+project acceptance captures are pending. Details in [12-tia-snapshot-diff.md](12-tia-snapshot-diff.md).
 
 **Risks:** object exports are not available for every protected/safety object; HMI screen export
 coverage differs between Classic and Unified; generated system objects must be filtered.

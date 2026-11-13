@@ -38,10 +38,14 @@
 - Offset-based reader against 10 DB tags.
 - Reconnect and 1 h soak; protocol notes in repo.
 
-### M4 — Goal 1 snapshot/diff (1–2 weeks)
-- Snapshot manifest from `project_model` + exports; archive hash.
-- Diff engine with stable identities and ignore rules.
-- Markdown/JSON report; CI exit code.
+### M4 — Goal 1 snapshot/diff (CLI implemented, acceptance pending)
+- [x] stdio MCP client and `capture`/`compare` CLI.
+- [x] Portable snapshot (`snapshot.json` + `review.json`) with archive/review hashes.
+- [x] Offline compare with `--no-native-workers`; Markdown/JSON + CI exit code.
+- [x] Unit tests (fake MCP host, report, archive).
+- [ ] Unchanged double-capture test on the lab project.
+- [ ] Tag/block/screen change acceptance tests.
+- [ ] HMI model supplement if screen-item content is not covered.
 
 ### M5 — Goal 2 symbolic + Pi/MQTT (later)
 - Symbolic browse if feasible; Pi bridge; write safety remains out of scope.
