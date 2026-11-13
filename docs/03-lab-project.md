@@ -74,6 +74,23 @@ semantics.
 After the overwrite, `C:\ProgramData\SCADAProjects\HMI_RT_1\currentConfiguration\UMCData.json`
 exists (not `_disabled.json`), and login succeeds.
 
+## Rebuilding a runtime package without Download to file
+
+The TIA project keeps the compiled HMI output under
+`<project>\IM\HMI\I\0\Saved\`. Its `DownloadTask.xml` lists the files TIA packages. A no-op
+rebuild was verified on 2026-11-13:
+
+1. Read the `FullDownload` entries from the shipped package's `DownloadTask.xml`.
+2. Take each file from `Saved\`; take `config\CertStore\own\private\PW.0.cert.pem` from the
+   current runtime (or the shipped package).
+3. Add the package's `Download.config` and `DownloadTask.xml`; store paths with forward slashes.
+4. `-c fulldownload -overwriteUmc <zip>`, then `-c start <project-id>`.
+
+The 30-entry, 3,669,931-byte rebuild imported successfully, and login plus `Tag01` read worked.
+This is a lab procedure, not a supported Siemens workflow. Rebuild only after a successful HMI
+compile, and add any new output files (for example alarm/logging RDFs) to the manifest; a missing
+manifest entry makes the import fail.
+
 ## Runtime layout
 
 ```text

@@ -83,10 +83,12 @@ first deliverable.
 1. **MVP (done):** schema introspection, `login`, `browse`, `tagValues`, `writeTagValues`, CSV
    watcher.
 2. **Live subscriptions (done):** graphql-ws `tagValues` subscription with reconnect/backoff,
-   SQLite + CSV logging, session/gap records and a 10-tag soak.
-3. **Alarms:** `activeAlarms` subscription, acknowledge/reset/enable/shelve mutations.
-4. **History:** `loggedTagValues` and `loggedAlarms`, time-range queries, archive files if the
-   history service is separate (`ReportingReverseProxy`).
+   SQLite + CSV logging, session/gap records and a 14.3 min soak (clean 1 h rerun pending).
+3. **Alarms (client done, live blocked):** `activeAlarms` query/subscription and
+   acknowledge/reset/enable/disable/shelve/unshelve; the current runtime returns
+   `INTERNAL_SERVER_ERROR` until alarms are configured (see [11-alarms-history.md](11-alarms-history.md)).
+4. **History (client done, live blocked):** `loggedTagValues` and `loggedAlarms` time-range
+   queries; storage located in the project's `APERDB`/`TPERDB` SQLite databases.
 5. **Storage/dashboard:** SQLite or InfluxDB writer + Grafana.
 6. **Packaging:** config file, service mode, schema-driven tag discovery.
 
@@ -97,10 +99,11 @@ first deliverable.
 4. SQLite is restart-safe and queryable; CSV format documented.
 5. Login uses a local UMC user; no credentials in files.
 
-**Current status:** MVP and live logger working (2026-11-12). 138 types / 8 queries / 11
-mutations / 3 subscriptions; user `Lab`; 20 internal tags; graphql-ws `tagValues` with
-reconnect/backoff, SQLite + CSV, and a 10-tag 1 Hz soak. Details in
-[04-wincc-graphql.md](04-wincc-graphql.md).
+**Current status:** live logger working and M2 clients implemented (2026-11-13). 138 types / 8
+queries / 11 mutations / 3 subscriptions; user `Lab`; 20 internal tags; graphql-ws `tagValues`
+with reconnect/backoff, SQLite + CSV, and a 14.3 min soak. Alarm/history reads currently return
+`INTERNAL_SERVER_ERROR`; storage and fixture path are documented in
+[11-alarms-history.md](11-alarms-history.md).
 
 **Risks:** UMC configuration (local vs central), editor-only transfer password for headless
 Unified stations (G-004), GraphQL connection resets on an unfiltered `browse`, and history

@@ -24,14 +24,18 @@ class Client:
         self.token = None
         self.s = requests.Session()
 
-    def _post(self, query, variables=None):
+    def post_raw(self, query, variables=None):
+        """POST a GraphQL document and return the full payload (errors included)."""
         headers = {"Content-Type": "application/json", "Connection": "close"}
         if self.token:
             headers["Authorization"] = "Bearer " + self.token
         r = self.s.post(self.url, json={"query": query, "variables": variables or {}},
                         headers=headers, timeout=30)
         r.raise_for_status()
-        payload = r.json()
+        return r.json()
+
+    def _post(self, query, variables=None):
+        payload = self.post_raw(query, variables)
         if "errors" in payload:
             raise RuntimeError(json.dumps(payload["errors"], ensure_ascii=False))
         return payload["data"]

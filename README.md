@@ -3,8 +3,9 @@
 Reverse-engineering lab for Siemens TIA Portal V21, PLCSIM Advanced V8 and WinCC Unified PC RT 21.0.
 The repo documents four projects, the environment they run in, and the evidence collected so far.
 
-> **Status: 2026-11-12.** Goal 3 now has a live subscription logger (SQLite + CSV, reconnect).
-> Goals 1, 2 and 4 are planned; goal 4 is blocked on hardware/artifacts.
+> **Status: 2026-11-13.** Goal 3 has a live tag logger, plus alarm/history clients. The live
+> alarm/history path is blocked by the current runtime configuration; goals 1, 2 and 4 are
+> planned, and goal 4 is blocked on hardware/artifacts.
 
 > **Disclaimer:** this is independent research on systems we own or are authorized to test.
 > It is not affiliated with or endorsed by Siemens. Siemens, SIMATIC, TIA Portal, PLCSIM,
@@ -17,7 +18,7 @@ The repo documents four projects, the environment they run in, and the evidence 
 |---|---|---|---|
 | 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | Planned — TIA MCP already exposes `project_index`, `project_snapshot_capture`, `project_model` |
 | 2 | **S7comm-plus client** | Read-only tag client that talks to an S7-1500/PLCSIM Advanced without TIA/WinCC; later a Pi/MQTT bridge | Planned — PLCSIM Advanced V8 installed; capture plan ready; no real PLC |
-| 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger working** — graphql-ws subscriptions, reconnect, SQLite/CSV; 1 h soak |
+| 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger working**; alarm/history clients done, live alarm path blocked by runtime config |
 | 4 | **Panel backup unpacker** | Parse a `.psb` panel backup (container/compression/encryption), inspect with ImHex, diff two backups of the same panel | **Blocked** — no panel, no `.psb`; ProSave needs hardware |
 
 The shared lab project is one TIA project containing a CPU 1511-1 PN and a WinCC Unified PC RT
@@ -51,14 +52,22 @@ WSL2 Ubuntu 24.04 worker
   exponential backoff, re-login, SQLite + CSV, session/gap records.
 - Demo writer: [`probe/demo_writer.py`](probe/demo_writer.py) — deterministic 1 Hz sine values
   for soak tests.
+- Alarm client: [`probe/unified_alarms.py`](probe/unified_alarms.py) — `activeAlarms` query and
+  subscription logger, ack/reset/enable/disable/shelve/unshelve.
+- History client: [`probe/unified_history.py`](probe/unified_history.py) — `loggedTagValues` and
+  `loggedAlarms`.
 - Probe: [`probe/unified_probe.py`](probe/unified_probe.py)
   (`browse`, `read`, `write`, `watch`).
+- **Current M2 blocker:** `activeAlarms`, `loggedTagValues` and `loggedAlarms` return
+  `INTERNAL_SERVER_ERROR` on this project (no alarm/logging configuration). The clients record
+  the error and reconnect; the fixture path is documented in
+  [docs/11-alarms-history.md](docs/11-alarms-history.md).
 
 ## Repository layout
 
 ```text
 docs/        goals, environment, lab project, WinCC GraphQL, TIA Openness, plans, roadmap
-probe/       schema dump, polling probe, live logger, demo writer
+probe/       schema dump, polling probe, live logger, alarm/history clients, tests
 analysis/    curated GraphQL schema summary (no vendor SDL committed)
 examples/    sample CSV output
 ```
@@ -77,6 +86,7 @@ Docs index:
 | [docs/08-roadmap.md](docs/08-roadmap.md) | sequencing, milestones, next actions |
 | [docs/09-artifacts.md](docs/09-artifacts.md) | local artifact paths and reproduction commands |
 | [docs/10-legal-security.md](docs/10-legal-security.md) | authorization, trademarks, secret handling |
+| [docs/11-alarms-history.md](docs/11-alarms-history.md) | M2 alarm/history client, live failure evidence, runtime storage, fixture path |
 
 ## Quick start (goal 3)
 
@@ -90,6 +100,11 @@ $py = "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 # live subscription logger (credentials from the environment)
 $env:WINCC_USER = 'Lab'; $env:WINCC_PASSWORD = '...'
 & $py probe/live_logger.py --config probe/live_logger.example.toml --duration 60
+
+# alarms / history (M2 client; live reads currently fail, see docs/11)
+& $py probe/unified_alarms.py list
+& $py probe/unified_alarms.py watch --duration 60 --sqlite data/alarms.sqlite
+& $py probe/unified_history.py tags --name Tag01 --max 20
 ```
 
 Credentials are not stored in this repo. Create a local UMC user in TIA and pass it at runtime.
@@ -109,6 +124,10 @@ Credentials are not stored in this repo. Create a local UMC user in TIA and pass
   A full download with **`-overwriteUmc`** activates it.
 - GraphQL tag names are fully qualified (`HMI_RT_1::Tag01`), `value` is an object
   (`value { value timestamp }`), and `browse` needs `nameFilters:["*"]`.
+- On this project the alarm and history root fields return `INTERNAL_SERVER_ERROR` even though
+  the runtime has active system alarms; `browse(ALARM)` works, `browse(ALARMCLASS)` and
+  `browse(LOGGINGTAG)` do not. Runtime history lives in per-project SQLite databases
+  (`db\APERDB`, `db\TPERDB`).
 
 ## License
 

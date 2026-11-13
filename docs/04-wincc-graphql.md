@@ -248,7 +248,14 @@ credentials in the task XML, the TOML config or the repository.
 |---|---|
 | 75 s, 10 tags, 1 Hz | 710 samples (10 `Added` + 700 `Modified`), 0 errors; steady-state max inter-arrival 1.068 s |
 | Forced 10.6 s outage (TCP proxy) | connection reset → 3 login/backoff attempts → new session → 10 `Added` resync, 530 further notifications; gap recorded |
-| 1 h soak, 10 tags, 1 Hz | running (results appended when complete) |
+| 1 h soak, 10 tags, 1 Hz | **partial**: 8,521 samples / 14.3 min, 0 errors, one 2.5 s gap when the GraphQL server restarted during alarm probing. A hard stop left 9 CSV rows not yet committed to SQLite. Clean 1 h rerun pending. |
+
+## Alarms and history (M2)
+
+`probe/unified_alarms.py` and `probe/unified_history.py` implement the M2 client. The live
+runtime currently returns `INTERNAL_SERVER_ERROR` for the alarm/history root fields; the
+subscription logger records that error and reconnects. Storage evidence, API shapes and the
+fixture path are in [11-alarms-history.md](11-alarms-history.md).
 
 ## Probe
 

@@ -10,6 +10,10 @@
 | `probe/demo_writer.py` | deterministic 1 Hz value generator for soak tests |
 | `probe/live_logger.example.toml` | logger configuration template (no credentials) |
 | `probe/soak_report.py` | capture summary: rate, intervals, sessions, gaps, integrity |
+| `probe/unified_alarms.py` | active alarms, subscription logger, ack/reset/enable/disable/shelve/unshelve |
+| `probe/unified_history.py` | `loggedTagValues` / `loggedAlarms` time-range queries |
+| `probe/tests/test_alarm_store.py` | alarm SQLite/CSV sink unit tests |
+| `docs/11-alarms-history.md` | M2 API shapes, live failure evidence, storage, fixture path |
 | `probe/dump_schema.py` | introspection → local SDL + JSON |
 | `probe/summarize_schema.py` | introspection JSON → Markdown operation summary |
 | `analysis/schema-summary.md` | curated queries/mutations/subscriptions/tag model |
@@ -25,6 +29,9 @@ installation and is intentionally **not committed**. Run `probe/dump_schema.py` 
 | TIA project | `C:\Programs\04_Programme\lab\tia-mcp-artifacts\scratch\TiaMcpScratch_20261112_123345_9eb052ce\...ap21` |
 | Runtime package | `%USERPROFILE%\Documents\Simatic.HMI\RT_Projects\HMI_RT_1[...] - Full <date>.zip` |
 | Runtime project data | `C:\ProgramData\SCADAProjects\HMI_RT_1\` |
+| Alarm persistency DB | `C:\ProgramData\SCADAProjects\HMI_RT_1\db\APERDB\HMI_RT_1_AlarmPersistencyDatabase.db3` |
+| Tag persistency DB | `C:\ProgramData\SCADAProjects\HMI_RT_1\db\TPERDB\HMI_RT_1_TagPersistencyDatabase.db3` |
+| Compiled HMI output | `...\TiaMcpScratch_...\IM\HMI\I\0\Saved\` (package source) |
 | TIA MCP bundle | `C:\TiaMcp\releases\tia-mcp-v21-0.9.0_20261112_122441_bb02d6cf` |
 | TIA MCP source | `C:\Programs\04_Programme\src\TIA_MCP` |
 | TIA MCP changes/journals | `C:\Programs\04_Programme\lab\tia-mcp-artifacts\changes\` |
@@ -61,6 +68,23 @@ $env:WINCC_PASSWORD = '...'
 Outputs are the SQLite tables `samples`, `sessions`, `events`, `meta` and the CSV listed in
 [04-wincc-graphql.md](04-wincc-graphql.md#live-logger-m1). Soak data stays under the local
 `analysis\wincc-graphql\soak\` path and is not committed.
+
+### Alarms and history (M2)
+
+```powershell
+$env:WINCC_USER = 'Lab'
+$env:WINCC_PASSWORD = '...'
+& $py probe/unified_alarms.py list
+& $py probe/unified_alarms.py watch --duration 60 `
+    --sqlite data/alarms.sqlite --csv data/alarms.csv
+& $py probe/unified_alarms.py ack --name HMI_RT_1::Alarm_1
+& $py probe/unified_history.py tags  --name Tag01 --max 20
+& $py probe/unified_history.py alarms --system HMI_RT_1 --max 20
+& $py -m unittest discover -s probe/tests -v
+```
+
+The live runtime currently returns `INTERNAL_SERVER_ERROR` for the alarm and history reads; see
+[11-alarms-history.md](11-alarms-history.md) for the evidence and the fixture path.
 
 ### Schema dump
 

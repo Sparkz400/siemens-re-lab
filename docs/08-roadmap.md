@@ -2,7 +2,7 @@
 
 ## Recommended order
 
-1. **Goal 3 — Unified extractor** (working MVP; finish subscriptions, alarms, storage).
+1. **Goal 3 — Unified extractor** (live logger working; alarm/history client blocked on the runtime fixture).
 2. **Goal 2 — S7comm-plus** (the real RE track; 2–4 weeks for a read-only MVP).
 3. **Goal 1 — TIA snapshot/diff** (highest daily value if TIA engineering is the day job;
    can run in parallel because the TIA MCP already exposes the primitives).
@@ -15,17 +15,22 @@
 - GraphQL schema captured; login/browse/read/write/watch verified.
 - TIA MCP v0.9.0 built and installed; toolchain documented.
 
-### M1 — Goal 3 live logger (code complete, soak running)
+### M1 — Goal 3 live logger (code complete, clean soak pending)
 - [x] graphql-ws `tagValues` subscription with reconnect/backoff.
 - [x] Config file (URL, user, tags, interval, storage).
 - [x] SQLite writer + CSV export; session and gap records.
-- [ ] 1 h / 10-tag soak test (running); gap and value cross-check against the Unified screen.
+- [x] 14.3 min / 8,521-row soak, 0 errors (one 2.5 s gap from a GraphQL server restart).
+- [ ] Clean 1 h / 10-tag soak; gap and value cross-check against the Unified screen.
 - [x] Windows service wrapper notes (Task Scheduler/NSSM) in docs/04.
 
-### M2 — Goal 3 alarms + history (~1–2 weeks)
-- `activeAlarms` subscription; acknowledge/reset/enable/shelve round-trip.
-- `loggedTagValues`/`loggedAlarms` time-range queries.
-- Locate history storage (`ReportingReverseProxy` vs archive files) and document it.
+### M2 — Goal 3 alarms + history (client done, live fixture blocked)
+- [x] `activeAlarms` query and subscription logger (SQLite/CSV, reconnect/backoff).
+- [x] acknowledge/reset/enable/disable/shelve/unshelve clients; error paths verified.
+- [x] `loggedTagValues`/`loggedAlarms` time-range CLIs.
+- [x] History storage located and documented (`APERDB`/`TPERDB` SQLite).
+- [ ] Add alarm classes/discrete alarm and logging tags, recompile and re-download.
+- [ ] Live alarm subscribe + acknowledge round-trip; record it in `examples/`.
+- [ ] Explain the current `INTERNAL_SERVER_ERROR` if it survives a configured alarm.
 
 ### M3 — Goal 2 capture + read-only client (2–4 weeks)
 - Wireshark install; capture TIA ↔ PLCSIM; annotate handshake/read.
