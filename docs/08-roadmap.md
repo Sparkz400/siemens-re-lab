@@ -44,8 +44,8 @@
 - [x] Unit tests (fake MCP host, report, archive).
 - [x] Offline compare validated with synthetic reviews (added + modified; unchanged).
 - [x] Unchanged double-capture test on the lab project (0 changes).
-- [x] One-tag addition test (tag + parent table metadata).
-- [ ] Block edit test.
+- [x] One-tag addition test (1 semantic entry).
+- [x] Block edit test (1 modified block; `interfaceChanged`, `documentChanged`).
 - [ ] HMI screen property/change test.
 - [ ] HMI model supplement if screen-item content is not covered.
 

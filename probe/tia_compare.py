@@ -18,10 +18,24 @@ IMPACT_KINDS = {
     "technologyObjectHardware", "softwareUnit", "libraryVersion",
 }
 COMPARISON_POLICY = (
-    "Exact relative native paths; no rename inference. XML ignores only "
-    "top-level DocumentInfo/Created. Whitespace, IDs, namespaces, comments and "
-    "unknown payload remain significant. Scope absence is not proof of deletion."
+    "Exact relative native paths; no rename inference. Volatile metadata "
+    "timestamps (modified, created, lastModified, modificationTime) are "
+    "ignored. XML ignores only top-level DocumentInfo/Created. Whitespace, "
+    "IDs, namespaces, comments and unknown payload remain significant. Scope "
+    "absence is not proof of deletion."
 )
+IGNORED_METADATA_KEYS = {"modified", "created", "lastModified",
+                         "modificationTime"}
+
+
+def _normalize_metadata(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {key: _normalize_metadata(item)
+                for key, item in value.items()
+                if key not in IGNORED_METADATA_KEYS}
+    if isinstance(value, list):
+        return [_normalize_metadata(item) for item in value]
+    return value
 
 
 def _nodes(model: dict) -> dict[str, dict]:
@@ -114,8 +128,14 @@ def compare_reviews(
             changes.append(change)
             continue
 
-        fields = [field for field in ("name", "kind", "access", "metadata")
-                  if old.get(field) != new.get(field)]
+        fields = []
+        for field in ("name", "kind", "access", "metadata"):
+            if field == "metadata":
+                if (_normalize_metadata(old.get(field)) !=
+                        _normalize_metadata(new.get(field))):
+                    fields.append(field)
+            elif old.get(field) != new.get(field):
+                fields.append(field)
         old_doc = a_docs.get(path)
         new_doc = b_docs.get(path)
         is_block = old.get("kind") == "block" or new.get("kind") == "block"

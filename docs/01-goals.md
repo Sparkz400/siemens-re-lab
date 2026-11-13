@@ -40,9 +40,9 @@ exports.
 TIA MCP project review into a portable snapshot (`snapshot.json` + `review.json`) and compares two
 snapshots with a native Python engine (`probe/tia_compare.py`), producing Markdown/JSON with a CI
 exit code. Capture uses the TIA MCP as the Openness bridge; comparison needs neither TIA nor the
-MCP. An unchanged double capture produced 0 changes; adding one PLC tag produced the tag entry
-plus the parent tag-table metadata entry. Block/screen change tests are pending. Details in
-[12-tia-snapshot-diff.md](12-tia-snapshot-diff.md).
+MCP. An unchanged double capture produced 0 changes; adding one PLC tag produced 1 change; editing
+one block produced 1 change (`interfaceChanged`, `documentChanged`). HMI screen change testing is
+pending. Details in [12-tia-snapshot-diff.md](12-tia-snapshot-diff.md).
 
 **Risks:** object exports are not available for every protected/safety object; HMI screen export
 coverage differs between Classic and Unified; generated system objects must be filtered.

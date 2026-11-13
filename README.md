@@ -18,7 +18,7 @@ The repo documents four projects, the environment they run in, and the evidence 
 
 | # | Goal | End state | Status |
 |---|---|---|---|
-| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP capture + native Python diff; unchanged = 0 changes, one tag validated; block/screen pending |
+| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP capture + native Python diff; unchanged = 0, one tag = 1, one block edit = 1; screen test pending |
 | 2 | **S7comm-plus client** | Read-only tag client that talks to an S7-1500/PLCSIM Advanced without TIA/WinCC; later a Pi/MQTT bridge | Planned — PLCSIM Advanced V8 installed; capture plan ready; no real PLC |
 | 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger + history working**; tag/alarm history and alarm controls verified; `activeAlarms` subscription blocked |
 | 4 | **Panel backup unpacker** | Parse a `.psb` panel backup (container/compression/encryption), inspect with ImHex, diff two backups of the same panel | **Blocked** — no panel, no `.psb`; ProSave needs hardware |
@@ -76,9 +76,9 @@ WSL2 Ubuntu 24.04 worker
   `compare.json` + `report.md`; it exits non-zero on changes.
 - `probe/tia_mcp.py` is the stdio MCP client (newline-delimited JSON-RPC), also usable standalone.
 - Unit tests cover the MCP client, native compare, report rendering and archive hashing.
-- Live acceptance: unchanged double capture = 0 changes; adding one PLC tag = tag entry plus
-  parent tag-table metadata; project-folder hash changed while `.ap21` stayed the same.
-  Block and screen change tests are pending.
+- Live acceptance: unchanged double capture = 0 changes; one PLC tag = 1 change; one block edit
+  = 1 change (`interfaceChanged`, `documentChanged`). Volatile metadata timestamps are ignored;
+  the project-folder hash changed while `.ap21` stayed the same. HMI screen testing is pending.
 
 ## Repository layout
 

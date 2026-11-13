@@ -100,6 +100,8 @@ The command exits **1** when changes are found, **0** when the captured scope is
 - **Blocks/types:** exact native XML exports are compared; interface/logic/document hashes are
   reported. Protected, safety and unsupported blocks are explicit unknowns.
 - **Hierarchy/metadata:** all captured native nodes and direct relationships, with exact paths.
+  Volatile metadata timestamps (`modified`, `created`, `lastModified`, `modificationTime`) are
+  normalized away.
 - **Tags:** captured as project-model metadata; the block/type XML is the content payload.
 - **HMI screens/items:** the TIA MCP snapshot captures HMI objects as model metadata, but not the
   full screen-item XML. A `hmi_inspect section=model` supplement is planned if screen item
@@ -110,8 +112,8 @@ The command exits **1** when changes are found, **0** when the captured scope is
 ## Acceptance plan
 
 1. Capture an unchanged project twice → `compare` reports 0 changes and exits 0.
-2. Add one tag → one `addedToCapturedScope` tag entry, plus the parent tag-table metadata entry
-   (expected).
+2. Add one tag → one `addedToCapturedScope` tag entry (timestamp-only parent metadata is
+   ignored).
 3. Modify one block → one `modified` change with `logicChanged`/`interfaceChanged`.
 4. Modify one HMI screen property → confirm whether the model metadata changes; if not, add the
    HMI model supplement.
@@ -123,16 +125,20 @@ The command exits **1** when changes are found, **0** when the captured scope is
 | Test | Result |
 |---|---|
 | Unchanged double capture | **0 changes**, exit 0; 4 block contents compared |
-| Add one PLC tag (`DiffTag01`, Bool, `%M100.0`) | **2 changes**, exit 1: the tag was added and the parent tag-table `metadata` changed; compile/save succeeded; 4 block contents compared |
+| Add one PLC tag (`DiffTag01`, Bool, `%M100.0`) | **1 change**, exit 1: the tag was added; compile/save succeeded; 4 block contents compared |
+| Edit one block (`Main` interface comment via `block_import_xml`) | **1 change**, exit 1: `modified` with `interfaceChanged`, `documentChanged`; compile/save succeeded |
 
 Baseline review `aa0e230b…`: 103 nodes, 4 exported blocks, project-folder hash
 `c5943384…` (76 files, 10,400,704 bytes). After the tag: 104 nodes, 4 blocks, folder hash
-`d48ed4e7…` (76 files, 10,445,323 bytes). The `.ap21` file SHA-256 stayed
-`aa8fc543…` in both captures — TIA stores much of the project state in the project folder, so
+`d48ed4e7…` (76 files, 10,445,323 bytes). After the block edit: 104 nodes, 4 blocks, folder hash
+`00bf95e5…` (76 files, 10,516,138 bytes). The `.ap21` file SHA-256 stayed
+`aa8fc543…` in all captures — TIA stores much of the project state in the project folder, so
 `projectFolderSha256` is the useful state hash; `archiveSha256` alone is not sufficient.
 
-The extra `tagTable` metadata entry is expected: adding a child updates the table's metadata
-(tag count). The report keeps it visible rather than hiding a real container change.
+The native compare ignores volatile metadata timestamps (`modified`, `created`, `lastModified`,
+`modificationTime`). That removes the tag-table timestamp-only churn: a tag addition is one
+semantic entry, and a block edit is one block entry. Content changes are still detected through
+the interface/logic/document signature hashes.
 
 ## Status
 
@@ -143,7 +149,7 @@ The extra `tagTable` metadata entry is expected: adding a child updates the tabl
 - [x] unit tests (fake MCP host, native compare, report, archive)
 - [x] offline compare validated with synthetic `project-review.v1` fixtures
 - [x] unchanged double-capture test on the lab project
-- [x] one-tag addition test (tag node + parent table metadata)
-- [ ] block edit test
+- [x] one-tag addition test (one semantic entry)
+- [x] block edit test (`interfaceChanged`, `documentChanged`)
 - [ ] HMI screen property/change test
 - [ ] HMI model supplement if screen content is not covered

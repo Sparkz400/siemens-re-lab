@@ -117,6 +117,15 @@ class CompareReviewsTest(unittest.TestCase):
             before, after, "a", "b", allow_different_project_copy=True)
         self.assertEqual(result["totalChanges"], 0)
 
+    def test_volatile_metadata_ignored(self):
+        before_nodes = copy.deepcopy(base_nodes())
+        after_nodes = copy.deepcopy(base_nodes())
+        before_nodes[2]["metadata"]["modified"] = "2026-11-12T00:00:00Z"
+        after_nodes[2]["metadata"]["modified"] = "2026-11-13T00:00:00Z"
+        result = compare_reviews(
+            review(before_nodes), review(after_nodes), "a", "b")
+        self.assertEqual(result["totalChanges"], 0)
+
     def test_impact_path(self):
         after_nodes = copy.deepcopy(base_nodes())
         after_nodes[2]["metadata"] = {"programmingLanguage": "SCL",
