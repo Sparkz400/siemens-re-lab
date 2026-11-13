@@ -17,7 +17,7 @@ The repo documents four projects, the environment they run in, and the evidence 
 
 | # | Goal | End state | Status |
 |---|---|---|---|
-| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP review capture, offline compare (synthetic validated), Markdown/JSON; real acceptance captures pending |
+| 1 | **TIA project snapshot/diff** | CLI that snapshots a TIA project (archive + exported object/block/tag/screen metadata) and diffs two snapshots into a readable change report | **CLI implemented** — TIA MCP capture + native Python diff (synthetic validated), Markdown/JSON; real acceptance captures pending |
 | 2 | **S7comm-plus client** | Read-only tag client that talks to an S7-1500/PLCSIM Advanced without TIA/WinCC; later a Pi/MQTT bridge | Planned — PLCSIM Advanced V8 installed; capture plan ready; no real PLC |
 | 3 | **WinCC Unified extractor** | Login, browse tags, read/subscribe values and alarms, write CSV/SQLite/InfluxDB; Grafana on top; history later | **Live logger + history working**; tag/alarm history and alarm controls verified; `activeAlarms` subscription blocked |
 | 4 | **Panel backup unpacker** | Parse a `.psb` panel backup (container/compression/encryption), inspect with ImHex, diff two backups of the same panel | **Blocked** — no panel, no `.psb`; ProSave needs hardware |
@@ -69,7 +69,7 @@ WSL2 Ubuntu 24.04 worker
 
 - `probe/tia_snapshot.py` captures a TIA MCP `project-review.v1` snapshot into
   `snapshot.json` + `review.json`, with the `.ap21` archive SHA-256.
-- `compare` runs offline via the TIA MCP Host `--no-native-workers` mode and writes
+- `compare` is pure Python over `review.json` (no TIA, no MCP Host) and writes
   `compare.json` + `report.md`; it exits non-zero on changes.
 - `probe/tia_mcp.py` is the stdio MCP client (newline-delimited JSON-RPC), also usable standalone.
 - Unit tests cover the MCP client, report rendering and archive hashing.
@@ -155,8 +155,9 @@ Capture starts a private headless TIA; compare does not. See
   Runtime history lives in per-project SQLite databases (`db\APERDB`, `db\TPERDB`) plus the
   configured data/alarm logs.
 - The TIA MCP snapshot is a portable `project-review.v1` JSON with a content-hash `reviewId`;
-  `project_snapshot_compare` can run in a `--no-native-workers` Host, so diffing needs no TIA.
-  The snapshot includes hierarchy and block/type XML; HMI screen-item XML is a coverage gap.
+  the diff is a native Python engine over the saved review JSON, so comparison needs neither TIA
+  nor the MCP. The snapshot includes hierarchy and block/type XML; HMI screen-item XML is a
+  coverage gap.
 
 ## License
 

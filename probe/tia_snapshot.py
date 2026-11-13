@@ -9,7 +9,7 @@ store it portably, and compare two snapshots offline.
       --out diff
 
 Capture needs TIA Portal/Openness and starts a private TIA MCP Host with the native
-worker.  Compare uses the Host's ``--no-native-workers`` mode and does not start TIA.
+worker.  Compare is pure Python over the saved review JSON: no TIA, no MCP Host.
 
 The snapshot directory contains ``snapshot.json`` (metadata) and ``review.json``
 (the TIA MCP project-review.v1 content).  Keep snapshots out of git.
@@ -19,13 +19,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import shutil
 import sys
-import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+from tia_compare import compare_reviews
 from tia_mcp import DEFAULT_ARTIFACTS, DEFAULT_BUNDLE, McpHost, McpError
 
 SNAPSHOT_SCHEMA = "tia-snapshot.v1"
@@ -159,7 +158,13 @@ def load_snapshot(path: str) -> tuple[dict, dict]:
     if review_id and actual != review_id:
         raise SystemExit(
             f"review hash mismatch in {directory}: {review_id} != {actual}")
-    return meta, {"file": review_file, "id": review_id, "sha256": actual}
+    review = json.loads(review_file.read_text(encoding="utf-8"))
+    if review.get("schemaVersion") != "project-review.v1":
+        raise SystemExit(
+            f"unsupported review schema in {review_file}: "
+            f"{review.get('schemaVersion')!r}")
+    return meta, {"file": review_file, "id": review_id,
+                  "sha256": actual, "data": review}
 
 
 def compare(args) -> int:
@@ -168,50 +173,23 @@ def compare(args) -> int:
     out = Path(args.out).expanduser().resolve()
     out.mkdir(parents=True, exist_ok=True)
 
-    with tempfile.TemporaryDirectory(prefix="tia-compare-") as temp:
-        reviews = Path(temp) / "project-reviews"
-        reviews.mkdir(parents=True)
-        shutil.copyfile(before["file"], reviews / f"{before['id']}.json")
-        shutil.copyfile(after["file"], reviews / f"{after['id']}.json")
-        with McpHost(args.bundle, temp, native=False,
-                     timeout_seconds=args.timeout,
-                     log_path=str(out / "host.log")) as host:
-            changes = []
-            first = None
-            offset = 0
-            while True:
-                result = host.call_tool(
-                    "project_snapshot_compare",
-                    {
-                        "beforeId": before["id"],
-                        "afterId": after["id"],
-                        "allowDifferentProjectCopy": args.allow_different_project_copy,
-                        "offset": offset,
-                        "maxItems": min(200, args.max_items),
-                        "impactDepth": args.impact_depth,
-                        "maxImpactPaths": args.max_impact_paths,
-                        "maxImpactEdgeVisits": args.max_impact_edge_visits,
-                    },
-                    timeout=args.timeout)
-                if first is None:
-                    first = dict(result)
-                changes.extend(result.get("changes") or [])
-                next_offset = result.get("nextOffset")
-                if next_offset is None:
-                    break
-                offset = next_offset
-            assert first is not None
-            first["changes"] = changes
-            first["returnedChanges"] = len(changes)
+    result = compare_reviews(
+        before["data"], after["data"], before["id"], after["id"],
+        allow_different_project_copy=args.allow_different_project_copy,
+        impact_depth=args.impact_depth,
+        max_impact_paths=args.max_impact_paths,
+        max_impact_edge_visits=args.max_impact_edge_visits,
+    )
+    result["returnedChanges"] = len(result["changes"])
 
     (out / "compare.json").write_text(
-        json.dumps(first, indent=2, ensure_ascii=False) + "\n",
+        json.dumps(result, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8")
-    report = render_markdown(first, before_meta, after_meta)
+    report = render_markdown(result, before_meta, after_meta)
     (out / "report.md").write_text(report, encoding="utf-8")
 
-    total = first.get("totalChanges", len(changes))
-    print(f"changes: {total} ({len(changes)} returned)")
+    total = result.get("totalChanges", len(result["changes"]))
+    print(f"changes: {total} ({len(result['changes'])} returned)")
     print(f"report:  {out / 'report.md'}")
     print(f"json:    {out / 'compare.json'}")
     if total and not args.no_fail:
@@ -307,11 +285,11 @@ def render_markdown(result: dict, before_meta: dict, after_meta: dict) -> str:
     return "\n".join(lines)
 
 
-def add_common(p: argparse.ArgumentParser) -> None:
+def add_capture_common(p: argparse.ArgumentParser) -> None:
     p.add_argument("--bundle", default=DEFAULT_BUNDLE,
                    help="TIA MCP bundle directory")
     p.add_argument("--artifacts", default=DEFAULT_ARTIFACTS,
-                   help="TIA MCP artifacts directory (capture)")
+                   help="TIA MCP artifacts directory")
     p.add_argument("--timeout", type=float, default=600)
     p.add_argument("-v", "--verbose", action="store_true")
 
@@ -321,7 +299,7 @@ def main(argv=None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     p_capture = sub.add_parser("capture", help="capture a TIA MCP project review")
-    add_common(p_capture)
+    add_capture_common(p_capture)
     p_capture.add_argument("--project", required=True,
                            help=".ap21 file or project folder")
     p_capture.add_argument("--out", required=True)
@@ -334,12 +312,14 @@ def main(argv=None) -> int:
     p_capture.add_argument("--force", action="store_true")
 
     p_compare = sub.add_parser("compare", help="compare two snapshot directories")
-    add_common(p_compare)
+    p_compare.add_argument("-v", "--verbose", action="store_true")
     p_compare.add_argument("--before", required=True)
     p_compare.add_argument("--after", required=True)
     p_compare.add_argument("--out", default="")
     p_compare.add_argument("--allow-different-project-copy", action="store_true")
-    p_compare.add_argument("--max-items", type=int, default=200)
+    p_compare.add_argument("--max-items", type=int, default=200,
+                           help="accepted for compatibility; native compare "
+                                "returns all changes")
     p_compare.add_argument("--impact-depth", type=int, default=3)
     p_compare.add_argument("--max-impact-paths", type=int, default=100)
     p_compare.add_argument("--max-impact-edge-visits", type=int, default=5000)
@@ -353,6 +333,9 @@ def main(argv=None) -> int:
         return capture(args) if args.cmd == "capture" else compare(args)
     except McpError as exc:
         print(f"TIA MCP error: {exc}", file=sys.stderr)
+        return 2
+    except ValueError as exc:
+        print(f"compare error: {exc}", file=sys.stderr)
         return 2
 
 

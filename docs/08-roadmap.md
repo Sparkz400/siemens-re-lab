@@ -41,7 +41,7 @@
 ### M4 — Goal 1 snapshot/diff (CLI implemented, acceptance pending)
 - [x] stdio MCP client and `capture`/`compare` CLI.
 - [x] Portable snapshot (`snapshot.json` + `review.json`) with archive/review hashes.
-- [x] Offline compare with `--no-native-workers`; Markdown/JSON + CI exit code.
+- [x] Native Python offline compare; Markdown/JSON + CI exit code.
 - [x] Unit tests (fake MCP host, report, archive).
 - [x] Offline compare validated with synthetic reviews (added + modified; unchanged).
 - [ ] Unchanged double-capture test on the lab project.

@@ -1,17 +1,18 @@
 # Goal 1 — TIA project snapshot / diff
 
-Status: **capture/compare CLI implemented and unit-tested; real project captures pending.**
+Status: **capture via TIA MCP; comparison is pure Python. Real project captures pending.**
 
-The tool wraps the TIA MCP `project_snapshot_capture` and `project_snapshot_compare` tools in a
-small CLI, stores snapshots portably, and turns the comparison into Markdown + JSON with a CI
-exit code.
+The CLI captures a TIA MCP `project-review.v1` snapshot and compares two snapshots with a native
+Python engine. Capture needs TIA/Openness; comparison needs neither TIA nor the TIA MCP.
 
 ## Tools
 
 | Tool | Purpose |
 |---|---|
 | `probe/tia_snapshot.py` | `capture` and `compare` commands |
-| `probe/tia_mcp.py` | stdio MCP client for the TIA MCP Host (also usable standalone) |
+| `probe/tia_compare.py` | native comparison of saved `project-review.v1` files |
+| `probe/tia_mcp.py` | stdio MCP client used only by `capture` |
+| `probe/tests/test_tia_compare.py` | native added/modified/removed/content/impact tests |
 | `probe/tests/test_tia_snapshot.py` | report/archive tests |
 | `probe/tests/fake_mcp_host.py` | fake JSON-RPC host for the MCP client test |
 
@@ -26,15 +27,18 @@ tia_snapshot.py capture
   └─ writes snapshots/<name>/snapshot.json + review.json
 
 tia_snapshot.py compare
-  └─ copies both review.json files into a temp project-reviews/ store
-  └─ starts TiaMcp.Host.exe --no-native-workers   (no TIA Portal)
-       └─ project_snapshot_compare(beforeId, afterId)
+  └─ loads both review.json files
+  └─ probe/tia_compare.py (pure Python; no TIA, no MCP Host)
   └─ writes diff/compare.json + diff/report.md
 ```
 
 The TIA MCP Host speaks newline-delimited JSON-RPC over stdin/stdout. `probe/tia_mcp.py` starts a
-private Host, initializes the MCP session, calls one tool, and shuts it down. The existing
-OpenCode-managed TIA MCP server is not touched.
+private Host, initializes the MCP session, calls `project_snapshot_capture`, and shuts it down.
+The existing OpenCode-managed TIA MCP server is not touched.
+
+**MCP boundary:** the TIA MCP is only the capture bridge to Openness. The comparison engine is
+`probe/tia_compare.py` and consumes only the saved review JSON. If a standalone Openness capture
+adapter replaces the MCP later, the snapshot format and diff engine stay unchanged.
 
 ## Usage
 
@@ -46,13 +50,14 @@ $py = "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
     --project "C:\Programs\04_Programme\lab\m2-alarms\TiaMcpScratch_20261112_123345_9eb052ce\TiaMcpScratch_20261112_123345_9eb052ce.ap21" `
     --out snapshots\baseline --max-blocks 200 --max-visited 5000
 
-# compare (offline; no TIA)
+# compare (pure Python; no TIA, no MCP)
 & $py probe/tia_snapshot.py compare `
     --before snapshots\baseline --after snapshots\changed --out diff
 ```
 
-Bundle/artifacts defaults can be overridden with `--bundle`/`--artifacts` or
-`TIA_MCP_BUNDLE`/`TIA_MCP_ARTIFACTS`. The default bundle is the installed TIA MCP v0.9.0.
+Bundle/artifacts defaults for **capture** can be overridden with `--bundle`/`--artifacts` or
+`TIA_MCP_BUNDLE`/`TIA_MCP_ARTIFACTS`. `compare` accepts neither; it reads only the snapshot
+directories.
 
 Close a user-owned TIA Portal instance with the project open before capture, or capture a
 **copy** of the project. The private Host opens the project read-only but TIA still refuses a
@@ -77,7 +82,7 @@ git; the `.gitignore` covers them.
 
 ## Comparison output
 
-`compare.json` is the full TIA MCP comparison result. `report.md` contains:
+`compare.json` is the native comparison result. `report.md` contains:
 
 - before/after capture times, project names, archive hashes and review IDs;
 - total changes and added/removed/modified counts;
@@ -108,15 +113,15 @@ The command exits **1** when changes are found, **0** when the captured scope is
 4. Modify one HMI screen property → confirm whether the model metadata changes; if not, add the
    HMI model supplement.
 5. Capture a project copy and compare with `--allow-different-project-copy`.
-6. Run `compare` with no TIA process; verify it still works via `--no-native-workers`.
+6. Run `compare` with no TIA process and no TIA MCP bundle; verify it still works.
 
 ## Status
 
 - [x] stdio MCP client with timeout/error handling
 - [x] portable snapshot + archive hash + review hash verification
-- [x] offline compare via `--no-native-workers`
+- [x] native Python compare; no TIA, no MCP Host
 - [x] Markdown/JSON report and exit code
-- [x] unit tests (fake MCP host, report, archive)
+- [x] unit tests (fake MCP host, native compare, report, archive)
 - [x] offline compare validated with synthetic `project-review.v1` fixtures:
   an added tag + a modified block produced 2 changes (exit 1); an identical clone produced
   0 changes (exit 0)
