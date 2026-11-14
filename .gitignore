@@ -48,3 +48,8 @@ __pycache__/
 # .NET build output
 bin/
 obj/
+
+# Obsidian local state
+obsidian/**/.obsidian/
+obsidian/**/.trash/
+
