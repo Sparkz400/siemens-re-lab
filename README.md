@@ -129,6 +129,7 @@ Docs index:
 | [docs/16-decompilation-roadmap.md](docs/16-decompilation-roadmap.md) | A/B/C decompilation roadmap, plus-code leads, TIA assembly inventory |
 | [docs/17-tia-addon-inventory.md](docs/17-tia-addon-inventory.md) | TIA V21 add-on/assembly family inventory (WinCC, PLC language, Safety, drives, CSI) |
 | [docs/18-hmi-scripting.md](docs/18-hmi-scripting.md) | WinCC Unified JavaScript/V8 scripting stack inventory |
+| [docs/19-native-exports.md](docs/19-native-exports.md) | native module exports (CSI, MC7 runtime, motion, scripting) |
 
 ## Quick start (goal 3)
 

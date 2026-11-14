@@ -114,6 +114,28 @@ notes.
 
 Test Suite is not installed. Full report: `docs/17-tia-addon-inventory.md`.
 
+## Native exports
+
+`probe/native_exports.ps1` runs `dumpbin /exports` on the key native modules:
+
+| Module | Exports | Note |
+|---|---:|---|
+| `Siemens.DF.CsiWrapper.dll` | 8 | CSI encrypt/verify only; no decrypt |
+| `s7irsrvmc7x.dll` | 254 | native MC7 compiler/runtime (`IR_*`) |
+| `JSEngineAdapterV8.dll` | 4 | V8 module entry points |
+| `rtpu.dll` | 3 | runtime module entry points |
+| `S7GSDxDLL.dll` | 16 | GSD device handling |
+| `Siemens.MP.tkImplementation.dll` | 4,211 | motion/technology C++ API |
+| `Siemens.MP.LMC.tkImplementation.dll` | 3,361 | motion/technology C++ API |
+| `Siemens.Simatic.Srm.Rdp.Data.dll` | 233 | SRM RDP data |
+| `RTScriptComponentWrapper.dll` | 4 | Unified V8 script wrapper |
+| `CCHMIScriptingSite.dll` | 4 | classic WinCC scripting |
+| `CCScriptComp.dll` | 4 | classic WinCC script compiler |
+
+Full report: `docs/19-native-exports.md`. The `IR_*` surface includes
+`IR_CodeGenerator_GenerateBinaryCode`, `IR_CreateCompilerEnvironment`,
+`IR_CreateInstructionList`, `IR_GenerateLIRInstructions`.
+
 ## Missing plus disassembler
 
 `MC7ViewLogic` in `NetworkEditorFrame` loads

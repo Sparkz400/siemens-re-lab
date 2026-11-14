@@ -31,6 +31,7 @@
 | `probe/tia_inventory.ps1` | TIA Portal assembly metadata inventory |
 | `probe/tia_addon_inventory.py` | TIA assembly family/add-on classifier |
 | `probe/hmi_scripting_inventory.py` | HMI Unified JavaScript/V8 stack inventory |
+| `probe/native_exports.ps1` | curated `dumpbin /exports` inventory |
 | `probe/tests/` | alarm-store, TIA MCP, snapshot-report and MC7 extractor tests |
 | `analysis/tia-assembly-inventory.csv` | TIA V21 managed/native assembly metadata |
 | `analysis/tia-assembly-summary.json` | TIA V21 inventory summary |
@@ -38,6 +39,7 @@
 | `analysis/plus-key-derivation.json` | plus seed hash, container header ids and MAC |
 | `analysis/tia-addon-inventory.json` | TIA assembly families, counts and sizes |
 | `analysis/hmi-scripting-inventory.json` | HMI Unified scripting assemblies and layers |
+| `analysis/native-exports.json` | native module export counts and names |
 | `obsidian/siemens-re-lab/` | Obsidian vault: A/B/C notes, experiment log, inventory |
 | `docs/11-alarms-history.md` | M2 API shapes, live failure evidence, storage, fixture path |
 | `docs/13-mc7-codegen.md` | classic/plus MC7 evidence, PLCSIM V21 read-back limits |

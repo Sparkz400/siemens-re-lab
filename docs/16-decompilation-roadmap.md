@@ -130,6 +130,17 @@ Key native target: `Siemens.DF.CsiWrapper.dll` (`InitCommonSecurity`,
 The mixed C++/CLI `s7irsrvmc7x.dll` is the MC7 runtime; its managed surface is
 mostly compiler attributes, so the MC7 logic is native inside the module.
 
+Add-on families (`probe/tia_addon_inventory.py`): WinCC/HMI 952 files/470.5 MB,
+PLC language 207/64.0 MB, hardware config 146/230.3 MB, Safety 26/11.2 MB,
+drives 116/39.7 MB, CSI/security 96/13.3 MB, OPC UA 10/11.4 MB; Test Suite is
+not installed. See [17-tia-addon-inventory.md](17-tia-addon-inventory.md).
+
+Native exports (`probe/native_exports.ps1`): `s7irsrvmc7x.dll` exports 254
+`IR_*` compiler/runtime functions (`IR_CodeGenerator_GenerateBinaryCode`,
+`IR_CreateCompilerEnvironment`, `IR_GenerateLIRInstructions`); the motion
+modules export thousands of C++ symbols. See
+[19-native-exports.md](19-native-exports.md).
+
 ## Feasibility
 
 | Target | Possibility | Route |

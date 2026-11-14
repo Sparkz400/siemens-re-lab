@@ -43,7 +43,7 @@ created: 2026-11-14
 - [ ] Curated decompilation of Openness, block logic, MC7, HMI, PLCSIM, CSI
 - [x] Call-path map for plus-code decryption/disassembly
 - [x] Add-on package inventory (Startdrive, Safety, WinCC Unified, Test Suite)
-- [ ] Native exports/entry-point map (CSI, compiler, runtime)
+- [x] Native exports/entry-point map (CSI, compiler, runtime)
 
 ## Milestones
 
