@@ -1,0 +1,1022 @@
+{
+  "pass": true,
+  "observed": 8,
+  "probes": 20,
+  "withMc7": 8,
+  "r2": 0.996920935707537,
+  "rmse": 0.7185774774227455,
+  "looRows": 20,
+  "looPassed": 18,
+  "looLengthPassed": 18,
+  "looOpcodePassed": 19,
+  "observedDistinctMc7": 8,
+  "observedLooRows": 8,
+  "observedLooPassed": 7,
+  "observedLooLengthPassed": 7,
+  "observedLooOpcodePassed": 8,
+  "realCodegen": true,
+  "targetBlock": "FC_LogicB",
+  "targetPredictedLength": 43,
+  "block1PredictedLength": 43,
+  "block1Prediction": {
+    "length": 43,
+    "instructions": 37,
+    "opcodes": {
+      "MOVE_BOOL": 2,
+      "NOP": 13,
+      "OP_04": 2,
+      "OP_06": 1,
+      "OP_08": 1,
+      "OP_60": 2,
+      "OP_61": 1,
+      "OP_68": 3,
+      "OP_80": 2,
+      "OP_92": 2,
+      "OP_C2": 1,
+      "OP_FB": 5,
+      "R_BOOL": 1,
+      "SET_RLO": 1
+    },
+    "confidence": 0.996920935707537,
+    "features": [
+      "bias=1,000",
+      "statements=2,000",
+      "assignments=2,000",
+      "branches=0,000",
+      "calls=0,000",
+      "symbols=5,000",
+      "constants=0,000",
+      "binaryOps=0,000",
+      "comparisons=0,000",
+      "andOps=0,000",
+      "orOps=0,000",
+      "xorOps=0,000",
+      "notOps=0,000",
+      "setOps=0,000",
+      "clearOps=0,000",
+      "setBoolOps=0,000",
+      "resetBoolOps=0,000",
+      "arithmeticOps=0,000",
+      "sourceLength/100=12,330"
+    ]
+  },
+  "differential": {
+    "rows": 8,
+    "meanAbsoluteError": 0.875,
+    "meanJaccard": 0.8414892399267399,
+    "exactOpcodeRate": 0.125,
+    "pass": true,
+    "items": [
+      {
+        "block": "FC_LogicB",
+        "actualLength": 42,
+        "predictedLength": 43,
+        "error": 1,
+        "actualOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_08",
+          "OP_41",
+          "OP_60",
+          "OP_61",
+          "OP_68",
+          "OP_80",
+          "OP_81",
+          "OP_92",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "predictedOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_08",
+          "OP_60",
+          "OP_61",
+          "OP_68",
+          "OP_80",
+          "OP_92",
+          "OP_C2",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "jaccard": 0.8125,
+        "exactOpcodes": false
+      },
+      {
+        "block": "FC_And",
+        "actualLength": 26,
+        "predictedLength": 26,
+        "error": 0,
+        "actualOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_92",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "predictedOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_92",
+          "OP_C2",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "jaccard": 0.9166666666666666,
+        "exactOpcodes": false
+      },
+      {
+        "block": "FC_Or",
+        "actualLength": 26,
+        "predictedLength": 26,
+        "error": 0,
+        "actualOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_82",
+          "OP_92",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "predictedOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_92",
+          "OP_C2",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "jaccard": 0.8461538461538461,
+        "exactOpcodes": false
+      },
+      {
+        "block": "FC_Not",
+        "actualLength": 22,
+        "predictedLength": 21,
+        "error": -1,
+        "actualOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_60",
+          "OP_68",
+          "OP_81",
+          "OP_92",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "predictedOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_92",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "jaccard": 0.75,
+        "exactOpcodes": false
+      },
+      {
+        "block": "FC_Xor",
+        "actualLength": 26,
+        "predictedLength": 26,
+        "error": 0,
+        "actualOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_84",
+          "OP_92",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "predictedOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_92",
+          "OP_C2",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "jaccard": 0.8461538461538461,
+        "exactOpcodes": false
+      },
+      {
+        "block": "FC_Mux",
+        "actualLength": 46,
+        "predictedLength": 47,
+        "error": 1,
+        "actualOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_07",
+          "OP_08",
+          "OP_0B",
+          "OP_60",
+          "OP_68",
+          "OP_70",
+          "OP_80",
+          "OP_92",
+          "OP_B8",
+          "OP_FB",
+          "OP_FF",
+          "R_BOOL",
+          "SET_RLO",
+          "S_BOOL"
+        ],
+        "predictedOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_07",
+          "OP_08",
+          "OP_0B",
+          "OP_60",
+          "OP_68",
+          "OP_70",
+          "OP_80",
+          "OP_92",
+          "OP_B8",
+          "OP_FB",
+          "OP_FF",
+          "R_BOOL",
+          "SET_RLO",
+          "S_BOOL"
+        ],
+        "jaccard": 1,
+        "exactOpcodes": true
+      },
+      {
+        "block": "FC_Cmp",
+        "actualLength": 28,
+        "predictedLength": 26,
+        "error": -2,
+        "actualOpcodes": [
+          "LDN_BOOL",
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_92",
+          "OP_C2",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "predictedOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_92",
+          "OP_C2",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "jaccard": 0.8461538461538461,
+        "exactOpcodes": false
+      },
+      {
+        "block": "FC_Add",
+        "actualLength": 28,
+        "predictedLength": 26,
+        "error": -2,
+        "actualOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_79",
+          "OP_C2",
+          "OP_C6",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "predictedOpcodes": [
+          "MOVE_BOOL",
+          "NOP",
+          "OP_04",
+          "OP_06",
+          "OP_60",
+          "OP_68",
+          "OP_80",
+          "OP_92",
+          "OP_C2",
+          "OP_FB",
+          "R_BOOL",
+          "SET_RLO"
+        ],
+        "jaccard": 0.7142857142857143,
+        "exactOpcodes": false
+      }
+    ]
+  },
+  "looItems": [
+    {
+      "block": "probe:x := y;",
+      "actualLength": 4,
+      "predictedLength": 5,
+      "actualOpcodes": [
+        "LD_BOOL",
+        "ST"
+      ],
+      "predictedOpcodes": [
+        "LD_BOOL",
+        "ST"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:x := a AND b;",
+      "actualLength": 6,
+      "predictedLength": 7,
+      "actualOpcodes": [
+        "A_BOOL",
+        "LD_BOOL",
+        "ST"
+      ],
+      "predictedOpcodes": [
+        "A_BOOL",
+        "LD_BOOL",
+        "ST"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:x := a OR b;",
+      "actualLength": 6,
+      "predictedLength": 7,
+      "actualOpcodes": [
+        "LD_BOOL",
+        "O_BOOL",
+        "ST"
+      ],
+      "predictedOpcodes": [
+        "LD_BOOL",
+        "O_BOOL",
+        "ST"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:x := NOT a;",
+      "actualLength": 5,
+      "predictedLength": 5,
+      "actualOpcodes": [
+        "LD_BOOL",
+        "NOT",
+        "ST"
+      ],
+      "predictedOpcodes": [
+        "LD_BOOL",
+        "ST"
+      ],
+      "jaccard": 0.667,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:x := a XOR b;",
+      "actualLength": 6,
+      "predictedLength": 7,
+      "actualOpcodes": [
+        "LD_BOOL",
+        "ST",
+        "X_BOOL"
+      ],
+      "predictedOpcodes": [
+        "LD_BOOL",
+        "ST"
+      ],
+      "jaccard": 0.667,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:SET(x);",
+      "actualLength": 2,
+      "predictedLength": 2,
+      "actualOpcodes": [
+        "SET"
+      ],
+      "predictedOpcodes": [
+        "SET"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:SET(y);",
+      "actualLength": 2,
+      "predictedLength": 2,
+      "actualOpcodes": [
+        "SET"
+      ],
+      "predictedOpcodes": [
+        "SET"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:CLR(x);",
+      "actualLength": 2,
+      "predictedLength": 2,
+      "actualOpcodes": [
+        "CLR"
+      ],
+      "predictedOpcodes": [
+        "CLR"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:CLR(y);",
+      "actualLength": 2,
+      "predictedLength": 2,
+      "actualOpcodes": [
+        "CLR"
+      ],
+      "predictedOpcodes": [
+        "CLR"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:S(x);",
+      "actualLength": 2,
+      "predictedLength": 2,
+      "actualOpcodes": [
+        "S_BOOL"
+      ],
+      "predictedOpcodes": [
+        "S_BOOL"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:S(y);",
+      "actualLength": 2,
+      "predictedLength": 2,
+      "actualOpcodes": [
+        "S_BOOL"
+      ],
+      "predictedOpcodes": [
+        "S_BOOL"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:R(x);",
+      "actualLength": 2,
+      "predictedLength": 2,
+      "actualOpcodes": [
+        "R_BOOL"
+      ],
+      "predictedOpcodes": [
+        "R_BOOL"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:R(y);",
+      "actualLength": 2,
+      "predictedLength": 2,
+      "actualOpcodes": [
+        "R_BOOL"
+      ],
+      "predictedOpcodes": [
+        "R_BOOL"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:x := 1;",
+      "actualLength": 3,
+      "predictedLength": 3,
+      "actualOpcodes": [
+        "MOVE"
+      ],
+      "predictedOpcodes": [
+        "MOVE"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:x := 0;",
+      "actualLength": 3,
+      "predictedLength": 3,
+      "actualOpcodes": [
+        "MOVE"
+      ],
+      "predictedOpcodes": [
+        "MOVE"
+      ],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:x := y; x := z;",
+      "actualLength": 8,
+      "predictedLength": 7,
+      "actualOpcodes": [
+        "LD_BOOL",
+        "ST"
+      ],
+      "predictedOpcodes": [
+        "LD_BOOL",
+        "OP_61",
+        "ST"
+      ],
+      "jaccard": 0.667,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:x := a AND b; y := c OR d;",
+      "actualLength": 12,
+      "predictedLength": 10,
+      "actualOpcodes": [
+        "A_BOOL",
+        "LD_BOOL",
+        "O_BOOL",
+        "ST"
+      ],
+      "predictedOpcodes": [
+        "A_BOOL",
+        "LD_BOOL",
+        "OP_08",
+        "O_BOOL",
+        "ST"
+      ],
+      "jaccard": 0.8,
+      "lengthOk": true,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:IF c THEN x := y; END_IF;",
+      "actualLength": 9,
+      "predictedLength": 6,
+      "actualOpcodes": [
+        "JMP",
+        "LD_BOOL",
+        "ST"
+      ],
+      "predictedOpcodes": [
+        "LD_BOOL",
+        "OP_07",
+        "OP_08",
+        "OP_0B",
+        "OP_70",
+        "OP_80",
+        "OP_B8",
+        "OP_FF",
+        "ST",
+        "S_BOOL"
+      ],
+      "jaccard": 0.182,
+      "lengthOk": false,
+      "opcodeOk": false
+    },
+    {
+      "block": "probe:x := a = b;",
+      "actualLength": 4,
+      "predictedLength": 7,
+      "actualOpcodes": [
+        "LD_BOOL",
+        "ST"
+      ],
+      "predictedOpcodes": [
+        "LD_BOOL",
+        "NOP",
+        "ST"
+      ],
+      "jaccard": 0.667,
+      "lengthOk": false,
+      "opcodeOk": true
+    },
+    {
+      "block": "probe:CALL fb();",
+      "actualLength": 0,
+      "predictedLength": 1,
+      "actualOpcodes": [],
+      "predictedOpcodes": [],
+      "jaccard": 1,
+      "lengthOk": true,
+      "opcodeOk": true
+    }
+  ],
+  "observedLooItems": [
+    {
+      "block": "FC_LogicB",
+      "actualLength": 42,
+      "predictedLength": 43,
+      "actualOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_08",
+        "OP_41",
+        "OP_60",
+        "OP_61",
+        "OP_68",
+        "OP_80",
+        "OP_81",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "predictedOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_08",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_92",
+        "OP_C2",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO",
+        "S_BOOL"
+      ],
+      "jaccard": 0.706,
+      "lengthOk": true,
+      "opcodeOk": true,
+      "mc7Hex": "681d682c41600000fb81000441610000fb80000200610000fb920006fb800004fb92000800600000682c"
+    },
+    {
+      "block": "FC_And",
+      "actualLength": 26,
+      "predictedLength": 26,
+      "actualOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "predictedOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_92",
+        "OP_C2",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "jaccard": 0.917,
+      "lengthOk": true,
+      "opcodeOk": true,
+      "mc7Hex": "681d682c41600000fb800002fb800004fb92000600600000682c"
+    },
+    {
+      "block": "FC_Or",
+      "actualLength": 26,
+      "predictedLength": 26,
+      "actualOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_82",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "predictedOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_92",
+        "OP_C2",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "jaccard": 0.846,
+      "lengthOk": true,
+      "opcodeOk": true,
+      "mc7Hex": "681d682c41600000fb800002fb820004fb92000600600000682c"
+    },
+    {
+      "block": "FC_Not",
+      "actualLength": 22,
+      "predictedLength": 21,
+      "actualOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_60",
+        "OP_68",
+        "OP_81",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "predictedOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "jaccard": 0.75,
+      "lengthOk": true,
+      "opcodeOk": true,
+      "mc7Hex": "681d682c41600000fb810002fb92000400600000682c"
+    },
+    {
+      "block": "FC_Xor",
+      "actualLength": 26,
+      "predictedLength": 26,
+      "actualOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_84",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "predictedOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_92",
+        "OP_C2",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "jaccard": 0.846,
+      "lengthOk": true,
+      "opcodeOk": true,
+      "mc7Hex": "681d682c41600000fb800002fb840004fb92000600600000682c"
+    },
+    {
+      "block": "FC_Mux",
+      "actualLength": 46,
+      "predictedLength": 49,
+      "actualOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_07",
+        "OP_08",
+        "OP_0B",
+        "OP_60",
+        "OP_68",
+        "OP_70",
+        "OP_80",
+        "OP_92",
+        "OP_B8",
+        "OP_FB",
+        "OP_FF",
+        "R_BOOL",
+        "SET_RLO",
+        "S_BOOL"
+      ],
+      "predictedOpcodes": [
+        "JMP",
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_08",
+        "OP_41",
+        "OP_60",
+        "OP_61",
+        "OP_68",
+        "OP_80",
+        "OP_81",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "jaccard": 0.545,
+      "lengthOk": false,
+      "opcodeOk": true,
+      "mc7Hex": "681d682c41600000fb800002ffb80008fb800004fb920008700b0007681cfb800006fb920008681c00600000682c"
+    },
+    {
+      "block": "FC_Cmp",
+      "actualLength": 28,
+      "predictedLength": 26,
+      "actualOpcodes": [
+        "LDN_BOOL",
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_92",
+        "OP_C2",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "predictedOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "jaccard": 0.769,
+      "lengthOk": true,
+      "opcodeOk": true,
+      "mc7Hex": "681d682c41600000fbc20002fbc200042120fb92000600600000682c"
+    },
+    {
+      "block": "FC_Add",
+      "actualLength": 28,
+      "predictedLength": 26,
+      "actualOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_79",
+        "OP_C2",
+        "OP_C6",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "predictedOpcodes": [
+        "MOVE_BOOL",
+        "NOP",
+        "OP_04",
+        "OP_06",
+        "OP_60",
+        "OP_68",
+        "OP_80",
+        "OP_92",
+        "OP_FB",
+        "R_BOOL",
+        "SET_RLO"
+      ],
+      "jaccard": 0.643,
+      "lengthOk": true,
+      "opcodeOk": true,
+      "mc7Hex": "681d682c41600000fbc20002fbc200047900fbc6000600600000682c"
+    }
+  ],
+  "checks": [
+    "observed=8",
+    "probes=20",
+    "withMc7=8",
+    "modelRows=27",
+    "r2=0,9969",
+    "rmse=0,72",
+    "loo=18/20",
+    "looLength=18/20",
+    "looOpcodes=19/20",
+    "observed.distinctMc7=8",
+    "observed.distinctCodeHashes=8",
+    "observed.loo=7/8",
+    "observed.looLength=7/8",
+    "observed.looOpcodes=8/8",
+    "realCodegen=True",
+    "observed.generalizes=False",
+    "targetBlock=FC_LogicB",
+    "targetPredictedLength=43",
+    "differential.rows=8",
+    "differential.mae=0,88",
+    "differential.jaccard=0,84",
+    "differential.pass=True"
+  ]
+}

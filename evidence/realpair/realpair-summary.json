@@ -1,0 +1,58 @@
+{
+  "project": "<PROJECTS>\\Scratch",
+  "releaseProject": "<LAB>\\tia-project\\out\\real-projects\\PlantB2",
+  "export": "<LAB>\\tia-project\\out\\final4\\opns\\project.objectframe.xml",
+  "releaseExport": "<LAB>\\tia-project\\out\\real-projects\\PlantB2.objectframe.xml",
+  "outPath": "<TEMP>\\realpair",
+  "status": "pass",
+  "steps": [
+    {
+      "name": "drift",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "drift/compare.json"
+    },
+    {
+      "name": "corpus",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "corpus/index.json"
+    },
+    {
+      "name": "fleet",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "fleet/report.json"
+    },
+    {
+      "name": "fleet-crossplant",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "fleet/crossplant/report.json"
+    },
+    {
+      "name": "compiler",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "compiler/compiler-test.json"
+    },
+    {
+      "name": "recorded-evolution",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "evolve/recorded/recorded-evolve.json"
+    },
+    {
+      "name": "ir-roundtrip",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "ir/primary/roundtrip.json"
+    },
+    {
+      "name": "ir-roundtrip-release",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "ir/release/roundtrip.json"
+    }
+  ]
+}

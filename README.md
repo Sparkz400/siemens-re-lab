@@ -14,6 +14,12 @@ The repo documents four projects, the environment they run in, and the evidence 
 > the PLCSIM V21 public API does not expose block download/upload. See
 > [docs/13-mc7-codegen.md](docs/13-mc7-codegen.md).
 
+> **Harness note (2026-11-14).** The 30-idea `tools/tia-project` harness is now
+> included: `platform run` 29/29, `platform realpair` 8/8, and the classic
+> compiler gate `distinct=8`, `realCodegen=true`. See
+> [docs/14-tia-project-harness.md](docs/14-tia-project-harness.md) and
+> [docs/15-decompilation-status.md](docs/15-decompilation-status.md).
+
 > **Disclaimer:** this is independent research on systems we own or are authorized to test.
 > It is not affiliated with or endorsed by Siemens. Siemens, SIMATIC, TIA Portal, PLCSIM,
 > WinCC and related marks belong to Siemens AG. No Siemens binaries, licenses, project
@@ -93,7 +99,9 @@ WSL2 Ubuntu 24.04 worker
 
 ```text
 docs/        goals, environment, lab project, WinCC GraphQL, TIA Openness, plans, roadmap
-probe/       schema dump, polling probe, live logger, alarm/history clients, tests
+probe/       schema dump, polling probe, live logger, alarm/history clients, MC7/Openness/PLCSIM probes, tests
+tools/       tia-project 30-idea harness, classic/plus MC7 hosts
+evidence/    sanitized JSON summaries from the platform, compiler and real-pair runs
 analysis/    curated GraphQL schema summary (no vendor SDL committed)
 examples/    sample CSV output
 ```
@@ -115,6 +123,8 @@ Docs index:
 | [docs/11-alarms-history.md](docs/11-alarms-history.md) | M2 alarm/history client, live evidence, runtime storage, activeAlarms limitation |
 | [docs/12-tia-snapshot-diff.md](docs/12-tia-snapshot-diff.md) | Goal 1 snapshot/diff CLI, snapshot layout, coverage and acceptance plan |
 | [docs/13-mc7-codegen.md](docs/13-mc7-codegen.md) | Classic S7-300 MC7 extraction, S7-1500 plus-code encryption, PLCSIM V21 read-back limits |
+| [docs/14-tia-project-harness.md](docs/14-tia-project-harness.md) | 30-idea TIA project harness, command map, status and evidence |
+| [docs/15-decompilation-status.md](docs/15-decompilation-status.md) | Surface-by-surface decompilation status: parsed, fully decoded, fixture and blocked |
 
 ## Quick start (goal 3)
 
@@ -148,6 +158,19 @@ $py = "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 
 Capture starts a private headless TIA; compare does not. See
 [docs/12-tia-snapshot-diff.md](docs/12-tia-snapshot-diff.md).
+
+## Quick start (30-idea harness)
+
+```powershell
+dotnet build .\tools\tia-project\TiaProject.csproj -c Release
+.\tools\tia-project\bin\Release\net10.0\tia-project.exe --help
+.\tools\tia-project\bin\Release\net10.0\tia-project.exe compiler classic-test `
+    --fs2xml <PlantE.objectframe.xml> --bin '<TIA_BIN>' --out out\plantE-classic-gate
+```
+
+The harness needs a local TIA installation for Openness and compiler steps; the
+pure XML/SQLite commands run without it. See
+[docs/14-tia-project-harness.md](docs/14-tia-project-harness.md).
 
 ## Key findings
 
@@ -186,6 +209,11 @@ Capture starts a private headless TIA; compare does not. See
   disassembler (`observed.distinctMc7=1`, `realCodegen=false`). On PLCSIM V21 an
   API-created vPLC powers on but is not reachable through TIA's `PLCSIM` PC interface;
   Openness download fails with `Connect to module PLC_B failed`.
+- The `tools/tia-project` harness implements the 30 platform ideas as CLI commands.
+  `platform run` passes 29/29, `platform realpair` 8/8, and the classic compiler gate is
+  `observed.distinctMc7=8`, `realCodegen=true`. Sanitized evidence is in `evidence/`; the
+  plus-code, PLCSIM read-back and cross-release gaps are in
+  [docs/15-decompilation-status.md](docs/15-decompilation-status.md).
 
 ## License
 

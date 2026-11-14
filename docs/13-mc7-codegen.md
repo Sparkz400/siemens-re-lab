@@ -201,7 +201,7 @@ needs a manual TIA UI action or the confidential PLC configuration password.
 
 ## Cross-release drift
 
-Only TIA Portal V21 is installed on this host (`D:\Arbeit\Siemens\Portal V21`).
+Only TIA Portal V21 is installed on this host (`<TIA_PORTAL>`).
 No V15.1-V20 installation or installer is available. The format-drift
 comparison therefore remains V21-vs-V21; it is not a genuine cross-release
 comparison. A second TIA release is required for that evidence.
