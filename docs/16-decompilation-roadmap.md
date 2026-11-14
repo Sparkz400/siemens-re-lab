@@ -56,17 +56,31 @@ Negative experiments:
 |---|---|
 | Non-optimized S7-1500 (`MemoryLayout.Standard`) | still `LoadablePlusCodeBlockData` / `PLUSBLOCK` |
 | `MC7PlusBinaryReader` + `OpenImmediateData` / section 0 | still `Read not allowed type code` / operand errors |
+| `CsiStreamImpl` / `CsiVerifierImpl` / `CsiWrapper` | write-only encoder + verifier; no `Decrypt*` export |
+
+The official TIA plus view path is:
+
+```text
+MC7ViewLogic
+  -> Siemens.Simatic.Lang.Mc7PlusDisassembler.dll
+  -> Mc7PlusDisassember.Disassembler.Disassembler(GetMC7Plus(), ImmediateLongTable)
+  -> GetDisassembledCode()
+```
+
+That DLL is **not installed** on this TIA V21 host. This is an artifact gap,
+not a crypto dead end: the UI passes exactly the blobs we already extract.
 
 Open leads, ranked:
 
-1. `GetMC7Plus(PlusBinaryType.Simulation)` / `VPlc` — different dependent blob,
+1. **Obtain `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll`** from a TIA
+   update, optional package or another release; load it directly.
+2. `GetMC7Plus(PlusBinaryType.Simulation)` / `VPlc` — different dependent blob,
    possibly recoded or unencrypted.
-2. Runtime hook of `Disassembler.DisassembleCallStatements` — capture the
+3. Runtime hook of `Disassembler.DisassembleCallStatements` — capture the
    plaintext `codeBinary` when TIA shows MC7.
-3. TIA UI MC7 view — extract the disassembly text directly.
 4. PLCSIM/CPU memory dump after download — the CPU executes plaintext MC7.
-5. Static CSI trace — `CsiWrapper`, `CsiStreamImpl`, `CsiVerifierImpl`,
-   `KeyKeeper`.
+5. Static CSI trace — **closed** for the public API; `CsiStreamImpl` is
+   write-only and `CsiWrapper` has no decrypt export.
 
 The practical insight: TIA must decrypt plus code to compile, download,
 simulate or disassemble it. The plaintext exists at runtime; capturing the
@@ -96,6 +110,8 @@ Key managed targets:
 - `Siemens.Simatic.Lang.PLInternal.dll`
 - `Siemens.Simatic.Lang.BlockHandling.TIA.Impl.dll`
 - `Siemens.Simatic.Lang.KnowHowProtection.dll`
+- `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll` — **missing on this install**;
+  the official plus MC7 view assembly.
 
 Key native target: `Siemens.DF.CsiWrapper.dll` (`InitCommonSecurity`,
 `EncryptDataInit/Update/Final`, `CalculateMACHybrid`; no `Decrypt*` export).

@@ -25,10 +25,12 @@
 | `probe/mc7_classic_host/` | TIA `AwlRegenerator` JSON host, build script and usage notes |
 | `probe/mc7plus_extract.py` | S7-1500 plus-code section extractor from objectframe XML |
 | `probe/mc7plus_reader/` | `MC7PlusBinaryReader` / `MC7plus.Disassembler` probe |
+| `probe/mc7plus_analyze.py` | plus-section entropy/length analysis |
 | `probe/tia_inventory.ps1` | TIA Portal assembly metadata inventory |
 | `probe/tests/` | alarm-store, TIA MCP, snapshot-report and MC7 extractor tests |
 | `analysis/tia-assembly-inventory.csv` | TIA V21 managed/native assembly metadata |
 | `analysis/tia-assembly-summary.json` | TIA V21 inventory summary |
+| `analysis/plus-section-analysis.json` | plus-section lengths, entropy and prefixes |
 | `obsidian/siemens-re-lab/` | Obsidian vault: A/B/C notes, experiment log, inventory |
 | `docs/11-alarms-history.md` | M2 API shapes, live failure evidence, storage, fixture path |
 | `docs/13-mc7-codegen.md` | classic/plus MC7 evidence, PLCSIM V21 read-back limits |
@@ -158,6 +160,16 @@ python .\probe\mc7plus_extract.py `
 The measured result is negative: the immediate table does not unlock the
 observed sections (`Read not allowed type code` / `Instruction code has no
 match`). See [`probe/mc7plus_reader/README.md`](../probe/mc7plus_reader/README.md).
+
+The section analysis records lengths, Shannon entropy and prefixes:
+
+```powershell
+python .\probe\mc7plus_analyze.py `
+    --dir out\plus-sections --out analysis\plus-section-analysis.json
+```
+
+The plus sections are short and near the small-sample entropy maximum, so the
+result is consistent with encrypted/encoded data; it is not proof of plaintext.
 
 ### TIA assembly inventory
 

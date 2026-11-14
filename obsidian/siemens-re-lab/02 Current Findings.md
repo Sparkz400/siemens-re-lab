@@ -51,6 +51,18 @@ Blocked at rest:
 - `FamilyKey` is 42 bytes; `OwnSignatureData` is 48 bytes
 - `distinctMc7=1`, `realCodegen=false`
 
+### Plus leads
+
+- TIA's MC7 view loads `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll` and
+  calls `Mc7PlusDisassember.Disassembler.Disassembler.GetDisassembledCode()`
+  with `GetMC7Plus()` + `ImmediateLongTable`. The DLL is **missing** on this
+  install; this is the official plus-code path.
+- `CsiStreamImpl` is write-only (`Read` throws); `CsiVerifierImpl` only
+  verifies; `CsiWrapper` has no `Decrypt*` export. Static CSI decryption is
+  closed.
+- Section 1 entropy is near the small-sample maximum and distinct per block;
+  consistent with encrypted/encoded data, not a simple plaintext stream.
+
 ## B — PLCSIM V21
 
 - API-created S7-1500 vPLC powers on (`Stop`, `IsPoweredOn=true`), IP set to

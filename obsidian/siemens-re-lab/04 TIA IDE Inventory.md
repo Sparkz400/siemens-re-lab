@@ -96,6 +96,24 @@ managed boundary.
 Vendor decompiled source stays local; the repo gets this index, scripts and
 notes.
 
+## Missing plus disassembler
+
+`MC7ViewLogic` in `NetworkEditorFrame` loads
+`Siemens.Simatic.Lang.Mc7PlusDisassembler.dll` and calls:
+
+```text
+Mc7PlusDisassember.Disassembler.Disassembler(
+    GetMC7Plus(),
+    ImmediateLongTable
+).GetDisassembledCode()
+```
+
+The DLL is **not installed** anywhere under TIA V21, `D:\Arbeit\Siemens` or
+`C:\Program Files\Siemens\Automation`. This is the official TIA plus-code
+path and the strongest lead; it receives exactly the blobs we extract.
+
+See [[2026-11-14 UI Call Path and Missing DLL]].
+
 ## Next
 
 - Decompile `Siemens.Simatic.Lang.MC7Codegenerator.dll` and

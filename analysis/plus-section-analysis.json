@@ -1,0 +1,727 @@
+{
+  "blocks": {
+    "FC_Add": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 219,
+      "sections": {
+        "0": {
+          "length": 32,
+          "entropy": 4.875,
+          "firstHex": "3809331000dcc750d0e854a85b16e7e68ef99726f1f22965",
+          "topBytes": [
+            {
+              "byte": 22,
+              "count": 2
+            },
+            {
+              "byte": 213,
+              "count": 2
+            },
+            {
+              "byte": 56,
+              "count": 1
+            },
+            {
+              "byte": 9,
+              "count": 1
+            },
+            {
+              "byte": 51,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 27,
+          "entropy": 4.6808,
+          "firstHex": "73e33fbec406a32920bb968db13fe53e04a733132a82cc0f",
+          "topBytes": [
+            {
+              "byte": 63,
+              "count": 2
+            },
+            {
+              "byte": 115,
+              "count": 1
+            },
+            {
+              "byte": 227,
+              "count": 1
+            },
+            {
+              "byte": 190,
+              "count": 1
+            },
+            {
+              "byte": 196,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    },
+    "FC_And": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 219,
+      "sections": {
+        "0": {
+          "length": 32,
+          "entropy": 4.9375,
+          "firstHex": "9a54c2d32d128626a1dd2f3c21c94de0fe32e93ec527fdd2",
+          "topBytes": [
+            {
+              "byte": 253,
+              "count": 2
+            },
+            {
+              "byte": 154,
+              "count": 1
+            },
+            {
+              "byte": 84,
+              "count": 1
+            },
+            {
+              "byte": 194,
+              "count": 1
+            },
+            {
+              "byte": 211,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 27,
+          "entropy": 4.6067,
+          "firstHex": "2ea076d89c02c18145e5413779146ae7d8d71534b4e9d078",
+          "topBytes": [
+            {
+              "byte": 216,
+              "count": 2
+            },
+            {
+              "byte": 60,
+              "count": 2
+            },
+            {
+              "byte": 46,
+              "count": 1
+            },
+            {
+              "byte": 160,
+              "count": 1
+            },
+            {
+              "byte": 118,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    },
+    "FC_Cmp": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 221,
+      "sections": {
+        "0": {
+          "length": 32,
+          "entropy": 4.8125,
+          "firstHex": "a26369d796f5882246a990a9237dc991f994cea54d5d1689",
+          "topBytes": [
+            {
+              "byte": 169,
+              "count": 2
+            },
+            {
+              "byte": 148,
+              "count": 2
+            },
+            {
+              "byte": 77,
+              "count": 2
+            },
+            {
+              "byte": 162,
+              "count": 1
+            },
+            {
+              "byte": 99,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 29,
+          "entropy": 4.72,
+          "firstHex": "cd5b23b104b190824e4bfa8e21dd97c6b680f6cf7bcdece9",
+          "topBytes": [
+            {
+              "byte": 205,
+              "count": 2
+            },
+            {
+              "byte": 177,
+              "count": 2
+            },
+            {
+              "byte": 91,
+              "count": 1
+            },
+            {
+              "byte": 35,
+              "count": 1
+            },
+            {
+              "byte": 4,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    },
+    "FC_LogicB": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 224,
+      "sections": {
+        "0": {
+          "length": 48,
+          "entropy": 5.4026,
+          "firstHex": "3c088a31e1893109643392990f7a9da56769d12e9561ce71",
+          "topBytes": [
+            {
+              "byte": 9,
+              "count": 3
+            },
+            {
+              "byte": 49,
+              "count": 2
+            },
+            {
+              "byte": 178,
+              "count": 2
+            },
+            {
+              "byte": 60,
+              "count": 1
+            },
+            {
+              "byte": 8,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 16,
+          "entropy": 4.0,
+          "firstHex": "46d2f35c33cea2c5dd070d9fd06d48e3",
+          "topBytes": [
+            {
+              "byte": 70,
+              "count": 1
+            },
+            {
+              "byte": 210,
+              "count": 1
+            },
+            {
+              "byte": 243,
+              "count": 1
+            },
+            {
+              "byte": 92,
+              "count": 1
+            },
+            {
+              "byte": 51,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    },
+    "FC_Mux": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 231,
+      "sections": {
+        "0": {
+          "length": 48,
+          "entropy": 5.46,
+          "firstHex": "356e96bf9442a4054499eaf72617b6868bf5d99148981357",
+          "topBytes": [
+            {
+              "byte": 148,
+              "count": 2
+            },
+            {
+              "byte": 145,
+              "count": 2
+            },
+            {
+              "byte": 45,
+              "count": 2
+            },
+            {
+              "byte": 53,
+              "count": 1
+            },
+            {
+              "byte": 110,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 23,
+          "entropy": 4.2299,
+          "firstHex": "5ef9bc39421e335e5e1c44ea359d91cbb11384df4b9ebc",
+          "topBytes": [
+            {
+              "byte": 94,
+              "count": 3
+            },
+            {
+              "byte": 188,
+              "count": 2
+            },
+            {
+              "byte": 249,
+              "count": 1
+            },
+            {
+              "byte": 57,
+              "count": 1
+            },
+            {
+              "byte": 66,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    },
+    "FC_Not": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 216,
+      "sections": {
+        "0": {
+          "length": 32,
+          "entropy": 4.8125,
+          "firstHex": "cf4fc9e8715ac4857defb372420d8252f5a89d594c3585c7",
+          "topBytes": [
+            {
+              "byte": 232,
+              "count": 2
+            },
+            {
+              "byte": 133,
+              "count": 2
+            },
+            {
+              "byte": 168,
+              "count": 2
+            },
+            {
+              "byte": 207,
+              "count": 1
+            },
+            {
+              "byte": 79,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 24,
+          "entropy": 4.5016,
+          "firstHex": "3d37880ad727113f77e06d77d9f95e1b4cc4a1dba34eccc9",
+          "topBytes": [
+            {
+              "byte": 119,
+              "count": 2
+            },
+            {
+              "byte": 61,
+              "count": 1
+            },
+            {
+              "byte": 55,
+              "count": 1
+            },
+            {
+              "byte": 136,
+              "count": 1
+            },
+            {
+              "byte": 10,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    },
+    "FC_Or": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 219,
+      "sections": {
+        "0": {
+          "length": 32,
+          "entropy": 4.9375,
+          "firstHex": "3b0470a4e1ba8352be435b668d3167d7e692568f0562b1f6",
+          "topBytes": [
+            {
+              "byte": 180,
+              "count": 2
+            },
+            {
+              "byte": 59,
+              "count": 1
+            },
+            {
+              "byte": 4,
+              "count": 1
+            },
+            {
+              "byte": 112,
+              "count": 1
+            },
+            {
+              "byte": 164,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 27,
+          "entropy": 4.6067,
+          "firstHex": "e696e07d5262318e5d80032d53ad82b9dd683360ae90e162",
+          "topBytes": [
+            {
+              "byte": 98,
+              "count": 2
+            },
+            {
+              "byte": 93,
+              "count": 2
+            },
+            {
+              "byte": 230,
+              "count": 1
+            },
+            {
+              "byte": 150,
+              "count": 1
+            },
+            {
+              "byte": 224,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    },
+    "FC_Xor": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 219,
+      "sections": {
+        "0": {
+          "length": 32,
+          "entropy": 4.9375,
+          "firstHex": "1d626a040ecd572720305dded6d6487ee687e729863bf46f",
+          "topBytes": [
+            {
+              "byte": 214,
+              "count": 2
+            },
+            {
+              "byte": 29,
+              "count": 1
+            },
+            {
+              "byte": 98,
+              "count": 1
+            },
+            {
+              "byte": 106,
+              "count": 1
+            },
+            {
+              "byte": 4,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 27,
+          "entropy": 4.5047,
+          "firstHex": "b2191cd2bda8282d2a33955b828e2a7e809511212a6003fd",
+          "topBytes": [
+            {
+              "byte": 42,
+              "count": 3
+            },
+            {
+              "byte": 149,
+              "count": 2
+            },
+            {
+              "byte": 178,
+              "count": 1
+            },
+            {
+              "byte": 25,
+              "count": 1
+            },
+            {
+              "byte": 28,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    },
+    "Main": {
+      "openLength": 12,
+      "openEntropy": 2.6175,
+      "openHex": "1500030030490000000802d5",
+      "mc7PlusLength": 210,
+      "sections": {
+        "0": {
+          "length": 32,
+          "entropy": 4.9375,
+          "firstHex": "f84e935294fd78d81827cff0b459bde1b6a3ad58ae098c47",
+          "topBytes": [
+            {
+              "byte": 148,
+              "count": 2
+            },
+            {
+              "byte": 248,
+              "count": 1
+            },
+            {
+              "byte": 78,
+              "count": 1
+            },
+            {
+              "byte": 147,
+              "count": 1
+            },
+            {
+              "byte": 82,
+              "count": 1
+            }
+          ]
+        },
+        "1": {
+          "length": 18,
+          "entropy": 4.1699,
+          "firstHex": "3170c50c172d14e0251b4028774e7490f153",
+          "topBytes": [
+            {
+              "byte": 49,
+              "count": 1
+            },
+            {
+              "byte": 112,
+              "count": 1
+            },
+            {
+              "byte": 197,
+              "count": 1
+            },
+            {
+              "byte": 12,
+              "count": 1
+            },
+            {
+              "byte": 23,
+              "count": 1
+            }
+          ]
+        },
+        "124": {
+          "length": 1,
+          "entropy": -0.0,
+          "firstHex": "02",
+          "topBytes": [
+            {
+              "byte": 2,
+              "count": 1
+            }
+          ]
+        },
+        "2": {
+          "length": 0,
+          "entropy": 0.0,
+          "firstHex": "",
+          "topBytes": []
+        }
+      }
+    }
+  },
+  "section1DistinctPrefixes": 9,
+  "section1Prefixes": {
+    "FC_Add": "73e33fbec406a32920bb968db13fe53e04a733132a82cc0f",
+    "FC_And": "2ea076d89c02c18145e5413779146ae7d8d71534b4e9d078",
+    "FC_Cmp": "cd5b23b104b190824e4bfa8e21dd97c6b680f6cf7bcdece9",
+    "FC_LogicB": "46d2f35c33cea2c5dd070d9fd06d48e3",
+    "FC_Mux": "5ef9bc39421e335e5e1c44ea359d91cbb11384df4b9ebc",
+    "FC_Not": "3d37880ad727113f77e06d77d9f95e1b4cc4a1dba34eccc9",
+    "FC_Or": "e696e07d5262318e5d80032d53ad82b9dd683360ae90e162",
+    "FC_Xor": "b2191cd2bda8282d2a33955b828e2a7e809511212a6003fd",
+    "Main": "3170c50c172d14e0251b4028774e7490f153"
+  }
+}

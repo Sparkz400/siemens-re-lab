@@ -220,6 +220,11 @@ pure XML/SQLite commands run without it. See
   and the [`obsidian/siemens-re-lab`](obsidian/siemens-re-lab) vault. Non-optimized S7-1500
   blocks still use `PLUSBLOCK`, and `MC7PlusBinaryReader` with `OpenImmediateData` still
   fails; runtime capture and PLCSIM/CPU memory are the next routes.
+- TIA's own plus MC7 view loads `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll` and calls
+  `Mc7PlusDisassember.Disassembler.Disassembler.GetDisassembledCode()` with `GetMC7Plus()` +
+  `ImmediateLongTable`. That DLL is **not installed** on this TIA V21 host; obtaining it is
+  the top plus-code lead. The static CSI route is closed: `CsiStreamImpl` is write-only and
+  `CsiWrapper` has no decrypt export.
 
 ## License
 
