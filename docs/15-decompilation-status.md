@@ -14,7 +14,7 @@ verified round-trip. It does not mean every Siemens format is decrypted.
 | Openness objectframe XML | Parsed | 1,317 objects, block/tag/HMI/hardware graph | `tools/tia-project` `opns` |
 | SimaticML | Exported | LAD `FlgNet` and SCL `SCLSource` bodies | `tools/tia-project` `opns` / `simaticml` |
 | Classic S7-300 MC7 | **Fully decoded** | Eight SCL FCs, 42/26/26/22/26/46/28/28 bytes, eight distinct hashes, statement lists | [13-mc7-codegen.md](13-mc7-codegen.md) |
-| S7-1500 plus MC7 | **Blocked** | `MC7PlusData` is `EF BE AD DE`-framed but encrypted; `Disassembler`, `MC7PlusBinaryReader`, `KeyKeeper` do not decode it | [13-mc7-codegen.md](13-mc7-codegen.md) |
+| S7-1500 plus MC7 | **Container + keys decoded** | `MC7PlusData` is a 124-byte CSI envelope with `EF BE AD DE`-framed sections; public/target CSI key ids reproduce exactly from `CreationTime` + `ObjectId` + family key; payload decryption still needs the missing `Mc7PlusDisassembler.dll` | [13-mc7-codegen.md](13-mc7-codegen.md), `probe/mc7plus_keys/` |
 | HMI SQL / screens / tags / SVG | Exported | SQL schema, screen/tag/SVG exports | `tools/tia-project` `hmi` |
 | Hardware topology | Parsed | Devices, modules, interfaces, addresses | `tools/tia-project` `hardware` |
 | Safety / UMAC / drives | Exported | Safety, UMAC and drive data exports | `tools/tia-project` `safety` |
@@ -47,20 +47,29 @@ of inventing code.
 
 ## What is not decoded
 
-- S7-1500 plus MC7 is encrypted at rest. The 12-byte `OpenImmediateData` stub
-  `1500030030490000000802D5` is identical for every block and is not code.
-- The public `KeyKeeper`/`FamilyKey` path does not unlock the disassembler.
+- S7-1500 plus MC7 payload is still encrypted at rest. The 12-byte
+  `OpenImmediateData` stub `1500030030490000000802D5` is identical for every
+  block and is not code.
+- The container format and key derivation are decoded: `TargetSeed` is
+  `CreationTime` + `ObjectId`, and `KeyKeeper` reproduces the header's public
+  and target ids exactly (`probe/mc7plus_keys/`).
+- The public `KeyKeeper`/`FamilyKey` path does not decrypt the payload. The CSI
+  engine exposes encryption and verification only; the decryption path is in
+  the missing `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll`.
 - PLCSIM V21 exposes runtime control, not block download/upload.
 - A genuine second TIA release is not installed, so cross-release drift is not
   measured.
 
 Closing the plus-code gap needs one of:
 
-1. A TIA decryption/export path that the public Openness surface does not
-   expose.
-2. A CPU/PLCSIM read-back where TIA creates and registers the simulation
+1. `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll` from a TIA update, optional
+   package or another release; it consumes `GetMC7Plus()` + `ImmediateLongTable`.
+2. A runtime hook of `CsiEncoderUm.Encrypt` or
+   `Disassembler.DisassembleCallStatements` to capture the plaintext before
+   encryption.
+3. A CPU/PLCSIM read-back where TIA creates and registers the simulation
    instance (the UI **Start simulation** path), followed by a station upload.
-3. A genuine second TIA release for cross-release drift.
+4. A genuine second TIA release for cross-release drift.
 
 The classic path remains the real codegen corpus until one of those is
 available.

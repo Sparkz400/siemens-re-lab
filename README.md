@@ -205,12 +205,17 @@ pure XML/SQLite commands run without it. See
   `BlockDebugInformation.EndSAC` gives the slice `BinaryData[78 : 78 + EndSAC + 1]`, and
   TIA's `AwlRegenerator` decodes it. Eight SCL FCs produced eight distinct code hashes
   (42/26/26/22/26/46/28/28 bytes), `observed.distinctMc7=8`, `realCodegen=true`.
-- S7-1500 plus code is not readable through the public Openness surface: all eight blocks
-  share the 12-byte `OpenImmediateData` stub `1500030030490000000802D5`, `MC7PlusData`
-  sections fail operand decoding, and `KeyKeeper`/`FamilyKey` does not unlock the
-  disassembler (`observed.distinctMc7=1`, `realCodegen=false`). On PLCSIM V21 an
-  API-created vPLC powers on but is not reachable through TIA's `PLCSIM` PC interface;
-  Openness download fails with `Connect to module PLC_B failed`.
+- S7-1500 plus code is stored as a 124-byte CSI envelope (`MC7PlusData`): the
+  header carries public/target CSI key ids, the body is `EF BE AD DE` sections.
+  The key ids reproduce exactly from the project `CreationTime`, the CPU
+  `ObjectId` (`{1052700-1411}`) and the 42-byte `FamilyKey` via
+  `KeyKeeper.AddKey`/`GenKey` (`probe/mc7plus_keys/`). Payload decryption still
+  needs the missing `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll`; all eight
+  blocks share the 12-byte `OpenImmediateData` stub
+  `1500030030490000000802D5` (`observed.distinctMc7=1`, `realCodegen=false`).
+  On PLCSIM V21 an API-created vPLC powers on but is not reachable through
+  TIA's `PLCSIM` PC interface; Openness download fails with
+  `Connect to module PLC_B failed`.
 - The `tools/tia-project` harness implements the 30 platform ideas as CLI commands.
   `platform run` passes 29/29, `platform realpair` 8/8, and the classic compiler gate is
   `observed.distinctMc7=8`, `realCodegen=true`. Sanitized evidence is in `evidence/`; the
@@ -218,8 +223,8 @@ pure XML/SQLite commands run without it. See
   [docs/15-decompilation-status.md](docs/15-decompilation-status.md).
 - The A/B/C decompilation track is in [docs/16-decompilation-roadmap.md](docs/16-decompilation-roadmap.md)
   and the [`obsidian/siemens-re-lab`](obsidian/siemens-re-lab) vault. Non-optimized S7-1500
-  blocks still use `PLUSBLOCK`, and `MC7PlusBinaryReader` with `OpenImmediateData` still
-  fails; runtime capture and PLCSIM/CPU memory are the next routes.
+  blocks still use `PLUSBLOCK`; the container and key derivation are decoded, while
+  payload decryption, runtime capture and PLCSIM/CPU memory remain open.
 - TIA's own plus MC7 view loads `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll` and calls
   `Mc7PlusDisassember.Disassembler.Disassembler.GetDisassembledCode()` with `GetMC7Plus()` +
   `ImmediateLongTable`. That DLL is **not installed** on this TIA V21 host; obtaining it is

@@ -1,0 +1,37 @@
+{
+  "block": "FC_And",
+  "projectCreationTime": 5250988075188121259,
+  "controllerTarget": {
+    "typeId": 1052700,
+    "instanceId": 1411,
+    "objectIdHex": "4f471c1010008305000000000000"
+  },
+  "seedHex": "ab6e665dd541df484f471c1010008305000000000000",
+  "seedSha256": "38121f93e4ffadf19398ee3b45eb95a6fcd424f5baf048b49d7dcf11af35fc33",
+  "familyKeyLength": 42,
+  "familyKeySha256": "4d4ebaf2aa1b975cd2a6b85557ee4ab314ac19e53a962bb3d4861f667b15544a",
+  "mac": "444e0dd229aca6586c282c8c67b92133",
+  "container": {
+    "headerLength": 124,
+    "mode": 2,
+    "chunk": 1024,
+    "publicId": "9379cc342363e4990400000000000000",
+    "targetId": "8146c72979d457820100000000000000",
+    "macLength": 60,
+    "mac": "5d856ecb6bd0032ee220ac08a94dae44d05abd64ec6c8e4118524ae17754792ccb92c21ea78b527e8066cf696c07c92215a3c44b5983baf622647869",
+    "sections": [
+      {
+        "index": 0,
+        "length": 32
+      },
+      {
+        "index": 1,
+        "length": 27
+      },
+      {
+        "index": 2,
+        "length": 0
+      }
+    ]
+  }
+}

@@ -39,15 +39,19 @@ invalid ranges.
 
 ## B — S7-1500 plus MC7
 
-Blocked at rest:
+Container and keys decoded; payload decryption still blocked:
 
 - `LoadType=PLUSBLOCK`
 - `OpenImmediateData` is 12 bytes and identical for every block:
   `1500030030490000000802D5`
-- `MC7PlusData` is `EF BE AD DE`-framed:
+- `MC7PlusData` is a 124-byte CSI envelope with `EF BE AD DE` sections:
   `124:1, 0:32..48, 1:16..29, 2:0`
-- `MC7plus.Disassembler` and `MC7PlusBinaryReader` fail on the section bytes
-- `KeyKeeper.AddKey(FamilyKey)` does not unlock the disassembler
+- `TargetSeed = CreationTime.ToBinary() + ObjectId.ToByteArray()`
+  (`4F 47` + typeId + instanceId); `PublicId`/`TargetId` from
+  `KeyKeeper.AddKey`/`GenKey` match the header exactly. See
+  [[2026-11-14 Plus Key Derivation]].
+- `MC7plus.Disassembler` and `MC7PlusBinaryReader` fail on the raw payload
+- `KeyKeeper.AddKey(FamilyKey)` alone does not decrypt
 - `FamilyKey` is 42 bytes; `OwnSignatureData` is 48 bytes
 - `distinctMc7=1`, `realCodegen=false`
 
@@ -58,8 +62,8 @@ Blocked at rest:
   with `GetMC7Plus()` + `ImmediateLongTable`. The DLL is **missing** on this
   install; this is the official plus-code path.
 - `CsiStreamImpl` is write-only (`Read` throws); `CsiVerifierImpl` only
-  verifies; `CsiWrapper` has no `Decrypt*` export. Static CSI decryption is
-  closed.
+  verifies; `CsiWrapper` has no `Decrypt*` export. `CsiEncoderUm` generates a
+  fresh random session key per call, so static decryption is blocked.
 - Section 1 entropy is near the small-sample maximum and distinct per block;
   consistent with encrypted/encoded data, not a simple plaintext stream.
 

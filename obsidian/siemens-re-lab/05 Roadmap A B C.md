@@ -19,7 +19,8 @@ created: 2026-11-14
 
 - [x] Classic S7-300 MC7 (8 SCL FCs, distinct hashes, statement lists)
 - [x] Negative extraction test
-- [ ] S7-1500 plus MC7 at rest
+- [x] S7-1500 plus MC7 container + key derivation
+- [ ] S7-1500 plus MC7 payload decode (decryption)
 - [ ] S7-1500 plus MC7 runtime capture
 - [ ] S7-1200 plus MC7
 - [ ] HMI JavaScript / runtime package
@@ -30,10 +31,11 @@ created: 2026-11-14
 1. [x] Non-optimized S7-1500 block — **negative**: still `PLUSBLOCK`.
 2. [x] `MC7PlusBinaryReader` with `OpenImmediateData` — **negative**: not sufficient.
 3. [x] Static CSI route (`CsiStreamImpl` / `CsiVerifierImpl` / `CsiWrapper`) - **negative**: write-only encoder + verifier, no decrypt.
-4. [ ] **UI call path** - TIA loads `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll` and calls `Mc7PlusDisassember.Disassembler.Disassembler.GetDisassembledCode()` with `GetMC7Plus()` + `ImmediateLongTable`. The DLL is **missing** on this install. Obtain it from a TIA update/optional package/another release.
-5. [ ] `GetMC7Plus(PlusBinaryType.Simulation)` / `VPlc` - different dependent blob.
-6. [ ] Runtime hook of `Disassembler.DisassembleCallStatements`.
-7. [ ] PLCSIM/CPU memory dump after download.
+4. [x] **Key derivation** - `TargetSeed = CreationTime.ToBinary() + ObjectId.ToByteArray()`; `KeyKeeper.AddKey`/`GenKey` reproduce the header ids exactly. See [[2026-11-14 Plus Key Derivation]].
+5. [ ] **UI call path** - TIA loads `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll` and calls `Mc7PlusDisassember.Disassembler.Disassembler.GetDisassembledCode()` with `GetMC7Plus()` + `ImmediateLongTable`. The DLL is **missing** on this install. Obtain it from a TIA update/optional package/another release.
+6. [ ] `GetMC7Plus(PlusBinaryType.Simulation)` / `VPlc` - different dependent blob.
+7. [ ] Runtime hook of `CsiEncoderUm.Encrypt` or `Disassembler.DisassembleCallStatements`.
+8. [ ] PLCSIM/CPU memory dump after download.
 
 ## C — TIA Portal and add-ons
 

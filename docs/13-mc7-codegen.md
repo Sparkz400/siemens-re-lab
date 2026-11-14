@@ -156,10 +156,67 @@ Measured behavior:
 | `KeyKeeper.GenKey(FamilyKey, null)` | `NullReferenceException` |
 | `OpenImmediateData` as code | no instructions; identical across blocks |
 
-`FamilyKey` is a 42-byte project-wide blob, not a per-block decryption key.
-`OwnSignatureData` is 48 bytes; `BindingMac` and `ClosedImmediateData` are
-empty. The plus code is encrypted at rest in a way the public Openness surface
-does not expose. This is a **blocked** result, not a claim of decryption.
+`FamilyKey` is a 42-byte project-wide public key, not a per-block decryption
+key. `OwnSignatureData` is 48 bytes; `BindingMac` and `ClosedImmediateData`
+are empty. The plus code is encrypted at rest in a way the public Openness
+surface does not expose. This is a **blocked** result, not a claim of
+decryption.
+
+### Key derivation
+
+The container header stores two 16-byte CSI key ids at offsets `0x1C` and
+`0x2C`. They are not random: they are reproduced exactly from the project
+metadata.
+
+`PlusPlcSecurityInfo` (`Siemens.Simatic.Lang.SwTarget.dll`) computes
+
+```csharp
+TargetSeed = BitConverter.GetBytes(project.CreationTime.ToBinary())
+           + ControllerTarget.Id.ToByteArray();
+PublicId   = keyKeeper.AddKey(cpuFamilyKey);
+TargetId   = keyKeeper.GenKey(TargetSeed, PublicId);
+```
+
+`ObjectId.ToByteArray()` is `4F 47` + type id (`u32 LE`) + instance id
+(`u64 LE`). For `PlantB2 / FC_And`:
+
+| Input | Value |
+|---|---|
+| project `CreationTime` | `5250988075188121259` |
+| controller target | `{1052700-1411}` |
+| seed | `ab6e665dd541df48 4f471c1010008305000000000000` |
+| header public id | `9379cc342363e4990400000000000000` |
+| header target id | `8146c72979d457820100000000000000` |
+
+`probe/mc7plus_keys.py` extracts the seed and container ids;
+`probe/mc7plus_keys/` (C#) drives TIA's `KeyKeeper` and reproduces both ids
+exactly. See `analysis/plus-key-derivation.json` and
+`probe/mc7plus_keys/README.md`.
+
+The container is a CSI envelope:
+
+```text
+0x00 EF BE AD DE  magic
+0x04 u32 124       header length
+0x08 u32 1         version
+0x0C u32 2         CSI mode (18 for lightweight binding)
+0x10 u32 50
+0x14 u32 1024      chunk size
+0x18 u32 0
+0x1C 16 bytes      public key id
+0x2C 16 bytes      target key id
+0x3C u32 60        mac length
+0x40 mac[60]       wrapped/session data
+...                EF BE AD DE + index + length + payload sections
+```
+
+The payload is encrypted by TIA's native CSI engine
+(`Siemens.DF.CsiWrapper.dll`, `CsiEncoderUm`). The engine exposes only
+encryption (`EncryptDataInit/Update/Final`) and a verifier
+(`CsiStatics.GetCsi()+120`); `CsiEncoderUm` generates a fresh random session
+key per call, so the ciphertext is non-deterministic even with a fixed tag.
+The matching decryption path is in the missing
+`Siemens.Simatic.Lang.Mc7PlusDisassembler.dll`.
 
 ## PLCSIM V21 read-back attempt
 

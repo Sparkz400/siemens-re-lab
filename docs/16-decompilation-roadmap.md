@@ -45,10 +45,19 @@ At rest:
 
 - `LoadType=PLUSBLOCK`
 - `OpenImmediateData` = `1500030030490000000802D5` (12 bytes, identical)
-- `MC7PlusData` = `EF BE AD DE` sections `124:1, 0:32..48, 1:16..29, 2:0`
+- `MC7PlusData` = 124-byte CSI envelope, `EF BE AD DE` sections `124:1, 0:32..48, 1:16..29, 2:0`
 - `FamilyKey` 42 bytes, `OwnSignatureData` 48 bytes
-- `MC7plus.Disassembler` / `MC7PlusBinaryReader` fail
-- `KeyKeeper.AddKey(FamilyKey)` does not unlock
+- `MC7plus.Disassembler` / `MC7PlusBinaryReader` fail on the raw payload
+- `KeyKeeper.AddKey(FamilyKey)` alone does not decrypt
+
+Key derivation (decoded):
+
+- `TargetSeed = BitConverter.GetBytes(project.CreationTime.ToBinary()) + ControllerTarget.Id.ToByteArray()`
+- `ObjectId.ToByteArray()` = `4F 47` + type id (`u32 LE`) + instance id (`u64 LE`)
+- `PublicId = KeyKeeper.AddKey(familyKey)`, `TargetId = KeyKeeper.GenKey(TargetSeed, PublicId)`
+- Both ids match the container header at `0x1C` / `0x2C` exactly for
+  `PlantB2 / FC_And`.
+- Tools: `probe/mc7plus_keys.py`, `probe/mc7plus_keys/`.
 
 Negative experiments:
 
@@ -74,13 +83,15 @@ Open leads, ranked:
 
 1. **Obtain `Siemens.Simatic.Lang.Mc7PlusDisassembler.dll`** from a TIA
    update, optional package or another release; load it directly.
-2. `GetMC7Plus(PlusBinaryType.Simulation)` / `VPlc` — different dependent blob,
+2. Runtime hook of `CsiEncoderUm.Encrypt` (native, `MC7Codegenerator.dll`) or
+   `Disassembler.DisassembleCallStatements` — capture the plaintext before it
+   is encrypted.
+3. `GetMC7Plus(PlusBinaryType.Simulation)` / `VPlc` — different dependent blob,
    possibly recoded or unencrypted.
-3. Runtime hook of `Disassembler.DisassembleCallStatements` — capture the
-   plaintext `codeBinary` when TIA shows MC7.
 4. PLCSIM/CPU memory dump after download — the CPU executes plaintext MC7.
-5. Static CSI trace — **closed** for the public API; `CsiStreamImpl` is
-   write-only and `CsiWrapper` has no decrypt export.
+5. Static CSI decryption — **blocked**: `CsiEncoderUm` generates a fresh
+   random session key per call and `CsiWrapper` exposes only
+   `EncryptDataInit/Update/Final` plus a verifier.
 
 The practical insight: TIA must decrypt plus code to compile, download,
 simulate or disassemble it. The plaintext exists at runtime; capturing the
