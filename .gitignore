@@ -44,3 +44,7 @@ __pycache__/
 
 # Keep the curated example
 !examples/*.csv
+
+# .NET build output
+bin/
+obj/

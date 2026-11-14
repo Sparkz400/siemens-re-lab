@@ -92,6 +92,11 @@ create-only and pass through the HMI preservation/compile gate.
 - **G-004:** no Openness API for the Unified encrypted-transfer password. A headless-created
   Unified PC station cannot compile until an operator sets the password and start screen in the
   editor (or a configured template is imported).
+- MC7 plus-code decryption and PLCSIM V21 block read-back limits are documented in
+  [13-mc7-codegen.md](13-mc7-codegen.md).
+- The classic project creation and the subnet/download probes are in
+  [`probe/openness_classic`](../probe/openness_classic) and
+  [`probe/openness_probe`](../probe/openness_probe).
 - Some HMI exports are unavailable (no `Screen.Export`), so preservation is compared through
   typed model readback and paired exports.
 - Test Suite operations are unavailable in this build (stub).

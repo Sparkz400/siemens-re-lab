@@ -1,0 +1,182 @@
+{
+  "project": "<PROJECTS>\\Scratch",
+  "export": "<LAB>\\tia-project\\out\\final4\\opns\\project.objectframe.xml",
+  "outPath": "<TEMP>\\platform-classic",
+  "status": "pass",
+  "steps": [
+    {
+      "name": "semantic-gate",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "gate/gate.json"
+    },
+    {
+      "name": "behavioral-bisect",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "gate/bisect.json"
+    },
+    {
+      "name": "semantic-merge",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "merge/merged.xml"
+    },
+    {
+      "name": "forensics",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "forensics/forensics.json"
+    },
+    {
+      "name": "flight-recorder",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "flightrec/recorded-test.json"
+    },
+    {
+      "name": "programmed-forgetting",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "forgetting/result.json"
+    },
+    {
+      "name": "ontology",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "ontology/ontology.db"
+    },
+    {
+      "name": "control-ir",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "ir/project.ir.json"
+    },
+    {
+      "name": "ir-roundtrip",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "ir/roundtrip/roundtrip.json"
+    },
+    {
+      "name": "headless-ci",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "ci/ci-report.json"
+    },
+    {
+      "name": "headless-linux",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "ci/linux/ci-linux-report.json"
+    },
+    {
+      "name": "equivalence",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "proof/mc7-cycle-test.json"
+    },
+    {
+      "name": "signed-registry",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "registry/manifest.sig.json"
+    },
+    {
+      "name": "verified-market",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "market/market-test.json"
+    },
+    {
+      "name": "format-drift",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "drift/compare.json"
+    },
+    {
+      "name": "golden-corpus",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "corpus/index.json"
+    },
+    {
+      "name": "fleet-corpus",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "fleet/report.json"
+    },
+    {
+      "name": "compiler-recovery",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "compiler/compiler-test.json"
+    },
+    {
+      "name": "affinity-maturation",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "evolve/recorded-evolve.json"
+    },
+    {
+      "name": "thymic-selection",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "thymus/repertoire.json"
+    },
+    {
+      "name": "hippocampal-replay",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "replay/consolidated.json"
+    },
+    {
+      "name": "quorum-contracts",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "contracts/contracts.json"
+    },
+    {
+      "name": "ant-colony-midden",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "midden/midden.json"
+    },
+    {
+      "name": "returns-desk",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "rollback/rollback-manifest.json"
+    },
+    {
+      "name": "proof-of-delivery",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "pod/pod.json"
+    },
+    {
+      "name": "bonded-warehouse",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "warehouse/warehouse-test.json"
+    },
+    {
+      "name": "customs-brokerage",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "customs/tariff.json"
+    },
+    {
+      "name": "ltl-consolidation",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "deploy/consolidated.json"
+    },
+    {
+      "name": "queue-aging",
+      "status": "pass",
+      "detail": "ok",
+      "artifact": "queue/invoice.json"
+    }
+  ]
+}

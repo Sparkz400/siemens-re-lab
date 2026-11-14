@@ -1,0 +1,1451 @@
+{
+  "exportPath": "<LAB>\\tia-project\\out\\real-projects\\PlantE.objectframe.xml",
+  "observed": 8,
+  "probes": 20,
+  "withMc7": 8,
+  "records": [
+    {
+      "block": "FC_LogicB",
+      "kind": "observed",
+      "language": "SCL",
+      "scl": "<SCLSource Version=\"3.4.0.0\"><Symbols><LocalTag SymID=\"2\" RefId=\"1\" /><LocalTag SymID=\"3\" RefId=\"2\" /><LocalTag SymID=\"4\" RefId=\"3\" /><LocalTag SymID=\"5\" RefId=\"4\" /></Symbols><RootStatements Version=\"3.4.0.0\"><NL UId=\"26\" /><BL NumBLs=\"2\" /><Statement UId=\"44\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"49\" SI=\"ExprPrimD\"><SymVa UId=\"30\" SI=\"Var\" SyId=\"2\" ODN=\"#Motor\" /></Expression><BL /><OpAs UId=\"31\" /><BL /><Expression Result=\"Bool\" UId=\"63\" SI=\"ExprAnd\"><Expression Result=\"Bool\" UId=\"55\" SI=\"ExprPrimD\"><SymVa UId=\"35\" SI=\"Var\" SyId=\"3\" ODN=\"#Start\" /></Expression><BL /><OpAND UId=\"51\" /><BL /><Expression Result=\"Bool\" UId=\"56\" SI=\"ExprUnaryN\"><OpNOT UId=\"52\" /><BL /><Expression Result=\"Bool\" UId=\"62\" SI=\"ExprPrimD\"><SymVa UId=\"57\" SI=\"Var\" SyId=\"4\" ODN=\"#Stop\" /></Expression></Expression></Expression><FiSt UId=\"59\" /></Statement><NL UId=\"60\" /><BL NumBLs=\"2\" /><Statement UId=\"66\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"68\" SI=\"ExprPrimD\"><SymVa UId=\"61\" SI=\"Var\" SyId=\"5\" ODN=\"#Fault\" /></Expression><BL /><OpAs UId=\"64\" /><BL /><Expression Result=\"Bool\" UId=\"73\" SI=\"ExprPrimD\"><SymVa UId=\"65\" SI=\"Var\" SyId=\"4\" ODN=\"#Stop\" /></Expression><FiSt UId=\"69\" /></Statement><NL UId=\"70\" /></RootStatements></SCLSource>",
+      "sourceHash": "594040e2d15af65cb96823a6961f338b0c6355483ed9b3fb2b0c4ccfc4d446e4",
+      "mc7Hex": "681d682c41600000fb81000441610000fb80000200610000fb920006fb800004fb92000800600000682c",
+      "codeHash": "3f996fd34e0f887f85e2d2d857af760362165de4a041db5ac56be2748f6897d0",
+      "compilerVersion": "classic-mc7",
+      "source": {
+        "nodes": 39,
+        "statements": 2,
+        "assignments": 2,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 5,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 6,
+        "sourceLength": 1233
+      },
+      "mc7": {
+        "length": 42,
+        "instructions": 12,
+        "known": 12,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1,
+          "SAVE": 2,
+          "Assign": 4,
+          "AN": 1,
+          "A": 4
+        },
+        "operandKinds": {
+          "short": 3,
+          "word": 9
+        }
+      },
+      "expectedOpcodes": [
+        "A",
+        "AN",
+        "Assign",
+        "SAVE",
+        "SET"
+      ]
+    },
+    {
+      "block": "FC_And",
+      "kind": "observed",
+      "language": "SCL",
+      "scl": "<SCLSource Version=\"3.4.0.0\"><Symbols><LocalTag SymID=\"2\" RefId=\"1\" /><LocalTag SymID=\"3\" RefId=\"2\" /><LocalTag SymID=\"4\" RefId=\"3\" /></Symbols><RootStatements Version=\"3.4.0.0\"><NL UId=\"26\" /><BL NumBLs=\"2\" /><Statement UId=\"38\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"40\" SI=\"ExprPrimD\"><SymVa UId=\"30\" SI=\"Var\" SyId=\"2\" ODN=\"#Out\" /></Expression><BL /><OpAs UId=\"31\" /><BL /><Expression Result=\"Bool\" UId=\"50\" SI=\"ExprAnd\"><Expression Result=\"Bool\" UId=\"45\" SI=\"ExprPrimD\"><SymVa UId=\"33\" SI=\"Var\" SyId=\"3\" ODN=\"#A\" /></Expression><BL /><OpAND UId=\"41\" /><BL /><Expression Result=\"Bool\" UId=\"49\" SI=\"ExprPrimD\"><SymVa UId=\"42\" SI=\"Var\" SyId=\"4\" ODN=\"#B\" /></Expression></Expression><FiSt UId=\"47\" /></Statement><NL UId=\"48\" /></RootStatements></SCLSource>",
+      "sourceHash": "893b27d2be5ef1b072ab132ecf2e660f82bc64b5c797877cb50694662afb6fb5",
+      "mc7Hex": "681d682c41600000fb800002fb800004fb92000600600000682c",
+      "codeHash": "488efca4aed9d56f5e0df9bac78f4ce4045717f750aafb6ced4386a21e2a7446",
+      "compilerVersion": "classic-mc7",
+      "source": {
+        "nodes": 24,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 5,
+        "sourceLength": 760
+      },
+      "mc7": {
+        "length": 26,
+        "instructions": 8,
+        "known": 8,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1,
+          "SAVE": 2,
+          "Assign": 2,
+          "A": 3
+        },
+        "operandKinds": {
+          "short": 3,
+          "word": 5
+        }
+      },
+      "expectedOpcodes": [
+        "A",
+        "Assign",
+        "SAVE",
+        "SET"
+      ]
+    },
+    {
+      "block": "FC_Or",
+      "kind": "observed",
+      "language": "SCL",
+      "scl": "<SCLSource Version=\"3.4.0.0\"><Symbols><LocalTag SymID=\"2\" RefId=\"1\" /><LocalTag SymID=\"3\" RefId=\"2\" /><LocalTag SymID=\"4\" RefId=\"3\" /></Symbols><RootStatements Version=\"3.4.0.0\"><NL UId=\"26\" /><BL NumBLs=\"2\" /><Statement UId=\"38\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"40\" SI=\"ExprPrimD\"><SymVa UId=\"30\" SI=\"Var\" SyId=\"2\" ODN=\"#Out\" /></Expression><BL /><OpAs UId=\"31\" /><BL /><Expression Result=\"Bool\" UId=\"50\" SI=\"ExprOr\"><Expression Result=\"Bool\" UId=\"45\" SI=\"ExprPrimD\"><SymVa UId=\"33\" SI=\"Var\" SyId=\"3\" ODN=\"#A\" /></Expression><BL /><OpOR UId=\"41\" /><BL /><Expression Result=\"Bool\" UId=\"49\" SI=\"ExprPrimD\"><SymVa UId=\"42\" SI=\"Var\" SyId=\"4\" ODN=\"#B\" /></Expression></Expression><FiSt UId=\"47\" /></Statement><NL UId=\"48\" /></RootStatements></SCLSource>",
+      "sourceHash": "ad2c6b359482b67678f5ab9584ddede1dd7f6983d6efdcb8a48d90427edd7295",
+      "mc7Hex": "681d682c41600000fb800002fb820004fb92000600600000682c",
+      "codeHash": "47e95974cc07401529253962cff96ebc791984f501183476ac50317dd6994b74",
+      "compilerVersion": "classic-mc7",
+      "source": {
+        "nodes": 24,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 5,
+        "sourceLength": 758
+      },
+      "mc7": {
+        "length": 26,
+        "instructions": 8,
+        "known": 8,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1,
+          "SAVE": 2,
+          "Assign": 2,
+          "A": 2,
+          "O": 1
+        },
+        "operandKinds": {
+          "short": 3,
+          "word": 5
+        }
+      },
+      "expectedOpcodes": [
+        "A",
+        "Assign",
+        "O",
+        "SAVE",
+        "SET"
+      ]
+    },
+    {
+      "block": "FC_Not",
+      "kind": "observed",
+      "language": "SCL",
+      "scl": "<SCLSource Version=\"3.4.0.0\"><Symbols><LocalTag SymID=\"2\" RefId=\"1\" /><LocalTag SymID=\"3\" RefId=\"2\" /></Symbols><RootStatements Version=\"3.4.0.0\"><NL UId=\"26\" /><BL NumBLs=\"2\" /><Statement UId=\"36\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"38\" SI=\"ExprPrimD\"><SymVa UId=\"28\" SI=\"Var\" SyId=\"2\" ODN=\"#Out\" /></Expression><BL /><OpAs UId=\"31\" /><BL /><Expression Result=\"Bool\" UId=\"40\" SI=\"ExprUnaryN\"><OpNOT UId=\"35\" /><BL /><Expression Result=\"Bool\" UId=\"45\" SI=\"ExprPrimD\"><SymVa UId=\"41\" SI=\"Var\" SyId=\"3\" ODN=\"#A\" /></Expression></Expression><FiSt UId=\"43\" /></Statement><NL UId=\"44\" /></RootStatements></SCLSource>",
+      "sourceHash": "efe8de06080f754468a30bde7b913523fd20f7d766483ed7ff0250b2df5144cd",
+      "mc7Hex": "681d682c41600000fb810002fb92000400600000682c",
+      "codeHash": "9a3b2e3a25ca55c1164e6c3c0723a9cf020914b852800609788b660c26833cc6",
+      "compilerVersion": "classic-mc7",
+      "source": {
+        "nodes": 20,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 2,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 5,
+        "sourceLength": 617
+      },
+      "mc7": {
+        "length": 22,
+        "instructions": 7,
+        "known": 7,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1,
+          "SAVE": 2,
+          "Assign": 2,
+          "AN": 1,
+          "A": 1
+        },
+        "operandKinds": {
+          "short": 3,
+          "word": 4
+        }
+      },
+      "expectedOpcodes": [
+        "A",
+        "AN",
+        "Assign",
+        "SAVE",
+        "SET"
+      ]
+    },
+    {
+      "block": "FC_Xor",
+      "kind": "observed",
+      "language": "SCL",
+      "scl": "<SCLSource Version=\"3.4.0.0\"><Symbols><LocalTag SymID=\"2\" RefId=\"1\" /><LocalTag SymID=\"3\" RefId=\"2\" /><LocalTag SymID=\"4\" RefId=\"3\" /></Symbols><RootStatements Version=\"3.4.0.0\"><NL UId=\"26\" /><BL NumBLs=\"2\" /><Statement UId=\"38\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"40\" SI=\"ExprPrimD\"><SymVa UId=\"30\" SI=\"Var\" SyId=\"2\" ODN=\"#Out\" /></Expression><BL /><OpAs UId=\"31\" /><BL /><Expression Result=\"Bool\" UId=\"50\" SI=\"ExprXor\"><Expression Result=\"Bool\" UId=\"45\" SI=\"ExprPrimD\"><SymVa UId=\"33\" SI=\"Var\" SyId=\"3\" ODN=\"#A\" /></Expression><BL /><OpXOR UId=\"41\" /><BL /><Expression Result=\"Bool\" UId=\"49\" SI=\"ExprPrimD\"><SymVa UId=\"42\" SI=\"Var\" SyId=\"4\" ODN=\"#B\" /></Expression></Expression><FiSt UId=\"47\" /></Statement><NL UId=\"48\" /></RootStatements></SCLSource>",
+      "sourceHash": "062166804be9199c013270401406b27ce38a650512d5374b92a5c833bfd15e16",
+      "mc7Hex": "681d682c41600000fb800002fb840004fb92000600600000682c",
+      "codeHash": "740f1a32440bcda79d2ef5a48e9b4eca4067c16f3cf3ef54f965142faa869d9e",
+      "compilerVersion": "classic-mc7",
+      "source": {
+        "nodes": 24,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 5,
+        "sourceLength": 760
+      },
+      "mc7": {
+        "length": 26,
+        "instructions": 8,
+        "known": 8,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1,
+          "SAVE": 2,
+          "Assign": 2,
+          "A": 2,
+          "X": 1
+        },
+        "operandKinds": {
+          "short": 3,
+          "word": 5
+        }
+      },
+      "expectedOpcodes": [
+        "A",
+        "Assign",
+        "SAVE",
+        "SET",
+        "X"
+      ]
+    },
+    {
+      "block": "FC_Mux",
+      "kind": "observed",
+      "language": "SCL",
+      "scl": "<SCLSource Version=\"3.4.0.0\"><Symbols><LocalTag SymID=\"2\" RefId=\"1\" /><LocalTag SymID=\"3\" RefId=\"2\" /><LocalTag SymID=\"4\" RefId=\"3\" /><LocalTag SymID=\"5\" RefId=\"4\" /></Symbols><RootStatements Version=\"3.4.0.0\"><NL UId=\"26\" /><BL NumBLs=\"2\" /><Statement TE=\"IF\" UId=\"33\" SI=\"IFE\"><Fold UId=\"46\"><BL /><Expression Result=\"Bool\" UId=\"57\" SI=\"ExprPrimD\"><SymVa UId=\"38\" SI=\"Var\" SyId=\"2\" ODN=\"#Select\" /></Expression><BL /><KwTHEN UId=\"39\" /><NL UId=\"52\" /><BL NumBLs=\"4\" /><Statements><Statement UId=\"60\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"62\" SI=\"ExprPrimD\"><SymVa UId=\"56\" SI=\"Var\" SyId=\"3\" ODN=\"#Out\" /></Expression><BL /><OpAs UId=\"58\" /><BL /><Expression Result=\"Bool\" UId=\"68\" SI=\"ExprPrimD\"><SymVa UId=\"59\" SI=\"Var\" SyId=\"4\" ODN=\"#A\" /></Expression><FiSt UId=\"63\" /></Statement></Statements><NL UId=\"64\" /><BL NumBLs=\"2\" /><KwELSE UId=\"65\" /><NL UId=\"69\" /><BL NumBLs=\"4\" /><Statements><Statement UId=\"73\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"75\" SI=\"ExprPrimD\"><SymVa UId=\"70\" SI=\"Var\" SyId=\"3\" ODN=\"#Out\" /></Expression><BL /><OpAs UId=\"71\" /><BL /><Expression Result=\"Bool\" UId=\"81\" SI=\"ExprPrimD\"><SymVa UId=\"72\" SI=\"Var\" SyId=\"5\" ODN=\"#B\" /></Expression><FiSt UId=\"76\" /></Statement></Statements><NL UId=\"77\" /><BL NumBLs=\"2\" /><KwENDIF UId=\"78\" /><FiSt UId=\"82\" /></Fold></Statement><NL UId=\"83\" /></RootStatements></SCLSource>",
+      "sourceHash": "d8429f56b24cfc1a5e02aff8a800302e95426dc1d5e8edf711a8a5699258031d",
+      "mc7Hex": "681d682c41600000fb800002ffb80008fb800004fb920008700b0007681cfb800006fb920008681c00600000682c",
+      "codeHash": "c428a2deb5bcbd0c666d8855bd3a1863ccfda507c3cda3a3a34f07f4f823f0e8",
+      "compilerVersion": "classic-mc7",
+      "source": {
+        "nodes": 48,
+        "statements": 3,
+        "assignments": 2,
+        "branches": 1,
+        "calls": 0,
+        "symbols": 5,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 7,
+        "sourceLength": 1349
+      },
+      "mc7": {
+        "length": 46,
+        "instructions": 14,
+        "known": 14,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1,
+          "SAVE": 2,
+          "Assign": 3,
+          "A": 4,
+          "JCN": 1,
+          "JU": 1,
+          "CLR": 2
+        },
+        "operandKinds": {
+          "short": 5,
+          "word": 9
+        }
+      },
+      "expectedOpcodes": [
+        "A",
+        "Assign",
+        "CLR",
+        "JCN",
+        "JU",
+        "SAVE",
+        "SET"
+      ]
+    },
+    {
+      "block": "FC_Cmp",
+      "kind": "observed",
+      "language": "SCL",
+      "scl": "<SCLSource Version=\"3.4.0.0\"><Symbols><LocalTag SymID=\"2\" RefId=\"1\" /><LocalTag SymID=\"3\" RefId=\"2\" /><LocalTag SymID=\"4\" RefId=\"3\" /></Symbols><RootStatements Version=\"3.4.0.0\"><NL UId=\"26\" /><BL NumBLs=\"2\" /><Statement UId=\"38\" SI=\"STAss\"><Expression Result=\"Bool\" UId=\"40\" SI=\"ExprPrimD\"><SymVa UId=\"30\" SI=\"Var\" SyId=\"2\" ODN=\"#Out\" /></Expression><BL /><OpAs UId=\"31\" /><BL /><Expression Result=\"Bool\" UId=\"50\" SI=\"ExprEquG\"><Expression Result=\"Int\" UId=\"45\" SI=\"ExprPrimD\"><SymVa UId=\"33\" SI=\"Var\" SyId=\"3\" ODN=\"#A\" /></Expression><BL /><OpG UId=\"41\" /><BL /><Expression Result=\"Int\" UId=\"49\" SI=\"ExprPrimD\"><SymVa UId=\"42\" SI=\"Var\" SyId=\"4\" ODN=\"#B\" /></Expression></Expression><FiSt UId=\"47\" /></Statement><NL UId=\"48\" /></RootStatements></SCLSource>",
+      "sourceHash": "ac262369a54f5edde496dc670cda7aad43571d6d6656bb44606df805eeeb8771",
+      "mc7Hex": "681d682c41600000fbc20002fbc200042120fb92000600600000682c",
+      "codeHash": "8adaa88f86772b1a6b8410dc5d7e97df1e48b99b5af8eb426d36b85bb8aefef1",
+      "compilerVersion": "classic-mc7",
+      "source": {
+        "nodes": 24,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 5,
+        "sourceLength": 757
+      },
+      "mc7": {
+        "length": 28,
+        "instructions": 9,
+        "known": 9,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1,
+          "SAVE": 2,
+          "Assign": 2,
+          "L": 2,
+          "EQ_I": 1,
+          "A": 1
+        },
+        "operandKinds": {
+          "short": 4,
+          "word": 5
+        }
+      },
+      "expectedOpcodes": [
+        "A",
+        "Assign",
+        "EQ_I",
+        "L",
+        "SAVE",
+        "SET"
+      ]
+    },
+    {
+      "block": "FC_Add",
+      "kind": "observed",
+      "language": "SCL",
+      "scl": "<SCLSource Version=\"3.4.0.0\"><Symbols><LocalTag SymID=\"2\" RefId=\"1\" /><LocalTag SymID=\"3\" RefId=\"2\" /><LocalTag SymID=\"4\" RefId=\"3\" /></Symbols><RootStatements Version=\"3.4.0.0\"><NL UId=\"26\" /><BL NumBLs=\"2\" /><Statement UId=\"38\" SI=\"STAss\"><Expression Result=\"Int\" UId=\"40\" SI=\"ExprPrimD\"><SymVa UId=\"30\" SI=\"Var\" SyId=\"2\" ODN=\"#Out\" /></Expression><BL /><OpAs UId=\"31\" /><BL /><Expression Result=\"Int\" UId=\"50\" SI=\"ExprAdd\"><Expression Result=\"Int\" UId=\"45\" SI=\"ExprPrimD\"><SymVa UId=\"33\" SI=\"Var\" SyId=\"3\" ODN=\"#A\" /></Expression><BL /><OpPl UId=\"41\" /><BL /><Expression Result=\"Int\" UId=\"49\" SI=\"ExprPrimD\"><SymVa UId=\"42\" SI=\"Var\" SyId=\"4\" ODN=\"#B\" /></Expression></Expression><FiSt UId=\"47\" /></Statement><NL UId=\"48\" /></RootStatements></SCLSource>",
+      "sourceHash": "05c91cde182f434d2d6396e7711e2ebf8d7e97665c3240af9fa9fab8cc1f472f",
+      "mc7Hex": "681d682c41600000fbc20002fbc200047900fbc6000600600000682c",
+      "codeHash": "c03e81a25980bf791135d60919dac4cc00675d5dd79f7d496974154dd17ce232",
+      "compilerVersion": "classic-mc7",
+      "source": {
+        "nodes": 24,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 5,
+        "sourceLength": 755
+      },
+      "mc7": {
+        "length": 28,
+        "instructions": 9,
+        "known": 9,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1,
+          "SAVE": 2,
+          "Assign": 1,
+          "L": 2,
+          "ADD_I": 1,
+          "T": 1,
+          "A": 1
+        },
+        "operandKinds": {
+          "short": 4,
+          "word": 5
+        }
+      },
+      "expectedOpcodes": [
+        "A",
+        "ADD_I",
+        "Assign",
+        "L",
+        "SAVE",
+        "SET",
+        "T"
+      ]
+    },
+    {
+      "block": "probe:x := y;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := y;",
+      "mc7Hex": "20001a01",
+      "source": {
+        "nodes": 5,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 2,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 7
+      },
+      "mc7": {
+        "length": 4,
+        "instructions": 2,
+        "known": 2,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 1,
+          "ST": 1
+        },
+        "operandKinds": {
+          "byte": 2
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:x := a AND b;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := a AND b;",
+      "mc7Hex": "200022011a02",
+      "source": {
+        "nodes": 6,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 1,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 1,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 13
+      },
+      "mc7": {
+        "length": 6,
+        "instructions": 3,
+        "known": 3,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 1,
+          "A_BOOL": 1,
+          "ST": 1
+        },
+        "operandKinds": {
+          "byte": 3
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "A_BOOL",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:x := a OR b;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := a OR b;",
+      "mc7Hex": "200024011a02",
+      "source": {
+        "nodes": 6,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 1,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 1,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 12
+      },
+      "mc7": {
+        "length": 6,
+        "instructions": 3,
+        "known": 3,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 1,
+          "O_BOOL": 1,
+          "ST": 1
+        },
+        "operandKinds": {
+          "byte": 3
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "O_BOOL",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:x := NOT a;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := NOT a;",
+      "mc7Hex": "2000011a01",
+      "source": {
+        "nodes": 5,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 2,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 1,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 11
+      },
+      "mc7": {
+        "length": 5,
+        "instructions": 3,
+        "known": 3,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 1,
+          "NOT": 1,
+          "ST": 1
+        },
+        "operandKinds": {
+          "byte": 2,
+          "none": 1
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "NOT",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:x := a XOR b;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := a XOR b;",
+      "mc7Hex": "200026011a02",
+      "source": {
+        "nodes": 6,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 1,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 1,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 13
+      },
+      "mc7": {
+        "length": 6,
+        "instructions": 3,
+        "known": 3,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 1,
+          "X_BOOL": 1,
+          "ST": 1
+        },
+        "operandKinds": {
+          "byte": 3
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "X_BOOL",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:SET(x);",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "SET(x);",
+      "mc7Hex": "1800",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 1,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 7
+      },
+      "mc7": {
+        "length": 2,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1
+        },
+        "operandKinds": {
+          "byte": 1
+        }
+      },
+      "expectedOpcodes": [
+        "SET"
+      ]
+    },
+    {
+      "block": "probe:SET(y);",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "SET(y);",
+      "mc7Hex": "1800",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 1,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 7
+      },
+      "mc7": {
+        "length": 2,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "SET": 1
+        },
+        "operandKinds": {
+          "byte": 1
+        }
+      },
+      "expectedOpcodes": [
+        "SET"
+      ]
+    },
+    {
+      "block": "probe:CLR(x);",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "CLR(x);",
+      "mc7Hex": "1900",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 1,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 7
+      },
+      "mc7": {
+        "length": 2,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "CLR": 1
+        },
+        "operandKinds": {
+          "byte": 1
+        }
+      },
+      "expectedOpcodes": [
+        "CLR"
+      ]
+    },
+    {
+      "block": "probe:CLR(y);",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "CLR(y);",
+      "mc7Hex": "1900",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 1,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 7
+      },
+      "mc7": {
+        "length": 2,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "CLR": 1
+        },
+        "operandKinds": {
+          "byte": 1
+        }
+      },
+      "expectedOpcodes": [
+        "CLR"
+      ]
+    },
+    {
+      "block": "probe:S(x);",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "S(x);",
+      "mc7Hex": "1c00",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 1,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 5
+      },
+      "mc7": {
+        "length": 2,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "S_BOOL": 1
+        },
+        "operandKinds": {
+          "byte": 1
+        }
+      },
+      "expectedOpcodes": [
+        "S_BOOL"
+      ]
+    },
+    {
+      "block": "probe:S(y);",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "S(y);",
+      "mc7Hex": "1c00",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 1,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 5
+      },
+      "mc7": {
+        "length": 2,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "S_BOOL": 1
+        },
+        "operandKinds": {
+          "byte": 1
+        }
+      },
+      "expectedOpcodes": [
+        "S_BOOL"
+      ]
+    },
+    {
+      "block": "probe:R(x);",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "R(x);",
+      "mc7Hex": "1d00",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 1,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 5
+      },
+      "mc7": {
+        "length": 2,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "R_BOOL": 1
+        },
+        "operandKinds": {
+          "byte": 1
+        }
+      },
+      "expectedOpcodes": [
+        "R_BOOL"
+      ]
+    },
+    {
+      "block": "probe:R(y);",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "R(y);",
+      "mc7Hex": "1d00",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 1,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 5
+      },
+      "mc7": {
+        "length": 2,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "R_BOOL": 1
+        },
+        "operandKinds": {
+          "byte": 1
+        }
+      },
+      "expectedOpcodes": [
+        "R_BOOL"
+      ]
+    },
+    {
+      "block": "probe:x := 1;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := 1;",
+      "mc7Hex": "e00001",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 1,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 7
+      },
+      "mc7": {
+        "length": 3,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "MOVE": 1
+        },
+        "operandKinds": {
+          "word": 1
+        }
+      },
+      "expectedOpcodes": [
+        "MOVE"
+      ]
+    },
+    {
+      "block": "probe:x := 0;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := 0;",
+      "mc7Hex": "e00001",
+      "source": {
+        "nodes": 4,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 1,
+        "constants": 1,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 7
+      },
+      "mc7": {
+        "length": 3,
+        "instructions": 1,
+        "known": 1,
+        "unknown": 0,
+        "opcodes": {
+          "MOVE": 1
+        },
+        "operandKinds": {
+          "word": 1
+        }
+      },
+      "expectedOpcodes": [
+        "MOVE"
+      ]
+    },
+    {
+      "block": "probe:x := y; x := z;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := y; x := z;",
+      "mc7Hex": "20001a0120021a03",
+      "source": {
+        "nodes": 9,
+        "statements": 2,
+        "assignments": 2,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 15
+      },
+      "mc7": {
+        "length": 8,
+        "instructions": 4,
+        "known": 4,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 2,
+          "ST": 2
+        },
+        "operandKinds": {
+          "byte": 4
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "ST",
+        "LD_BOOL",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:x := a AND b; y := c OR d;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := a AND b; y := c OR d;",
+      "mc7Hex": "200022011a02200324041a05",
+      "source": {
+        "nodes": 11,
+        "statements": 2,
+        "assignments": 2,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 5,
+        "constants": 0,
+        "binaryOps": 2,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 1,
+        "orOps": 1,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 26
+      },
+      "mc7": {
+        "length": 12,
+        "instructions": 6,
+        "known": 6,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 2,
+          "A_BOOL": 1,
+          "ST": 2,
+          "O_BOOL": 1
+        },
+        "operandKinds": {
+          "byte": 6
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "A_BOOL",
+        "ST",
+        "LD_BOOL",
+        "O_BOOL",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:IF c THEN x := y; END_IF;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "IF c THEN x := y; END_IF;",
+      "mc7Hex": "20006c010203041a05",
+      "source": {
+        "nodes": 9,
+        "statements": 2,
+        "assignments": 1,
+        "branches": 1,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 25
+      },
+      "mc7": {
+        "length": 9,
+        "instructions": 3,
+        "known": 3,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 1,
+          "JMP": 1,
+          "ST": 1
+        },
+        "operandKinds": {
+          "byte": 2,
+          "long": 1
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "JMP",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:x := a = b;",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "x := a = b;",
+      "mc7Hex": "20001a01",
+      "source": {
+        "nodes": 6,
+        "statements": 1,
+        "assignments": 1,
+        "branches": 0,
+        "calls": 0,
+        "symbols": 3,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 1,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 11
+      },
+      "mc7": {
+        "length": 4,
+        "instructions": 2,
+        "known": 2,
+        "unknown": 0,
+        "opcodes": {
+          "LD_BOOL": 1,
+          "ST": 1
+        },
+        "operandKinds": {
+          "byte": 2
+        }
+      },
+      "expectedOpcodes": [
+        "LD_BOOL",
+        "ST"
+      ]
+    },
+    {
+      "block": "probe:CALL fb();",
+      "kind": "probe",
+      "language": "SCL",
+      "scl": "CALL fb();",
+      "mc7Hex": "",
+      "source": {
+        "nodes": 3,
+        "statements": 1,
+        "assignments": 0,
+        "branches": 0,
+        "calls": 1,
+        "symbols": 0,
+        "constants": 0,
+        "binaryOps": 0,
+        "unaryOps": 0,
+        "comparisons": 0,
+        "andOps": 0,
+        "orOps": 0,
+        "xorOps": 0,
+        "notOps": 0,
+        "setOps": 0,
+        "clearOps": 0,
+        "setBoolOps": 0,
+        "resetBoolOps": 0,
+        "arithmeticOps": 0,
+        "maxDepth": 3,
+        "sourceLength": 10
+      },
+      "mc7": {
+        "length": 0,
+        "instructions": 0,
+        "known": 0,
+        "unknown": 0,
+        "opcodes": {},
+        "operandKinds": {}
+      },
+      "expectedOpcodes": []
+    }
+  ],
+  "opcodeVocabulary": [
+    "A",
+    "ADD_I",
+    "AN",
+    "A_BOOL",
+    "Assign",
+    "CLR",
+    "EQ_I",
+    "JCN",
+    "JMP",
+    "JU",
+    "L",
+    "LD_BOOL",
+    "MOVE",
+    "NOT",
+    "O",
+    "O_BOOL",
+    "R_BOOL",
+    "SAVE",
+    "SET",
+    "ST",
+    "S_BOOL",
+    "T",
+    "X",
+    "X_BOOL"
+  ],
+  "features": [
+    "bias",
+    "statements",
+    "assignments",
+    "branches",
+    "calls",
+    "symbols",
+    "constants",
+    "binaryOps",
+    "comparisons",
+    "andOps",
+    "orOps",
+    "xorOps",
+    "notOps",
+    "setOps",
+    "clearOps",
+    "setBoolOps",
+    "resetBoolOps",
+    "arithmeticOps",
+    "sourceLength/100"
+  ]
+}

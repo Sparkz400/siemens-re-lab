@@ -16,8 +16,18 @@
 | `probe/unified_history.py` | `loggedTagValues` / `loggedAlarms` time-range queries |
 | `probe/tia_snapshot.py` | TIA project snapshot capture + offline diff CLI |
 | `probe/tia_mcp.py` | stdio MCP client for the TIA MCP Host |
-| `probe/tests/` | alarm-store, TIA MCP and snapshot-report tests |
+| `tools/tia-project/` | 30-idea TIA project harness, command map, classic/plus MC7 hosts |
+| `probe/openness_classic/` | create and compile the classic S7-300 PlantE project |
+| `probe/openness_probe/` | Openness subnet, download-config, download and close probe |
+| `probe/plcsim_v21_host/` | PLCSIM V21 standard vPLC power-on diagnostic |
+| `evidence/` | sanitized platform/compiler/real-pair JSON summaries |
+| `probe/mc7_classic_extract.py` | classic S7-300 MC7 code-slice extractor from objectframe XML |
+| `probe/mc7_classic_host/` | TIA `AwlRegenerator` JSON host, build script and usage notes |
+| `probe/tests/` | alarm-store, TIA MCP, snapshot-report and MC7 extractor tests |
 | `docs/11-alarms-history.md` | M2 API shapes, live failure evidence, storage, fixture path |
+| `docs/13-mc7-codegen.md` | classic/plus MC7 evidence, PLCSIM V21 read-back limits |
+| `docs/14-tia-project-harness.md` | 30-idea harness command map and status |
+| `docs/15-decompilation-status.md` | surface-by-surface decompilation status |
 | `probe/dump_schema.py` | introspection → local SDL + JSON |
 | `probe/summarize_schema.py` | introspection JSON → Markdown operation summary |
 | `analysis/schema-summary.md` | curated queries/mutations/subscriptions/tag model |
@@ -107,6 +117,68 @@ Capture starts a private TIA MCP Host with the native worker and also captures a
 `hmi_inspect section=model` supplement. Compare is pure Python over the saved `review.json` and
 HMI model files; it does not start TIA or the MCP Host. See
 [12-tia-snapshot-diff.md](12-tia-snapshot-diff.md) for coverage and acceptance tests.
+
+### MC7 codegen (classic S7-300)
+
+```powershell
+& $py probe/mc7_classic_extract.py --xml <PlantE.objectframe.xml> --out out\classic-blocks
+.\probe\mc7_classic_host\build.ps1 -TiaBin 'C:\Program Files\Siemens\Automation\Portal V21\Bin'
+.\probe\mc7_classic_host\bin\Mc7ClassicHost.exe `
+    --tia-bin 'C:\Program Files\Siemens\Automation\Portal V21\Bin' `
+    --data out\classic-blocks\FC_And.bin --start 0 --length 26
+& $py -m unittest discover -s probe/tests -p 'test_mc7_classic_extract.py' -v
+```
+
+The objectframe XML comes from the Openness `fs2xml` step. The extractor reads
+`LoadableCodeBlockData.BinaryData` and `BlockDebugInformation.EndSAC`; the host
+loads TIA's `AwlRegenerator` from the local installation and prints JSON
+statements. See [13-mc7-codegen.md](13-mc7-codegen.md) for the measured classic
+and plus-code results and the PLCSIM V21 limits.
+
+### TIA project harness (30 ideas)
+
+```powershell
+dotnet build .\tools\tia-project\TiaProject.csproj -c Release
+.\tools\tia-project\bin\Release\net10.0\tia-project.exe --help
+.\tools\tia-project\bin\Release\net10.0\tia-project.exe compiler classic-test `
+    --fs2xml <PlantE.objectframe.xml> --bin '<TIA_BIN>' --out out\plantE-classic-gate
+```
+
+The harness source, command map and artifact names are in
+[`tools/tia-project/PLATFORM.md`](../tools/tia-project/PLATFORM.md). The
+sanitized platform/compiler/real-pair summaries are in [`evidence/`](../evidence).
+See [14-tia-project-harness.md](14-tia-project-harness.md) and
+[15-decompilation-status.md](15-decompilation-status.md).
+
+### Openness classic project
+
+```powershell
+.\probe\openness_classic\build.ps1
+.\probe\openness_classic\bin\OpennessClassic.exe `
+    <PROJECTS> PlantE .\probe\openness_classic\PlantE.scl
+```
+
+TIA Portal must be running and the Openness access prompt must be accepted.
+The program creates CPU `6ES7 315-2EH14-0AB0/V3.2`, four tags and the eight
+SCL functions, then compiles. See
+[`probe/openness_classic/README.md`](../probe/openness_classic/README.md).
+
+### Openness / PLCSIM V21 probes
+
+```powershell
+.\probe\openness_probe\build.ps1
+.\probe\openness_probe\bin\OpennessProbe.exe config  .\PlantB2-plcsim\PlantB.ap21
+.\probe\openness_probe\bin\OpennessProbe.exe subnet  .\PlantB2-plcsim\PlantB.ap21
+.\probe\openness_probe\bin\OpennessProbe.exe download .\PlantB2-plcsim\PlantB.ap21 192.168.0.1
+
+dotnet build .\probe\plcsim_v21_host\plcsimhost.csproj -c Release
+.\probe\plcsim_v21_host\bin\Release\net10.0\plcsimhost.exe
+```
+
+The download probe documents the measured blocker: the PLCSIM V21 vPLC powers
+on, but TIA cannot connect to it (`Connect to module PLC_B failed`). See
+[`probe/openness_probe/README.md`](../probe/openness_probe/README.md) and
+[`probe/plcsim_v21_host/README.md`](../probe/plcsim_v21_host/README.md).
 
 ### Schema dump
 

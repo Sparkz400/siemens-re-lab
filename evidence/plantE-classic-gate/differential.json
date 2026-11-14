@@ -1,0 +1,190 @@
+{
+  "rows": 8,
+  "meanAbsoluteError": 0.875,
+  "meanJaccard": 0.7684523809523809,
+  "exactOpcodeRate": 0.125,
+  "pass": true,
+  "items": [
+    {
+      "block": "FC_LogicB",
+      "actualLength": 42,
+      "predictedLength": 43,
+      "error": 1,
+      "actualOpcodes": [
+        "A",
+        "AN",
+        "Assign",
+        "SAVE",
+        "SET"
+      ],
+      "predictedOpcodes": [
+        "A",
+        "Assign",
+        "L",
+        "SAVE",
+        "SET"
+      ],
+      "jaccard": 0.6666666666666666,
+      "exactOpcodes": false
+    },
+    {
+      "block": "FC_And",
+      "actualLength": 26,
+      "predictedLength": 26,
+      "error": 0,
+      "actualOpcodes": [
+        "A",
+        "Assign",
+        "SAVE",
+        "SET"
+      ],
+      "predictedOpcodes": [
+        "A",
+        "Assign",
+        "L",
+        "SAVE",
+        "SET"
+      ],
+      "jaccard": 0.8,
+      "exactOpcodes": false
+    },
+    {
+      "block": "FC_Or",
+      "actualLength": 26,
+      "predictedLength": 26,
+      "error": 0,
+      "actualOpcodes": [
+        "A",
+        "Assign",
+        "O",
+        "SAVE",
+        "SET"
+      ],
+      "predictedOpcodes": [
+        "A",
+        "Assign",
+        "L",
+        "SAVE",
+        "SET"
+      ],
+      "jaccard": 0.6666666666666666,
+      "exactOpcodes": false
+    },
+    {
+      "block": "FC_Not",
+      "actualLength": 22,
+      "predictedLength": 21,
+      "error": -1,
+      "actualOpcodes": [
+        "A",
+        "AN",
+        "Assign",
+        "SAVE",
+        "SET"
+      ],
+      "predictedOpcodes": [
+        "A",
+        "Assign",
+        "SAVE",
+        "SET"
+      ],
+      "jaccard": 0.8,
+      "exactOpcodes": false
+    },
+    {
+      "block": "FC_Xor",
+      "actualLength": 26,
+      "predictedLength": 26,
+      "error": 0,
+      "actualOpcodes": [
+        "A",
+        "Assign",
+        "SAVE",
+        "SET",
+        "X"
+      ],
+      "predictedOpcodes": [
+        "A",
+        "Assign",
+        "L",
+        "SAVE",
+        "SET"
+      ],
+      "jaccard": 0.6666666666666666,
+      "exactOpcodes": false
+    },
+    {
+      "block": "FC_Mux",
+      "actualLength": 46,
+      "predictedLength": 47,
+      "error": 1,
+      "actualOpcodes": [
+        "A",
+        "Assign",
+        "CLR",
+        "JCN",
+        "JU",
+        "SAVE",
+        "SET"
+      ],
+      "predictedOpcodes": [
+        "A",
+        "Assign",
+        "CLR",
+        "JCN",
+        "JU",
+        "SAVE",
+        "SET"
+      ],
+      "jaccard": 1,
+      "exactOpcodes": true
+    },
+    {
+      "block": "FC_Cmp",
+      "actualLength": 28,
+      "predictedLength": 26,
+      "error": -2,
+      "actualOpcodes": [
+        "A",
+        "Assign",
+        "EQ_I",
+        "L",
+        "SAVE",
+        "SET"
+      ],
+      "predictedOpcodes": [
+        "A",
+        "Assign",
+        "L",
+        "SAVE",
+        "SET"
+      ],
+      "jaccard": 0.8333333333333334,
+      "exactOpcodes": false
+    },
+    {
+      "block": "FC_Add",
+      "actualLength": 28,
+      "predictedLength": 26,
+      "error": -2,
+      "actualOpcodes": [
+        "A",
+        "ADD_I",
+        "Assign",
+        "L",
+        "SAVE",
+        "SET",
+        "T"
+      ],
+      "predictedOpcodes": [
+        "A",
+        "Assign",
+        "L",
+        "SAVE",
+        "SET"
+      ],
+      "jaccard": 0.7142857142857143,
+      "exactOpcodes": false
+    }
+  ]
+}
