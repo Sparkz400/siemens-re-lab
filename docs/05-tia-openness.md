@@ -97,6 +97,10 @@ create-only and pass through the HMI preservation/compile gate.
 - The classic project creation and the subnet/download probes are in
   [`probe/openness_classic`](../probe/openness_classic) and
   [`probe/openness_probe`](../probe/openness_probe).
+- The plus-code reader and TIA assembly inventory are in
+  [`probe/mc7plus_reader`](../probe/mc7plus_reader) and
+  [`probe/tia_inventory.ps1`](../probe/tia_inventory.ps1); see
+  [16-decompilation-roadmap.md](16-decompilation-roadmap.md).
 - Some HMI exports are unavailable (no `Screen.Export`), so preservation is compared through
   typed model readback and paired exports.
 - Test Suite operations are unavailable in this build (stub).

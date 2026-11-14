@@ -23,11 +23,18 @@
 | `evidence/` | sanitized platform/compiler/real-pair JSON summaries |
 | `probe/mc7_classic_extract.py` | classic S7-300 MC7 code-slice extractor from objectframe XML |
 | `probe/mc7_classic_host/` | TIA `AwlRegenerator` JSON host, build script and usage notes |
+| `probe/mc7plus_extract.py` | S7-1500 plus-code section extractor from objectframe XML |
+| `probe/mc7plus_reader/` | `MC7PlusBinaryReader` / `MC7plus.Disassembler` probe |
+| `probe/tia_inventory.ps1` | TIA Portal assembly metadata inventory |
 | `probe/tests/` | alarm-store, TIA MCP, snapshot-report and MC7 extractor tests |
+| `analysis/tia-assembly-inventory.csv` | TIA V21 managed/native assembly metadata |
+| `analysis/tia-assembly-summary.json` | TIA V21 inventory summary |
+| `obsidian/siemens-re-lab/` | Obsidian vault: A/B/C notes, experiment log, inventory |
 | `docs/11-alarms-history.md` | M2 API shapes, live failure evidence, storage, fixture path |
 | `docs/13-mc7-codegen.md` | classic/plus MC7 evidence, PLCSIM V21 read-back limits |
 | `docs/14-tia-project-harness.md` | 30-idea harness command map and status |
 | `docs/15-decompilation-status.md` | surface-by-surface decompilation status |
+| `docs/16-decompilation-roadmap.md` | A/B/C roadmap, plus-code leads, TIA inventory |
 | `probe/dump_schema.py` | introspection → local SDL + JSON |
 | `probe/summarize_schema.py` | introspection JSON → Markdown operation summary |
 | `analysis/schema-summary.md` | curated queries/mutations/subscriptions/tag model |
@@ -134,6 +141,34 @@ The objectframe XML comes from the Openness `fs2xml` step. The extractor reads
 loads TIA's `AwlRegenerator` from the local installation and prints JSON
 statements. See [13-mc7-codegen.md](13-mc7-codegen.md) for the measured classic
 and plus-code results and the PLCSIM V21 limits.
+
+### MC7 plus reader
+
+```powershell
+python .\probe\mc7plus_extract.py `
+    --xml <PlantB2.objectframe.xml> --out out\plus-sections
+.\probe\mc7plus_reader\build.ps1 -TiaBin '<TIA_BIN>'
+.\probe\mc7plus_reader\bin\Mc7PlusReader.exe `
+    --tia-bin '<TIA_BIN>' `
+    --code out\plus-sections\FC_And.sec1.bin `
+    --immediate out\plus-sections\FC_And.open.bin `
+    --label 'FC_And sec1 + open'
+```
+
+The measured result is negative: the immediate table does not unlock the
+observed sections (`Read not allowed type code` / `Instruction code has no
+match`). See [`probe/mc7plus_reader/README.md`](../probe/mc7plus_reader/README.md).
+
+### TIA assembly inventory
+
+```powershell
+.\probe\tia_inventory.ps1 -TiaBin '<TIA_BIN>' -OutDir .\analysis
+```
+
+The script classifies every `*.dll`/`*.exe` as managed or native and writes
+`analysis/tia-assembly-inventory.csv` + `analysis/tia-assembly-summary.json`.
+The TIA V21 run found 2,573 files: 2,326 managed, 247 native, 1,640.8 MB total.
+Vendor decompiled source is not committed.
 
 ### TIA project harness (30 ideas)
 

@@ -1,0 +1,194 @@
+{
+  "tiaBin": "<TIA_BIN>",
+  "generated": "2026-11-14T11:28:56.4931108+01:00",
+  "files": 2573,
+  "managed": 2326,
+  "native": 247,
+  "totalSizeMB": 1640.8,
+  "managedSizeMB": 931.1,
+  "nativeSizeMB": 709.6,
+  "topManaged": [
+    {
+      "Name": "Siemens.Automation.Cax.MddPublicationTool.OpennessDB.dll",
+      "SizeMB": 80.547,
+      "AssemblyVersion": "2100.0.121.1"
+    },
+    {
+      "Name": "Siemens.Simatic.Hmi.BL.ExpressionValidator.dll",
+      "SizeMB": 21.626,
+      "AssemblyVersion": "1.0.9566.23729"
+    },
+    {
+      "Name": "Siemens.MP.tkWebUICli.dll",
+      "SizeMB": 19.796,
+      "AssemblyVersion": "2100.244.8.0"
+    },
+    {
+      "Name": "Siemens.TechTrace.Editor.UserInterface.dll",
+      "SizeMB": 13.874,
+      "AssemblyVersion": "2100.0.121.1"
+    },
+    {
+      "Name": "Siemens.MP.tkDotNetDirectProxies.dll",
+      "SizeMB": 12.055,
+      "AssemblyVersion": "2100.244.8.0"
+    },
+    {
+      "Name": "OMSp_core_managed.dll",
+      "SizeMB": 11.779,
+      "AssemblyVersion": "16.0.0.1"
+    },
+    {
+      "Name": "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_mips_V6_1.dll",
+      "SizeMB": 11.577,
+      "AssemblyVersion": "2100.0.121.1"
+    },
+    {
+      "Name": "Siemens.Collaboration.Net.VisualStudio.DebuggerAutomation.dll",
+      "SizeMB": 11.123,
+      "AssemblyVersion": "1.0.0.0"
+    },
+    {
+      "Name": "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_ppc460_V6_1.dll",
+      "SizeMB": 10.658,
+      "AssemblyVersion": "2100.0.121.1"
+    },
+    {
+      "Name": "Siemens.MP.LMC.tkTIABridge.dll",
+      "SizeMB": 10.222,
+      "AssemblyVersion": "2100.244.8.0"
+    },
+    {
+      "Name": "Siemens.MP.tkTIABridge.dll",
+      "SizeMB": 10.22,
+      "AssemblyVersion": "2100.244.8.0"
+    },
+    {
+      "Name": "Siemens.MP.LMC.tkDotNetDirectProxies.dll",
+      "SizeMB": 9.086,
+      "AssemblyVersion": "2100.244.8.0"
+    },
+    {
+      "Name": "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_mips_V6_0.dll",
+      "SizeMB": 9.042,
+      "AssemblyVersion": "2100.0.121.1"
+    },
+    {
+      "Name": "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_mips_V5_2.dll",
+      "SizeMB": 8.826,
+      "AssemblyVersion": "2100.0.121.1"
+    },
+    {
+      "Name": "Siemens.Simatic.Hwcn.BusinessLogic.dll",
+      "SizeMB": 8.811,
+      "AssemblyVersion": "2100.300.4.1"
+    },
+    {
+      "Name": "Opc.Ua.Core.dll",
+      "SizeMB": 8.016,
+      "AssemblyVersion": "1.4.366.0"
+    },
+    {
+      "Name": "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_ppc460_V6_0.dll",
+      "SizeMB": 7.622,
+      "AssemblyVersion": "2100.0.121.1"
+    },
+    {
+      "Name": "Siemens.Simatic.Hmi.Device.DEVICE_T.dll",
+      "SizeMB": 7.588,
+      "AssemblyVersion": "2100.300.4.1"
+    },
+    {
+      "Name": "TeeChart.dll",
+      "SizeMB": 7.55,
+      "AssemblyVersion": "4.2023.4.18"
+    },
+    {
+      "Name": "s7irsrvmc7x.dll",
+      "SizeMB": 7.518,
+      "AssemblyVersion": "2100.0.121.1"
+    }
+  ],
+  "topNative": [
+    {
+      "Name": "Qt6WebEngineCoreRTIL.dll",
+      "SizeMB": 150.593
+    },
+    {
+      "Name": "Siemens.MP.MotionCore.exe",
+      "SizeMB": 75.621
+    },
+    {
+      "Name": "Siemens.MP.tkImplementation.dll",
+      "SizeMB": 67.609
+    },
+    {
+      "Name": "Siemens.MP.LMC.tkImplementation.dll",
+      "SizeMB": 51.184
+    },
+    {
+      "Name": "icudt77.dll",
+      "SizeMB": 30.7
+    },
+    {
+      "Name": "JSEngineAdapterV8.dll",
+      "SizeMB": 28.655
+    },
+    {
+      "Name": "opengl32sw.dll",
+      "SizeMB": 19.965
+    },
+    {
+      "Name": "Siemens.MP.MotionCoreCam.exe",
+      "SizeMB": 19.672
+    },
+    {
+      "Name": "webenginedriver.exe",
+      "SizeMB": 14.662
+    },
+    {
+      "Name": "GfxVCS.dll",
+      "SizeMB": 14.194
+    },
+    {
+      "Name": "QtWebEngineProcessd.exe",
+      "SizeMB": 11.451
+    },
+    {
+      "Name": "ChromRender.dll",
+      "SizeMB": 10.157
+    },
+    {
+      "Name": "Qt6GuiRTIL.dll",
+      "SizeMB": 8.795
+    },
+    {
+      "Name": "libWCCILRdfFwSerializer.dll",
+      "SizeMB": 7.293
+    },
+    {
+      "Name": "S7GSDxDLL.dll",
+      "SizeMB": 7.041
+    },
+    {
+      "Name": "rtpu.dll",
+      "SizeMB": 6.99
+    },
+    {
+      "Name": "Siemens.Simatic.Srm.Rdp.Data.dll",
+      "SizeMB": 6.286
+    },
+    {
+      "Name": "Qt6WidgetsRTIL.dll",
+      "SizeMB": 6.096
+    },
+    {
+      "Name": "Qt6QuickRTIL.dll",
+      "SizeMB": 5.974
+    },
+    {
+      "Name": "Qt6CoreRTIL.dll",
+      "SizeMB": 5.87
+    }
+  ]
+}

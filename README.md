@@ -102,6 +102,7 @@ docs/        goals, environment, lab project, WinCC GraphQL, TIA Openness, plans
 probe/       schema dump, polling probe, live logger, alarm/history clients, MC7/Openness/PLCSIM probes, tests
 tools/       tia-project 30-idea harness, classic/plus MC7 hosts
 evidence/    sanitized JSON summaries from the platform, compiler and real-pair runs
+obsidian/    Obsidian vault: A/B/C notes, experiment log, TIA inventory
 analysis/    curated GraphQL schema summary (no vendor SDL committed)
 examples/    sample CSV output
 ```
@@ -125,6 +126,7 @@ Docs index:
 | [docs/13-mc7-codegen.md](docs/13-mc7-codegen.md) | Classic S7-300 MC7 extraction, S7-1500 plus-code encryption, PLCSIM V21 read-back limits |
 | [docs/14-tia-project-harness.md](docs/14-tia-project-harness.md) | 30-idea TIA project harness, command map, status and evidence |
 | [docs/15-decompilation-status.md](docs/15-decompilation-status.md) | Surface-by-surface decompilation status: parsed, fully decoded, fixture and blocked |
+| [docs/16-decompilation-roadmap.md](docs/16-decompilation-roadmap.md) | A/B/C decompilation roadmap, plus-code leads, TIA assembly inventory |
 
 ## Quick start (goal 3)
 
@@ -214,6 +216,10 @@ pure XML/SQLite commands run without it. See
   `observed.distinctMc7=8`, `realCodegen=true`. Sanitized evidence is in `evidence/`; the
   plus-code, PLCSIM read-back and cross-release gaps are in
   [docs/15-decompilation-status.md](docs/15-decompilation-status.md).
+- The A/B/C decompilation track is in [docs/16-decompilation-roadmap.md](docs/16-decompilation-roadmap.md)
+  and the [`obsidian/siemens-re-lab`](obsidian/siemens-re-lab) vault. Non-optimized S7-1500
+  blocks still use `PLUSBLOCK`, and `MC7PlusBinaryReader` with `OpenImmediateData` still
+  fails; runtime capture and PLCSIM/CPU memory are the next routes.
 
 ## License
 
