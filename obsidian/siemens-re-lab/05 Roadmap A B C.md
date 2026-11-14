@@ -42,7 +42,7 @@ created: 2026-11-14
 - [x] Assembly inventory (managed/native, size, version, type count)
 - [ ] Curated decompilation of Openness, block logic, MC7, HMI, PLCSIM, CSI
 - [x] Call-path map for plus-code decryption/disassembly
-- [ ] Add-on package inventory (Startdrive, Safety, WinCC Unified, Test Suite)
+- [x] Add-on package inventory (Startdrive, Safety, WinCC Unified, Test Suite)
 - [ ] Native exports/entry-point map (CSI, compiler, runtime)
 
 ## Milestones

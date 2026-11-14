@@ -127,6 +127,7 @@ Docs index:
 | [docs/14-tia-project-harness.md](docs/14-tia-project-harness.md) | 30-idea TIA project harness, command map, status and evidence |
 | [docs/15-decompilation-status.md](docs/15-decompilation-status.md) | Surface-by-surface decompilation status: parsed, fully decoded, fixture and blocked |
 | [docs/16-decompilation-roadmap.md](docs/16-decompilation-roadmap.md) | A/B/C decompilation roadmap, plus-code leads, TIA assembly inventory |
+| [docs/17-tia-addon-inventory.md](docs/17-tia-addon-inventory.md) | TIA V21 add-on/assembly family inventory (WinCC, PLC language, Safety, drives, CSI) |
 
 ## Quick start (goal 3)
 

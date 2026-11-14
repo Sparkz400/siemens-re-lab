@@ -96,6 +96,24 @@ managed boundary.
 Vendor decompiled source stays local; the repo gets this index, scripts and
 notes.
 
+## Add-on families
+
+`probe/tia_addon_inventory.py` classifies the 2,573 assemblies:
+
+| Family | Files | Size MB |
+|---|---:|---:|
+| WinCC/HMI + motion proxies | 952 | 470.5 |
+| PLC language/compiler | 207 | 64.0 |
+| Hardware config | 146 | 230.3 |
+| Safety | 26 | 11.2 |
+| Drives/Startdrive | 116 | 39.7 |
+| OPC UA | 10 | 11.4 |
+| CSI/security | 96 | 13.3 |
+| Automation framework | 401 | 161.1 |
+| Motion/technology | 94 | 339.5 |
+
+Test Suite is not installed. Full report: `docs/17-tia-addon-inventory.md`.
+
 ## Missing plus disassembler
 
 `MC7ViewLogic` in `NetworkEditorFrame` loads

@@ -1,0 +1,223 @@
+{
+  "source": "tia-assembly-inventory.csv",
+  "totalFiles": 2573,
+  "totalSizeMB": 1640.8,
+  "families": {
+    "wincc-unified": {
+      "prefixes": [
+        "Siemens.Simatic.Hmi.",
+        "Siemens.WinCC.",
+        "Siemens.MP."
+      ],
+      "files": 952,
+      "managed": 941,
+      "native": 11,
+      "sizeMB": 470.47999999999985,
+      "examples": [
+        "Siemens.Simatic.Hmi.BL.ExpressionValidator.dll",
+        "Siemens.MP.tkWebUICli.dll",
+        "Siemens.MP.tkDotNetDirectProxies.dll",
+        "Siemens.MP.LMC.tkTIABridge.dll",
+        "Siemens.MP.tkTIABridge.dll",
+        "Siemens.MP.LMC.tkDotNetDirectProxies.dll",
+        "Siemens.Simatic.Hmi.Device.DEVICE_T.dll",
+        "Siemens.Simatic.Hmi.Es2rt.Target.CeRt.dll"
+      ]
+    },
+    "plc-language": {
+      "prefixes": [
+        "Siemens.Simatic.Lang."
+      ],
+      "files": 207,
+      "managed": 207,
+      "native": 0,
+      "sizeMB": 63.984000000000016,
+      "examples": [
+        "Siemens.Simatic.Lang.MC7Codegenerator.dll",
+        "Siemens.Simatic.Lang.FLDiagram.dll",
+        "Siemens.Simatic.Lang.Block.Compiler.dll",
+        "Siemens.Simatic.Lang.BlockEditorFrame.dll",
+        "Siemens.Simatic.Lang.PLRegEx.dll",
+        "Siemens.Simatic.Lang.BlockLogic.dll",
+        "Siemens.Simatic.Lang.BlockInterface.dll",
+        "Siemens.Simatic.Lang.GraphEditor.dll"
+      ]
+    },
+    "hardware-config": {
+      "prefixes": [
+        "Siemens.Simatic.Hwcn."
+      ],
+      "files": 146,
+      "managed": 141,
+      "native": 5,
+      "sizeMB": 230.26399999999992,
+      "examples": [
+        "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_mips_V6_1.dll",
+        "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_ppc460_V6_1.dll",
+        "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_mips_V6_0.dll",
+        "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_mips_V5_2.dll",
+        "Siemens.Simatic.Hwcn.BusinessLogic.dll",
+        "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_ppc460_V6_0.dll",
+        "Siemens.Simatic.Hwcn.BusinessLogic.Ncm.scw_ppc460_V5_2.dll",
+        "Siemens.Simatic.Hwcn.Basics.CsiInterop.dll"
+      ]
+    },
+    "safety": {
+      "prefixes": [
+        "Siemens.Simatic.Safety.",
+        "Siemens.Simatic.F.",
+        "Siemens.Simatic.S7F."
+      ],
+      "files": 26,
+      "managed": 26,
+      "native": 0,
+      "sizeMB": 11.225999999999999,
+      "examples": [
+        "Siemens.Simatic.Safety.Compiler.dll",
+        "Siemens.Simatic.Safety.Tia.dll",
+        "Siemens.Simatic.Safety.Core.dll",
+        "Siemens.Simatic.Safety.Interface.dll",
+        "Siemens.Simatic.Safety.Flx.dll",
+        "Siemens.Simatic.Safety.Runtime.dll",
+        "Siemens.Simatic.Safety.UI.dll",
+        "Siemens.Simatic.Safety.OpcUa.dll"
+      ]
+    },
+    "drives-startdrive": {
+      "prefixes": [
+        "Siemens.MC.Drives.",
+        "Siemens.Simatic.Drive.",
+        "Siemens.Simatic.Startdrive."
+      ],
+      "files": 116,
+      "managed": 115,
+      "native": 1,
+      "sizeMB": 39.688000000000024,
+      "examples": [
+        "Siemens.MC.Drives.Acx.Hwcn.dll",
+        "Siemens.MC.Drives.Common.SafetyAcceptanceTest.dll",
+        "Siemens.MC.Drives.Acx.BusinessLogic.dll",
+        "Siemens.MC.Drives.Acx.TechTrace.dll",
+        "Siemens.MC.Drives.Acx.Model.dll",
+        "Siemens.MC.Drives.Acx.UI.ParameterGrid.Common.dll",
+        "Siemens.MC.Drives.Acx.UI.Common.dll",
+        "Siemens.MC.Drives.Acx.UI.WatchTable.dll"
+      ]
+    },
+    "test-suite": {
+      "prefixes": [
+        "Siemens.Simatic.TestSuite.",
+        "Siemens.Simatic.Test."
+      ],
+      "files": 0,
+      "managed": 0,
+      "native": 0,
+      "sizeMB": 0.0,
+      "examples": []
+    },
+    "opc-ua": {
+      "prefixes": [
+        "Opc.Ua.",
+        "Siemens.Simatic.OpcUa."
+      ],
+      "files": 10,
+      "managed": 10,
+      "native": 0,
+      "sizeMB": 11.417999999999997,
+      "examples": [
+        "Opc.Ua.Core.dll",
+        "Siemens.Simatic.OpcUa.Bl.dll",
+        "Siemens.Simatic.OpcUa.Ui.dll",
+        "Siemens.Simatic.OpcUa.Base.Bl.dll",
+        "Opc.Ua.Client.dll",
+        "Siemens.Simatic.OpcUa.Bl.Online.dll",
+        "Opc.Ua.Security.Certificates.dll",
+        "Opc.Ua.Configuration.dll"
+      ]
+    },
+    "security-csi": {
+      "prefixes": [
+        "Siemens.DF.",
+        "Siemens.Automation.Security.",
+        "Siemens.Automation.Cryptography."
+      ],
+      "files": 96,
+      "managed": 95,
+      "native": 1,
+      "sizeMB": 13.33799999999999,
+      "examples": [
+        "Siemens.DF.Domain.PN.Pure.Impl.BL.dll",
+        "Siemens.DF.Dev.GSD.Pure.Impl.Converter.BL.dll",
+        "Siemens.DF.Infra.ObjTModel.Pure.BL.dll",
+        "Siemens.DF.DG.SecurityPlus.Pure.Impl.BL.dll",
+        "Siemens.DF.DG.SystemDataPlus.Pure.Impl.BL.dll",
+        "Siemens.DF.Infra.ConfigObject.Pure.Impl.BL.dll",
+        "Siemens.DF.Domain.Security.Pure.Impl.BL.dll",
+        "Siemens.DF.DG.SystemDataPlus.Pure.BL.dll"
+      ]
+    },
+    "automation-framework": {
+      "prefixes": [
+        "Siemens.Automation."
+      ],
+      "files": 401,
+      "managed": 397,
+      "native": 4,
+      "sizeMB": 161.0879999999998,
+      "examples": [
+        "Siemens.Automation.Cax.MddPublicationTool.OpennessDB.dll",
+        "Siemens.Automation.Rse.AwlCodeGen.dll",
+        "Siemens.Automation.UI.Controls.dll",
+        "Siemens.Automation.FrameApplication.dll",
+        "Siemens.Automation.ObjectFrame.dll",
+        "Siemens.Automation.DomainServices.Online.dll",
+        "Siemens.Automation.DomainServices.dll",
+        "Siemens.Automation.Basics.dll"
+      ]
+    },
+    "motion-technology": {
+      "prefixes": [
+        "Siemens.MP.",
+        "Siemens.TechTrace.",
+        "Siemens.Simatic.Tech."
+      ],
+      "files": 94,
+      "managed": 86,
+      "native": 8,
+      "sizeMB": 339.514,
+      "examples": [
+        "Siemens.MP.tkWebUICli.dll",
+        "Siemens.TechTrace.Editor.UserInterface.dll",
+        "Siemens.MP.tkDotNetDirectProxies.dll",
+        "Siemens.MP.LMC.tkTIABridge.dll",
+        "Siemens.MP.tkTIABridge.dll",
+        "Siemens.MP.LMC.tkDotNetDirectProxies.dll",
+        "Siemens.Simatic.Tech.SMC.Core.dll",
+        "Siemens.Simatic.Tech.LMC.Core.dll"
+      ]
+    }
+  },
+  "unmatchedFiles": 564,
+  "unmatchedExamples": [
+    "OMSp_core_managed.dll",
+    "Siemens.Collaboration.Net.VisualStudio.DebuggerAutomation.dll",
+    "TeeChart.dll",
+    "s7irsrvmc7x.dll",
+    "DocumentFormat.OpenXml.dll",
+    "Swashbuckle.Core.dll",
+    "BouncyCastle.Crypto.dll",
+    "Microsoft.Diagnostics.Tracing.TraceEvent.dll",
+    "Siemens.Chrom.Som.Model.dll",
+    "Siemens.Chrom.Som.Model.Styles.dll",
+    "0Harmony.dll",
+    "Siemens.Simatic.Srm.Rdp.Compiler.Generators.dll",
+    "S7GSDI.Interpreter.dll",
+    "edd_CommDriver_Profibus_x.dll",
+    "Siemens.Simatic.AlarmServices.BusinessLogic.dll",
+    "Siemens.Collaboration.Net.CoreExtensions.dll",
+    "Siemens.Simatic.SystemDiagnosis.Host.Classic.dll",
+    "System.Text.Encoding.CodePages.dll",
+    "Lucene.Net.dll",
+    "Interop.CCHMISCRIPTINGSITELib.dll"
+  ]
+}
