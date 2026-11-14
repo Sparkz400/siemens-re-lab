@@ -9,6 +9,11 @@ The repo documents four projects, the environment they run in, and the evidence 
 > has a capture/compare CLI with a native Python diff, validated live for tag, block and HMI
 > screen-item changes. Goals 2 and 4 are planned; goal 4 is blocked on hardware/artifacts.
 
+> **MC7 note (2026-11-14).** Classic S7-300 MC7 is readable and was verified on
+> eight SCL functions; S7-1500 plus code remains encrypted in `MC7PlusData`, and
+> the PLCSIM V21 public API does not expose block download/upload. See
+> [docs/13-mc7-codegen.md](docs/13-mc7-codegen.md).
+
 > **Disclaimer:** this is independent research on systems we own or are authorized to test.
 > It is not affiliated with or endorsed by Siemens. Siemens, SIMATIC, TIA Portal, PLCSIM,
 > WinCC and related marks belong to Siemens AG. No Siemens binaries, licenses, project
@@ -109,6 +114,7 @@ Docs index:
 | [docs/10-legal-security.md](docs/10-legal-security.md) | authorization, trademarks, secret handling |
 | [docs/11-alarms-history.md](docs/11-alarms-history.md) | M2 alarm/history client, live evidence, runtime storage, activeAlarms limitation |
 | [docs/12-tia-snapshot-diff.md](docs/12-tia-snapshot-diff.md) | Goal 1 snapshot/diff CLI, snapshot layout, coverage and acceptance plan |
+| [docs/13-mc7-codegen.md](docs/13-mc7-codegen.md) | Classic S7-300 MC7 extraction, S7-1500 plus-code encryption, PLCSIM V21 read-back limits |
 
 ## Quick start (goal 3)
 
@@ -170,6 +176,16 @@ Capture starts a private headless TIA; compare does not. See
   `hmi_inspect section=model` supplement (Unified typed public attributes; script code hashed;
   Classic coverage limited to the tool's supported sections). This is model readback, not a
   native export or runtime proof.
+- Classic S7-300 MC7 is stored unencrypted in `LoadableCodeBlockData.BinaryData`;
+  `BlockDebugInformation.EndSAC` gives the slice `BinaryData[78 : 78 + EndSAC + 1]`, and
+  TIA's `AwlRegenerator` decodes it. Eight SCL FCs produced eight distinct code hashes
+  (42/26/26/22/26/46/28/28 bytes), `observed.distinctMc7=8`, `realCodegen=true`.
+- S7-1500 plus code is not readable through the public Openness surface: all eight blocks
+  share the 12-byte `OpenImmediateData` stub `1500030030490000000802D5`, `MC7PlusData`
+  sections fail operand decoding, and `KeyKeeper`/`FamilyKey` does not unlock the
+  disassembler (`observed.distinctMc7=1`, `realCodegen=false`). On PLCSIM V21 an
+  API-created vPLC powers on but is not reachable through TIA's `PLCSIM` PC interface;
+  Openness download fails with `Connect to module PLC_B failed`.
 
 ## License
 
