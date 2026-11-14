@@ -1,0 +1,235 @@
+{
+  "bin": "<TIA_BIN>",
+  "files": [
+    {
+      "name": "Siemens.Simatic.Hmi.BL.ScriptModuleLib.Interfaces.dll",
+      "layer": "contracts",
+      "role": "module library contracts",
+      "sizeMB": 0.014
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.Scripting.Interfaces.dll",
+      "layer": "contracts",
+      "role": "script, module and validation contracts",
+      "sizeMB": 0.108
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.Scripting.Interfaces.dll",
+      "layer": "contracts",
+      "role": "scripting UI contracts",
+      "sizeMB": 0.179
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.DL.ScriptModuleLib.dll",
+      "layer": "data",
+      "role": "module library data layer",
+      "sizeMB": 0.025
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.DL.Scripting.dll",
+      "layer": "data",
+      "role": "script data layer",
+      "sizeMB": 0.056
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.PL.ScriptModuleLib.dll",
+      "layer": "editor",
+      "role": "module library editor",
+      "sizeMB": 0.02
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.PL.Scripting.EditorLogic.dll",
+      "layer": "editor",
+      "role": "script editor logic",
+      "sizeMB": 0.143
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.PL.Scripting.Scan.dll",
+      "layer": "editor",
+      "role": "script editor scan",
+      "sizeMB": 0.244
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.Scripting.EditControl.dll",
+      "layer": "editor",
+      "role": "script edit control",
+      "sizeMB": 0.546
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.Scripting.Managers.Scan.dll",
+      "layer": "editor",
+      "role": "script managers",
+      "sizeMB": 0.448
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.Scripting.Snapin.Scan.dll",
+      "layer": "editor",
+      "role": "script snap-in",
+      "sizeMB": 2.918
+    },
+    {
+      "name": "JSEngineAdapterV8.dll",
+      "layer": "engine",
+      "role": "V8 engine adapter (native)",
+      "sizeMB": 28.655
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.Scripting.RTScriptComponentWrapper.dll",
+      "layer": "engine",
+      "role": "native V8 wrapper: CreateV8EngineWrapper, CompileScript",
+      "sizeMB": 0.062
+    },
+    {
+      "name": "CCHMIScriptingSite.dll",
+      "layer": "legacy-vb",
+      "role": "classic WinCC scripting site",
+      "sizeMB": 0.427
+    },
+    {
+      "name": "CCScriptComp.dll",
+      "layer": "legacy-vb",
+      "role": "classic WinCC script compiler",
+      "sizeMB": 1.039
+    },
+    {
+      "name": "FwVBScripting.dll",
+      "layer": "legacy-vb",
+      "role": "legacy VB scripting",
+      "sizeMB": 0.265
+    },
+    {
+      "name": "Interop.CCHMISCRIPTINGSITELib.dll",
+      "layer": "legacy-vb",
+      "role": "classic scripting interop",
+      "sizeMB": 0.718
+    },
+    {
+      "name": "Interop.Siemens.Simatic.Hmi.Scripting.FwVBScripting.dll",
+      "layer": "legacy-vb",
+      "role": "VB interop",
+      "sizeMB": 0.144
+    },
+    {
+      "name": "Interop.Siemens.Simatic.Hmi.Scripting.vbobjects.dll",
+      "layer": "legacy-vb",
+      "role": "VB object model interop",
+      "sizeMB": 0.017
+    },
+    {
+      "name": "HmiScriptModel.dll",
+      "layer": "model",
+      "role": "legacy script model and tokenizer",
+      "sizeMB": 0.365
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.ScriptModuleLib.dll",
+      "layer": "model",
+      "role": "script module library",
+      "sizeMB": 0.133
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.Scripting.ChromDataExchange.dll",
+      "layer": "model",
+      "role": "Chrom data exchange",
+      "sizeMB": 0.069
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.Scripting.Model.dll",
+      "layer": "model",
+      "role": "tokenizer, snippets, RT model",
+      "sizeMB": 0.091
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.Scripting.Scan.dll",
+      "layer": "model",
+      "role": "script/module data access; HmiScriptModule, virtual event/trigger modules",
+      "sizeMB": 0.441
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.Vci.GlobalScriptModule.dll",
+      "layer": "model",
+      "role": "global script module / VCI",
+      "sizeMB": 0.078
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.Scripting.Parser.dll",
+      "layer": "parser",
+      "role": "JavaScript lexer/parser (ParserLevel1-3, JsDoc, template strings)",
+      "sizeMB": 0.058
+    },
+    {
+      "name": "ScriptAlarmObjectModel.dll",
+      "layer": "runtime",
+      "role": "alarm object model",
+      "sizeMB": 0.756
+    },
+    {
+      "name": "ScriptCommonLib.dll",
+      "layer": "runtime",
+      "role": "common script library",
+      "sizeMB": 0.459
+    },
+    {
+      "name": "ScriptHMIMath.dll",
+      "layer": "runtime",
+      "role": "math library",
+      "sizeMB": 0.148
+    },
+    {
+      "name": "ScriptHMIRuntime.dll",
+      "layer": "runtime",
+      "role": "HMI script runtime",
+      "sizeMB": 0.228
+    },
+    {
+      "name": "ScriptTagObjectModel.dll",
+      "layer": "runtime",
+      "role": "tag object model",
+      "sizeMB": 1.163
+    },
+    {
+      "name": "ScriptTimerObjectModel.dll",
+      "layer": "runtime",
+      "role": "timer object model",
+      "sizeMB": 0.065
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.ILCompiler.RtContribution.dll",
+      "layer": "serialization",
+      "role": "VCS20ScriptAction RDF serialization",
+      "sizeMB": 0.368
+    },
+    {
+      "name": "Siemens.Simatic.Hmi.BL.Scripting.Validator.dll",
+      "layer": "validator",
+      "role": "V8 compile/validate; JavaScriptValidator, NativeMethods",
+      "sizeMB": 0.05
+    }
+  ],
+  "deviceScriptAssemblies": [
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE1810.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2001.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2101.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2105.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2208.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2209.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2212.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2306.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2401.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2408.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2501.dll",
+    "Siemens.Simatic.Hmi.Device.ScriptDevice_PE2508.dll"
+  ],
+  "layers": [
+    "contracts",
+    "data",
+    "editor",
+    "engine",
+    "legacy-vb",
+    "model",
+    "parser",
+    "runtime",
+    "serialization",
+    "validator"
+  ]
+}

@@ -67,7 +67,27 @@ Container and keys decoded; payload decryption still blocked:
 - Section 1 entropy is near the small-sample maximum and distinct per block;
   consistent with encrypted/encoded data, not a simple plaintext stream.
 
-## B — PLCSIM V21
+## B - HMI Unified scripting
+
+- WinCC Unified uses **JavaScript**, compiled by a native **V8** wrapper:
+  `Siemens.Simatic.Hmi.BL.Scripting.Validator.NativeMethods` calls
+  `CreateV8EngineWrapper()` / `CompileScript()` in
+  `Siemens.Simatic.Hmi.BL.Scripting.RTScriptComponentWrapper.dll`.
+- `JavaScriptValidator` rewraps native `CompileResult` into line/column/module
+  `CompileProblem`s.
+- Parser: `Siemens.Simatic.Hmi.BL.Scripting.Parser` (`ScriptParser`,
+  `ParserLevel1-3`, `JsDocAnnotation`, `TemplateString`).
+- Model: `HmiScriptModule`, `VirtualEventScriptModule`,
+  `VirtualTriggerScriptModule`; runtime RDF uses
+  `VCS20ScriptAction`.
+- Runtime object model: `ScriptTagObjectModel.dll`,
+  `ScriptAlarmObjectModel.dll`, `ScriptTimerObjectModel.dll`,
+  `ScriptHMIRuntime.dll`.
+- Legacy VB path (`FwVBScripting.dll`, `CCHMIScriptingSite.dll`) is separate.
+- Inventory: `docs/18-hmi-scripting.md`,
+  `analysis/hmi-scripting-inventory.json`.
+
+## B - PLCSIM V21
 
 - API-created S7-1500 vPLC powers on (`Stop`, `IsPoweredOn=true`), IP set to
   `192.168.0.1`.

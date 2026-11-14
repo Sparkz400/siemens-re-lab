@@ -128,6 +128,7 @@ Docs index:
 | [docs/15-decompilation-status.md](docs/15-decompilation-status.md) | Surface-by-surface decompilation status: parsed, fully decoded, fixture and blocked |
 | [docs/16-decompilation-roadmap.md](docs/16-decompilation-roadmap.md) | A/B/C decompilation roadmap, plus-code leads, TIA assembly inventory |
 | [docs/17-tia-addon-inventory.md](docs/17-tia-addon-inventory.md) | TIA V21 add-on/assembly family inventory (WinCC, PLC language, Safety, drives, CSI) |
+| [docs/18-hmi-scripting.md](docs/18-hmi-scripting.md) | WinCC Unified JavaScript/V8 scripting stack inventory |
 
 ## Quick start (goal 3)
 

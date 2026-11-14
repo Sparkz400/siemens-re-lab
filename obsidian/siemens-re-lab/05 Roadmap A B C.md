@@ -23,7 +23,7 @@ created: 2026-11-14
 - [ ] S7-1500 plus MC7 payload decode (decryption)
 - [ ] S7-1500 plus MC7 runtime capture
 - [ ] S7-1200 plus MC7
-- [ ] HMI JavaScript / runtime package
+- [ ] HMI JavaScript / runtime package (V8 stack inventoried; extraction needs an HMI Unified project)
 - [ ] Drive/safety compiled artifacts
 
 ### Plus-code experiment order
