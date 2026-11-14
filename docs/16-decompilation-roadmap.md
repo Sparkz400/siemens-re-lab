@@ -147,9 +147,9 @@ modules export thousands of C++ symbols. See
 |---|---:|---|
 | A — engineering graph | 90%+ | Openness + parsers |
 | B — classic MC7 | ~100% | `AwlRegenerator` |
-| B — S7-1500 plus at rest | 30–50% | CSI key/static trace |
+| B — S7-1500 plus at rest | 60–80% | container + key ids decoded; payload decrypt blocked on missing DLL |
 | B — S7-1500 plus runtime | 70–90% | hook, UI view, memory |
-| B — HMI Unified | 80–90% | GraphQL + runtime DB |
+| B — HMI Unified | 80–90% | GraphQL + runtime DB; V8 scripting stack inventoried |
 | B — safety/drives | 50–80% per add-on | Openness + native RE |
 | C — full IDE source | <10% | large hybrid, low value |
 
